@@ -1,24 +1,26 @@
 import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
+
+function main(): void {
+  const root:HTMLElement|null = document.getElementById("root");
+  if (root){
+    root.innerHTML = `
+    <div class="registers" id="registers"></div>
+    <div class="flex-horizontal">
+        <div class="memory" id="instruction-memory"></div>
+        <div class="code-container flex-vertical" id="code-container">
+            <textarea name="code" id="code" cols="30" rows="10"></textarea>
+            <div class="flex-horizontal">
+                <button>Compile</button>
+            </div>
+        </div>
+        <div class="memory" id="data-memory"></div>
     </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+  `;
+  }
+  
+}
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+// Call the main function when the DOM is ready
+document.addEventListener("DOMContentLoaded", main);
+
