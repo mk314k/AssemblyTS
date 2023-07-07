@@ -5,11 +5,40 @@
     <!-- <link rel="icon" type="image/svg+xml" href="./vite.svg" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pyssemble</title>
-    <script type="module" crossorigin src="./assets/index-d09c2653.js"></script>
-    <link rel="stylesheet" href="./assets/index-3e513434.css">
+    <script type="module" crossorigin src="./assets/index-710368b3.js"></script>
+    <link rel="stylesheet" href="./assets/index-0f5a745a.css">
   </head>
   <body>
-    <div id="root" class="flex-vertical"></div>
+    <header class="flex-horizontal">
+      <nav class="flex-horizontal">
+          <div class="header">Pyssemble</div>
+      </nav>
+    </header>
+    <main>
+        <div id="root" class="flex-vertical">
+            <div class="registers flex-horizontal" id="registers"></div>
+            <div class="flex-horizontal">
+                <div class="memory flex-vertical" id="instruction-memory"></div>
+                <div class="code-container flex-vertical" id="code-container">
+                    <textarea name="code" id="code" cols="30" rows="10"></textarea>
+                    <div class="flex-horizontal">
+                        <button>Compile</button>
+                    </div>
+                </div>
+                <div class="memory flex-vertical" id="data-memory"></div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <!-- Footer section -->
+        <div class="flex-horizontal" id="footer-elements">
+            <div class="flex-horizontal" id ="social-icons"></div>
+            <div id="source-code">
+                <!-- Source code link -->
+                See Source Code on <a href="https://github.com/mk314k/buttonGame">Github</a>
+            </div>
+        </div>
+    </footer>
     
   </body>
 </html>
