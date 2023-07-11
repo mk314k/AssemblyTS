@@ -1,23 +1,27 @@
+import { RegisterSet } from './register';
 import './style.css'
 
 
 function main(): void {
-  const root:HTMLElement|null = document.getElementById("root");
-  if (root){
-    root.innerHTML = `
-    <div class="registers" id="registers"></div>
-    <div class="flex-horizontal">
-        <div class="memory" id="instruction-memory"></div>
-        <div class="code-container flex-vertical" id="code-container">
-            <textarea name="code" id="code" cols="30" rows="10"></textarea>
-            <div class="flex-horizontal">
-                <button>Compile</button>
-            </div>
-        </div>
-        <div class="memory" id="data-memory"></div>
-    </div>
-  `;
+  const registers:HTMLElement|null = document.getElementById("registers");
+  const imemory:HTMLElement|null = document.getElementById("instruction-memory");
+  const dmemory:HTMLElement|null = document.getElementById("data-memory");
+  const compile = document.getElementById("compile") as HTMLButtonElement;
+
+  if (registers !== null && imemory !== null && dmemory){
+    const regs = new RegisterSet(registers);
+    let code = "";
+    regs.outHTML();
+    compile?.addEventListener(
+      'click', ()=>{
+        const textarea = document.getElementById("code") as HTMLTextAreaElement;
+        code = textarea.value;
+        console.log(code);
+      }
+    );
   }
+
+  
   
 }
 
