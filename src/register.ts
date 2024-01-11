@@ -4,12 +4,7 @@ class RegisterIndexError extends Error {
       this.name = "RegisterIndexError";
     }
   }
-  
-  function regValid(reg: string): boolean {
-    const pattern = /^x([0-9]|[1-2]\d|3[0-1])$/;
-    return pattern.test(reg);
-  }
-  
+  import {RegisterIndexError} from './exception';
   const regMap: { [key: string]: string } = {
     zero: "x0",
     ra: "x1",
@@ -45,22 +40,59 @@ class RegisterIndexError extends Error {
     t6: "x31",
   };
   
-  export class RegIndex {
-    index: number;
   
-    constructor(index: number) {
-      if (Number.isInteger(index) && index >= 0 && index < 32) {
-        this.index = index;
-      } else {
-        throw new RegisterIndexError();
+  // export class RegIndex {
+  //   index: number;
+  
+  //   constructor(index: number) {
+  //     if (Number.isInteger(index) && index >= 0 && index < 32) {
+  //       this.index = index;
+  //     } else {
+  //       throw new RegisterIndexError();
+  //     }
+  //   }
+  // }
+  
+  export type Register = string | number;
+
+  function regToIndex(reg: Register): number {
+    if (typeof reg === 'number') {
+      // Check if it's an integer and within the range 0-31
+       if (Number.isInteger(reg) && reg >= 0 && reg < 32){
+          return reg;
+       } else {
+          throw new RegisterIndexError();
+       }
+    } else {
+      if (reg in regMap){
+        reg = regMap[reg];
+      } else{
+        const pattern = /^x([0-9]|[1-2]\d|3[0-1])$/;
+        if (! pattern.test(reg)){
+          throw new RegisterIndexError();
+        }
       }
+      return parseInt(reg.slice(1));
     }
   }
-  
+
+  export function regValid(reg: Register): boolean {
+    if (typeof reg === 'number') {
+        // Check if it's an integer and within the range 0-31
+        return Number.isInteger(reg) && reg >= 0 && reg < 32;
+    } else {
+        const pattern = /^x([0-9]|[1-2]\d|3[0-1])$/;
+        return pattern.test(reg) || reg in regMap;
+    }
+  }
+
   export class Counter {
     val: number;
   
     constructor(val = 0) {
+      this.val = val;
+    }
+    jump(val:number){
       this.val = val;
     }
   
@@ -76,35 +108,20 @@ class RegisterIndexError extends Error {
       this.registers = new Array(32).fill(0);
     }
   
-    regToIndex(reg: string|RegIndex): number {
-      if (reg instanceof RegIndex) {
-        return reg.index;
-      }
   
-      if (regValid(reg)) {
-        const index = parseInt(reg.slice(1));
-        return index;
-      } else if (reg in regMap) {
-        const index = parseInt(regMap[reg].slice(1));
-        return index;
-      } else {
-        throw new RegisterIndexError();
-      }
-    }
-  
-    getValue(reg: string): number {
-      const index = this.regToIndex(reg);
+    getValue(reg: Register): number {
+      const index = regToIndex(reg);
       return this.registers[index];
     }
   
-    setValue(reg: string, value: number): void {
-      const index = this.regToIndex(reg);
+    setValue(reg: Register, value: number): void {
+      const index = regToIndex(reg);
       this.registers[index] = value;
     }
     outHTML() {
         let html = "";
         for (const regName in regMap) {
-          let regValue = this.registers[this.regToIndex(regName)].toString();
+          let regValue = this.registers[regToIndex(regName)].toString();
           if (regValue.length < 8){
             regValue = "0".repeat(8-regValue.length) + regValue;
           }
