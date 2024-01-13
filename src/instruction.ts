@@ -2,12 +2,14 @@ import { Memory } from "./memory";
 import { Counter, RegisterSet, Register, regValid} from "./register";
 import {RegisterIndexError} from './exception';
 
-export class AssemblyInstruction {
+export class Assembler {
     static registers = new RegisterSet();
     static instMemory = new Memory();
     static dataMemory = new Memory();
     static pc = new Counter();
-    static ic = new Counter();
+}
+
+export class AssemblyInstruction {
     constructor(
         public readonly reg1:Register,
         public readonly reg2:Register,
@@ -16,6 +18,9 @@ export class AssemblyInstruction {
     func = (_:number, __:number, ___?:number):number=>{
         throw new Error("function not implemented");
     };
+    // parseLine(line:string):AssemblyInstruction{
+    //     const inst = 
+    // }
 }
 
 class RegInstruction extends AssemblyInstruction {
@@ -32,10 +37,10 @@ class RegInstruction extends AssemblyInstruction {
         
     }
     execute(){
-        AssemblyInstruction.registers.setValue(
+        Assembler.registers.setValue(
             this.reg1, this.func(
-                AssemblyInstruction.registers.getValue(this.reg2), 
-                AssemblyInstruction.registers.getValue(this.reg_num as Register|string)
+                Assembler.registers.getValue(this.reg2), 
+                Assembler.registers.getValue(this.reg_num)
             ) as number
         );
     }
@@ -53,9 +58,9 @@ class RegImmInstruction extends AssemblyInstruction {
         }
     }
     execute(){
-        AssemblyInstruction.registers.setValue(
+        Assembler.registers.setValue(
             this.reg1, this.func(
-                AssemblyInstruction.registers.getValue(this.reg2), 
+                Assembler.registers.getValue(this.reg2), 
                 this.reg_num as number
             ) as number
         );
@@ -75,10 +80,10 @@ class BranchInstruction extends AssemblyInstruction {
         }
     }
     execute(){
-        AssemblyInstruction.pc.jump(
+        Assembler.pc.jump(
             this.func(
-                AssemblyInstruction.registers.getValue(this.reg1),
-                AssemblyInstruction.registers.getValue(this.reg2),
+                Assembler.registers.getValue(this.reg1),
+                Assembler.registers.getValue(this.reg2),
                 this.reg_num as number
             )
         );
@@ -96,12 +101,12 @@ class Lw extends MemInstruction{
     }
     execute(){
         const jump:number = this.func(
-            AssemblyInstruction.registers.getValue(this.reg1),
-            AssemblyInstruction.registers.getValue(this.reg2),
+            Assembler.registers.getValue(this.reg1),
+            Assembler.registers.getValue(this.reg2),
             this.reg_num as number
         );
         if (jump){
-            AssemblyInstruction.pc.jump(this.reg_num as number);
+            Assembler.pc.jump(this.reg_num as number);
         }
     }
 }
@@ -115,12 +120,12 @@ class Sw extends MemInstruction{
     }
     execute(){
         const jump:number = this.func(
-            AssemblyInstruction.registers.getValue(this.reg1),
-            AssemblyInstruction.registers.getValue(this.reg2),
+            Assembler.registers.getValue(this.reg1),
+            Assembler.registers.getValue(this.reg2),
             this.reg_num as number
         );
         if (jump){
-            AssemblyInstruction.pc.jump(this.reg_num as number);
+            Assembler.pc.jump(this.reg_num as number);
         }
     }
 }
@@ -192,37 +197,37 @@ class Srai extends RegImmInstruction {
 // Branch 
 class Beq extends BranchInstruction{
     static func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : AssemblyInstruction.pc.val;
+    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Bne extends BranchInstruction {
     static func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : AssemblyInstruction.pc.val;
+    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Blt extends BranchInstruction {
     static func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : AssemblyInstruction.pc.val;
+    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Bge extends BranchInstruction {
     static func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : AssemblyInstruction.pc.val;
+    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Bltu extends BranchInstruction{
     static func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : AssemblyInstruction.pc.val;
+    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Bgeu extends BranchInstruction{
     static func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : AssemblyInstruction.pc.val;
+    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 
 // Jump
 class Jal {
     static func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : AssemblyInstruction.pc.val;
+    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Jalr{
     static func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : AssemblyInstruction.pc.val;
+    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 
 export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
@@ -254,8 +259,23 @@ export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
     ['bge', Bge],
     ['bltu', Bltu],
     ['bgeu', Bgeu],
+
+    // Mem Operations
+    ['lw', Lw],
+    ['sw', Sw],
+
+    // Reg Loading Operations
+    ['li', Li],
+    ['lui', Lui],
+
+    // Jump operations
 ]);
 
 export class InstructionSet {
+    public readonly instructions:AssemblyInstruction[]= [];
+    constructor(){}
+    addInstruction(inst:AssemblyInstruction){
+        this.instructions.push(inst);
+    }
 
 }

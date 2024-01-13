@@ -1,4 +1,5 @@
-import { RegisterSet } from './register';
+import { Assembler } from './instruction';
+import { parser } from './parser';
 import './style.css'
 
 
@@ -9,14 +10,13 @@ function main(): void {
   const compile = document.getElementById("compile") as HTMLButtonElement;
 
   if (registers !== null && imemory !== null && dmemory){
-    const regs = new RegisterSet(registers);
     let code = "";
-    regs.outHTML();
     compile?.addEventListener(
       'click', ()=>{
         const textarea = document.getElementById("code") as HTMLTextAreaElement;
         code = textarea.value;
-        console.log(code);
+        let parsedCode = parser(code);
+        console.log(parsedCode);
       }
     );
   }

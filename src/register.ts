@@ -1,10 +1,5 @@
-class RegisterIndexError extends Error {
-    constructor() {
-      super("Invalid register index");
-      this.name = "RegisterIndexError";
-    }
-  }
   import {RegisterIndexError} from './exception';
+
   const regMap: { [key: string]: string } = {
     zero: "x0",
     ra: "x1",
@@ -41,17 +36,10 @@ class RegisterIndexError extends Error {
   };
   
   
-  // export class RegIndex {
-  //   index: number;
-  
-  //   constructor(index: number) {
-  //     if (Number.isInteger(index) && index >= 0 && index < 32) {
-  //       this.index = index;
-  //     } else {
-  //       throw new RegisterIndexError();
-  //     }
-  //   }
-  // }
+  export function regValidStr(reg: string): boolean {
+        const pattern = /^x([0-9]|[1-2]\d|3[0-1])$/;
+        return pattern.test(reg) || reg in regMap;
+  }
   
   export type Register = string | number;
 
