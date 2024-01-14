@@ -1,17 +1,52 @@
+export interface MemContent {
+  binaryRep():string;
+  hexRep():string;
+  numValue():number;
+}
+
+export function numToBin(num:number, bitLength=5):string{
+  let numBin =  num.toString(2);
+  if (numBin.length < bitLength){
+    numBin = "0".repeat(bitLength - numBin.length) + numBin;
+  }
+  return numBin;
+}
+
+export class Data implements MemContent{
+  constructor(public readonly data:number){}
+  numValue(): number {
+    return this.data;
+  }
+  binaryRep(): string {
+    return numToBin(this.data, 32);
+  }
+  hexRep(): string {
+    return this.data.toString(16);
+  }
+}
 export class Memory {
-    public readonly memory: Map<number, string>;
-    public readonly size: number;
+    public readonly memory: Map<number, MemContent>;
   
     constructor() {
-      this.memory = new Map<number, string>();
-      this.size = 0;
+      this.memory = new Map<number, MemContent>();
     }
   
-    getItem(address: number): string | undefined {
+    get(address: number): MemContent | undefined {
       return this.memory.get(address);
     }
   
-    setItem(address: number, value: string): void {
+    set(address: number, value: MemContent): void {
       this.memory.set(address, value);
+    }
+    outHTML(memElement:HTMLElement|null){
+      if (memElement) {
+        memElement.innerHTML = '';
+        this.memory.forEach((value, address) => {
+            const memByteDiv = document.createElement('div');
+            memByteDiv.classList.add('mem-byte');
+            memByteDiv.innerHTML = `${address}: ${value.hexRep()}`;
+            memElement.appendChild(memByteDiv);
+        });
+    }
     }
   }

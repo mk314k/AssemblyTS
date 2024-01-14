@@ -1,4 +1,5 @@
   import {RegisterIndexError} from './exception';
+import { numToBin } from './memory';
 
   const regMap: { [key: string]: string } = {
     zero: "x0",
@@ -64,6 +65,10 @@
     }
   }
 
+  export function regToBin(reg:Register):string{
+    return numToBin(regToIndex(reg), 5);
+  }
+
   export function regValid(reg: Register): boolean {
     if (typeof reg === 'number') {
         // Check if it's an integer and within the range 0-31
@@ -106,22 +111,24 @@
       const index = regToIndex(reg);
       this.registers[index] = value;
     }
-    outHTML() {
+    outHTML(regElement:HTMLElement|null) {
+      if (regElement){
         let html = "";
         for (const regName in regMap) {
-          let regValue = this.registers[regToIndex(regName)].toString();
+          let regValue = this.getValue(regName).toString(16);
           if (regValue.length < 8){
             regValue = "0".repeat(8-regValue.length) + regValue;
           }
           html += `
             <div class="register flex-vertical">
               <span>${regName}</span>
-              <span>0d${regValue}</span>
+              <span>0x${regValue}</span>
               <span>${regMap[regName]}</span>
             </div>
           `;
         }
-        // this.regElement.innerHTML = html;
+        regElement.innerHTML = html;
+      }
     }
   }
   

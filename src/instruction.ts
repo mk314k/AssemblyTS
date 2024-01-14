@@ -1,5 +1,5 @@
-import { Memory } from "./memory";
-import { Counter, RegisterSet, Register, regValid} from "./register";
+import { Memory, MemContent, Data, numToBin} from "./memory";
+import { Counter, RegisterSet, Register, regValid, regToBin} from "./register";
 import {RegisterIndexError} from './exception';
 
 export class Assembler {
@@ -9,18 +9,28 @@ export class Assembler {
     static pc = new Counter();
 }
 
-export class AssemblyInstruction {
+export class AssemblyInstruction implements MemContent {
     constructor(
-        public readonly reg1:Register,
-        public readonly reg2:Register,
-        public readonly reg_num:Register
+        public readonly reg1?:Register,
+        public readonly reg2?:Register,
+        public readonly reg_num?:Register
     ){}
+    funct7 = "";
+    funct3 = "";
+    opcode = "";
     func = (_:number, __:number, ___?:number):number=>{
         throw new Error("function not implemented");
     };
-    // parseLine(line:string):AssemblyInstruction{
-    //     const inst = 
-    // }
+    binaryRep(): string {
+        return '';
+    }
+    hexRep(): string {
+        return this.numValue().toString(16);
+    }
+    numValue(): number {
+        return parseInt(this.binaryRep(), 2);
+    }
+    execute():void{}
 }
 
 class RegInstruction extends AssemblyInstruction {
@@ -34,13 +44,22 @@ class RegInstruction extends AssemblyInstruction {
         }else{
             throw new RegisterIndexError();
         }
-        
+        this.funct7 = "0000000";
+        this.opcode = "0110011";
+    }
+    binaryRep(): string {
+        return this.funct7 +
+                regToBin(this.reg_num as Register) +
+                regToBin(this.reg2 as Register) +
+                this.funct3 +
+                regToBin(this.reg1 as Register) +
+                this.opcode
     }
     execute(){
         Assembler.registers.setValue(
-            this.reg1, this.func(
-                Assembler.registers.getValue(this.reg2), 
-                Assembler.registers.getValue(this.reg_num)
+            this.reg1 as Register, this.func(
+                Assembler.registers.getValue(this.reg2 as Register), 
+                Assembler.registers.getValue(this.reg_num as Register)
             ) as number
         );
     }
@@ -56,17 +75,38 @@ class RegImmInstruction extends AssemblyInstruction {
         }else{
             throw new RegisterIndexError();
         }
+        this.opcode = "0010011";
+    }
+    binaryRep(): string {
+        return numToBin(this.reg_num as number) +
+                regToBin(this.reg2 as Register) +
+                this.funct3 +
+                regToBin(this.reg1 as Register) +
+                this.opcode
     }
     execute(){
         Assembler.registers.setValue(
-            this.reg1, this.func(
-                Assembler.registers.getValue(this.reg2), 
+            this.reg1 as Register, this.func(
+                Assembler.registers.getValue(this.reg2 as Register), 
                 this.reg_num as number
             ) as number
         );
     }
 }
-class MemInstruction extends AssemblyInstruction {}
+class MemInstruction extends AssemblyInstruction {
+    constructor(
+        rs2:Register,
+        offset:number,
+        rs1:Register
+    ){
+        if (regValid(rs2) && regValid(rs1)){
+            super(rs2, rs1, offset);
+        }else{
+            throw new RegisterIndexError();
+        }
+        this.funct3 = "010";
+    }
+}
 class BranchInstruction extends AssemblyInstruction {
     constructor(
         rs1:Register,
@@ -82,8 +122,8 @@ class BranchInstruction extends AssemblyInstruction {
     execute(){
         Assembler.pc.jump(
             this.func(
-                Assembler.registers.getValue(this.reg1),
-                Assembler.registers.getValue(this.reg2),
+                Assembler.registers.getValue(this.reg1 as Register),
+                Assembler.registers.getValue(this.reg2 as Register),
                 this.reg_num as number
             )
         );
@@ -92,142 +132,167 @@ class BranchInstruction extends AssemblyInstruction {
 
 // Memory Operation
 class Lw extends MemInstruction{
-    constructor(
-        rd:Register,
-        rs2:Register,
-        offset:number
-    ){
-        super(rd, rs2, offset);
-    }
     execute(){
-        const jump:number = this.func(
-            Assembler.registers.getValue(this.reg1),
-            Assembler.registers.getValue(this.reg2),
-            this.reg_num as number
+        const memData = Assembler.dataMemory.get(
+            Assembler.registers.getValue(this.reg2 as Register) + 
+            (this.reg_num as number)
+        ) as MemContent;
+        Assembler.registers.setValue(
+            this.reg1 as Register,
+            memData.numValue()
         );
-        if (jump){
-            Assembler.pc.jump(this.reg_num as number);
-        }
     }
 }
 class Sw extends MemInstruction{
-    constructor(
-        rs2:Register|string,
-        rs1:Register|string,
-        offset:number
-    ){
-        super(rs1, rs2, offset);
-    }
     execute(){
-        const jump:number = this.func(
-            Assembler.registers.getValue(this.reg1),
-            Assembler.registers.getValue(this.reg2),
-            this.reg_num as number
+        Assembler.dataMemory.set(
+            Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number),
+            new Data(Assembler.registers.getValue(this.reg1 as Register))
         );
-        if (jump){
-            Assembler.pc.jump(this.reg_num as number);
-        }
     }
 }
 
 // Register loading
 class Li extends RegImmInstruction{
-    func = (arg1: number, arg2: number): number => arg1 + arg2;
+    constructor(
+        rd:Register,
+        liConstant:number
+    ){
+        super(rd, rd, liConstant);
+    }
+    execute(){
+        Assembler.registers.setValue(
+            this.reg1 as Register,
+            this.reg_num as number
+        );
+    }
 }
 class Lui extends RegImmInstruction{
-    func = (arg1: number, arg2: number): number => arg1 + arg2;
+    constructor(
+        rd:Register,
+        luiConstant:number
+    ){
+        super(rd, rd, luiConstant);
+    }
+    execute(){
+        Assembler.registers.setValue(
+            this.reg1 as Register,
+            this.reg_num as number
+        );
+    }
 }
 
 // Reg operations
 class Add extends RegInstruction{
-    static func = (arg1: number, arg2: number): number => arg1 + arg2;
+    funct3 = "000";
+    func = (arg1: number, arg2: number): number => arg1 + arg2;
 }
 
 class Sub extends RegInstruction{
-    static func = (arg1: number, arg2: number): number => arg1 - arg2;
+    funct3 = "000";
+    funct7 = "0100000";
+    func = (arg1: number, arg2: number): number => arg1 - arg2;
 }
 class And extends RegInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 & arg2;
+    funct3 = "111";
+    func = (arg1: number, arg2: number): number => arg1 & arg2;
 }
 class Or extends RegInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 | arg2;
+    funct3 = "110";
+    func = (arg1: number, arg2: number): number => arg1 | arg2;
 }
 class Xor extends RegInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 ^ arg2;
+    funct3 = "100";
+    func = (arg1: number, arg2: number): number => arg1 ^ arg2;
 }
 class Sll extends RegInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 + arg2;
+    funct3 = "001";
+    func = (arg1: number, arg2: number): number => arg1 + arg2;
 }
 class Srl extends RegInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 + arg2;
+    funct3 = "101";
+    func = (arg1: number, arg2: number): number => arg1 + arg2;
 }
 class Sra extends RegInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 + arg2;
+    funct3 = "101";
+    funct7 = "0100000";
+    func = (arg1: number, arg2: number): number => arg1 + arg2;
 }
 
 // Reg Immediate Operations
 class Addi extends RegImmInstruction{
-    static func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = (arg1: number, arg2: number): number => arg1 + arg2;
 }
 class Andi extends RegImmInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 & arg2;
+    func = (arg1: number, arg2: number): number => arg1 & arg2;
 }
 class Ori extends RegImmInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 | arg2;
+    func = (arg1: number, arg2: number): number => arg1 | arg2;
 }
 class Xori extends RegImmInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 ^ arg2;
+    func = (arg1: number, arg2: number): number => arg1 ^ arg2;
 }
 class Slti extends RegImmInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = (arg1: number, arg2: number): number => arg1 + arg2;
 }
 class Sltiu extends RegImmInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = (arg1: number, arg2: number): number => arg1 + arg2;
 }
 class Slli extends RegImmInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = (arg1: number, arg2: number): number => arg1 + arg2;
 }
 class Srli extends RegImmInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = (arg1: number, arg2: number): number => arg1 + arg2;
 }
 class Srai extends RegImmInstruction {
-    static func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = (arg1: number, arg2: number): number => arg1 + arg2;
 }
 
 // Branch 
 class Beq extends BranchInstruction{
-    static func = (arg1: number, arg2: number, arg3?:number): number => 
+    func = (arg1: number, arg2: number, arg3?:number): number => 
     arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Bne extends BranchInstruction {
-    static func = (arg1: number, arg2: number, arg3?:number): number => 
+    func = (arg1: number, arg2: number, arg3?:number): number => 
     arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Blt extends BranchInstruction {
-    static func = (arg1: number, arg2: number, arg3?:number): number => 
+    func = (arg1: number, arg2: number, arg3?:number): number => 
     arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Bge extends BranchInstruction {
-    static func = (arg1: number, arg2: number, arg3?:number): number => 
+    func = (arg1: number, arg2: number, arg3?:number): number => 
     arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Bltu extends BranchInstruction{
-    static func = (arg1: number, arg2: number, arg3?:number): number => 
+    func = (arg1: number, arg2: number, arg3?:number): number => 
     arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Bgeu extends BranchInstruction{
-    static func = (arg1: number, arg2: number, arg3?:number): number => 
+    func = (arg1: number, arg2: number, arg3?:number): number => 
     arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 
 // Jump
 class Jal {
-    static func = (arg1: number, arg2: number, arg3?:number): number => 
+    func = (arg1: number, arg2: number, arg3?:number): number => 
     arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Jalr{
-    static func = (arg1: number, arg2: number, arg3?:number): number => 
+    func = (arg1: number, arg2: number, arg3?:number): number => 
     arg1 == arg2 ? arg3 as number : Assembler.pc.val;
+}
+
+class Ret extends AssemblyInstruction{
+    constructor(){
+        super();
+    }
+    execute(): void {
+        Assembler.pc.jump(
+            Assembler.registers.getValue('ra') - 4
+        );
+    }
 }
 
 export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
@@ -269,13 +334,6 @@ export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
     ['lui', Lui],
 
     // Jump operations
+
+    ['ret', Ret]
 ]);
-
-export class InstructionSet {
-    public readonly instructions:AssemblyInstruction[]= [];
-    constructor(){}
-    addInstruction(inst:AssemblyInstruction){
-        this.instructions.push(inst);
-    }
-
-}
