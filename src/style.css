@@ -73,8 +73,19 @@ main{
   height: var(--memory-height);
   width: var(--memory-width);
   border: 1px solid black;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
 }
-
+.mem-byte{
+  width: 100%;
+  justify-content: flex-start !important;
+  border: 0.5px solid black;
+}
+.mem-byte .address{
+  border: 0.5px solid black;
+  margin-right: 10px;
+}
 
 
 /* Footer */

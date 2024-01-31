@@ -44,7 +44,11 @@ export class Memory {
         this.memory.forEach((value, address) => {
             const memByteDiv = document.createElement('div');
             memByteDiv.classList.add('mem-byte');
-            memByteDiv.innerHTML = `${address}: ${value.hexRep()}`;
+            memByteDiv.classList.add('flex-horizontal');
+            memByteDiv.innerHTML = `
+                <div class= 'address'>${address}</div>
+                <div class= 'value'>${value.hexRep()}</div>
+              `;
             memElement.appendChild(memByteDiv);
         });
     }
