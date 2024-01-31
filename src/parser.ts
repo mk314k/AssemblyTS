@@ -34,6 +34,7 @@ export function parser(code:string, start_addr=540, memory?:Memory):pseudoMem|vo
             if (line.endsWith(':')){
                 labels.set(line.slice(0, line.length - 1), addr)
             }else{
+                line = line.replace(/\(/g, ',').replace(/\)/g, '');
                 const idrdres = line.split(',');
                 const idrd = idrdres[0].split(' ');
                 if (instructions.has(idrd[0])){

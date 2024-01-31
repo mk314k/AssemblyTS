@@ -275,18 +275,21 @@ class Bgeu extends BranchInstruction{
 }
 
 // Jump
-class Jal {
-    func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
-}
-class Jalr{
-    func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
-}
+// class Jal {
+//     func = (arg1: number, arg2: number, arg3?:number): number => 
+//     arg1 == arg2 ? arg3 as number : Assembler.pc.val;
+// }
+// class Jalr{
+//     func = (arg1: number, arg2: number, arg3?:number): number => 
+//     arg1 == arg2 ? arg3 as number : Assembler.pc.val;
+// }
 
 class Ret extends AssemblyInstruction{
     constructor(){
         super();
+    }
+    binaryRep(): string {
+        return '1100'+'0000'.repeat(7);
     }
     execute(): void {
         Assembler.pc.jump(
