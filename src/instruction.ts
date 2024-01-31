@@ -182,55 +182,65 @@ class Lui extends RegImmInstruction{
     }
 }
 
+let funcList = {
+    add: (arg1: number, arg2: number): number => arg1 + arg2,
+    sub: (arg1: number, arg2: number): number => arg1 - arg2,
+    and: (arg1: number, arg2: number): number => arg1 & arg2,
+    or: (arg1: number, arg2: number): number => arg1 | arg2,
+    xor: (arg1: number, arg2: number): number => arg1 ^ arg2,
+    sll: (arg1: number, arg2: number): number => arg1 + arg2,
+    srl: (arg1: number, arg2: number): number => arg1 + arg2,
+    sra: (arg1: number, arg2: number): number => arg1 + arg2
+}
 // Reg operations
 class Add extends RegInstruction{
     funct3 = "000";
-    func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = funcList.add;
 }
 
 class Sub extends RegInstruction{
     funct3 = "000";
     funct7 = "0100000";
-    func = (arg1: number, arg2: number): number => arg1 - arg2;
+    func = funcList.sub;
 }
 class And extends RegInstruction {
     funct3 = "111";
-    func = (arg1: number, arg2: number): number => arg1 & arg2;
+    func = funcList.and;
 }
 class Or extends RegInstruction {
     funct3 = "110";
-    func = (arg1: number, arg2: number): number => arg1 | arg2;
+    func = funcList.or;
 }
 class Xor extends RegInstruction {
     funct3 = "100";
-    func = (arg1: number, arg2: number): number => arg1 ^ arg2;
+    func = funcList.xor;
 }
 class Sll extends RegInstruction {
     funct3 = "001";
-    func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = funcList.sll;
 }
 class Srl extends RegInstruction {
     funct3 = "101";
-    func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = funcList.srl;
 }
 class Sra extends RegInstruction {
     funct3 = "101";
     funct7 = "0100000";
-    func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = funcList.sra;
 }
 
 // Reg Immediate Operations
 class Addi extends RegImmInstruction{
-    func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = funcList.add;
 }
 class Andi extends RegImmInstruction {
-    func = (arg1: number, arg2: number): number => arg1 & arg2;
+    func = funcList.and;
 }
 class Ori extends RegImmInstruction {
-    func = (arg1: number, arg2: number): number => arg1 | arg2;
+    func = funcList.or;
 }
 class Xori extends RegImmInstruction {
-    func = (arg1: number, arg2: number): number => arg1 ^ arg2;
+    func = funcList.xor;
 }
 class Slti extends RegImmInstruction {
     func = (arg1: number, arg2: number): number => arg1 + arg2;
@@ -239,13 +249,13 @@ class Sltiu extends RegImmInstruction {
     func = (arg1: number, arg2: number): number => arg1 + arg2;
 }
 class Slli extends RegImmInstruction {
-    func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = funcList.sll;
 }
 class Srli extends RegImmInstruction {
-    func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = funcList.srl;
 }
 class Srai extends RegImmInstruction {
-    func = (arg1: number, arg2: number): number => arg1 + arg2;
+    func = funcList.sra;
 }
 
 // Branch 
@@ -255,15 +265,23 @@ class Beq extends BranchInstruction{
 }
 class Bne extends BranchInstruction {
     func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
+    arg1 != arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Blt extends BranchInstruction {
     func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
+    arg1 < arg2 ? arg3 as number : Assembler.pc.val;
+}
+class Ble extends BranchInstruction {
+    func = (arg1: number, arg2: number, arg3?:number): number => 
+    arg1 <= arg2 ? arg3 as number : Assembler.pc.val;
+}
+class Bgt extends BranchInstruction {
+    func = (arg1: number, arg2: number, arg3?:number): number => 
+    arg1 > arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Bge extends BranchInstruction {
     func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
+    arg1 >= arg2 ? arg3 as number : Assembler.pc.val;
 }
 class Bltu extends BranchInstruction{
     func = (arg1: number, arg2: number, arg3?:number): number => 
@@ -325,6 +343,8 @@ export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
     ['bne', Bne],
     ['blt', Blt],
     ['bge', Bge],
+    ['bgt', Bgt],
+    ['ble', Ble],
     ['bltu', Bltu],
     ['bgeu', Bgeu],
 
