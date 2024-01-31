@@ -5,28 +5,37 @@
     <!-- <link rel="icon" type="image/svg+xml" href="./vite.svg" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pyssemble</title>
+    <script src="https://kit.fontawesome.com/7ca2746f93.js" crossorigin="anonymous"></script>
     <script src="index.js"></script>
   </head>
   <body>
-    <header class="flex-horizontal">
+    <header class="flex-vertical">
       <nav class="flex-horizontal">
           <div class="header">Pyssemble</div>
       </nav>
     </header>
     <main>
-        <div id="root" class="flex-vertical">
+        <div id="root">
+            <div class="flex-horizontal build-run">
+                <button id="buildRun"><i class="fa-solid fa-gears"></i></button>
+                <div class="hover-text">build and run</div>
+                <div class="flex-horizontal">
+                    <button id="build"><i class="fa-solid fa-gear"></i></button>
+                    <div class="hover-text">build</div>
+                    <textarea id ="buildAddr" ></textarea>
+                </div>
+                <div class="flex-horizontal">
+                    <button id="run"><i class="fa-solid fa-terminal"></i></button>
+                    <div class="hover-text">run</div>
+                    <textarea id ="runAddr" ></textarea>
+                </div>
+            </div>
             <div class="registers flex-horizontal" id="registers"></div>
             <div class="flex-horizontal">
                 <div class="memory flex-vertical" id="instruction-memory"></div>
                 <div class="code-container flex-vertical" id="code-container">
-                    <textarea name="code" id="code" cols="30" rows="10"></textarea>
-                    <div class="flex-horizontal">
-                        <button id="buildRun">Build & Run</button>
-                        <button id="build">Build Only</button>
-                        <textarea id ="buildAddr" ></textarea>
-                        <button id="run">Run</button>
-                        <textarea id ="runAddr" ></textarea>
-                    </div>
+                    <textarea name="code" id="code"></textarea>
+                    <textarea name="console" id="console" readonly></textarea>
                 </div>
                 <div class="memory flex-vertical" id="data-memory"></div>
             </div>
