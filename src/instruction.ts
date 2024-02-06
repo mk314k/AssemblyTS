@@ -22,7 +22,7 @@ export class AssemblyInstruction implements MemContent {
         throw new Error("function not implemented");
     };
     binaryRep(): string {
-        return '';
+        throw new Error("Not Implemented Binary");
     }
     hexRep(): string {
         return this.numValue().toString(16);
@@ -78,7 +78,7 @@ class RegImmInstruction extends AssemblyInstruction {
         this.opcode = "0010011";
     }
     binaryRep(): string {
-        return numToBin(this.reg_num as number) +
+        return numToBin(this.reg_num as number, 12) +
                 regToBin(this.reg2 as Register) +
                 this.funct3 +
                 regToBin(this.reg1 as Register) +
@@ -132,6 +132,15 @@ class BranchInstruction extends AssemblyInstruction {
 
 // Memory Operation
 class Lw extends MemInstruction{
+    opcode: string = '0000011';
+    funct3: string = '010';
+    binaryRep(): string {
+        return numToBin(this.reg_num as number, 12) +
+                regToBin(this.reg2 as Register) +
+                this.funct3 +
+                regToBin(this.reg1 as Register) +
+                this.opcode
+    }
     execute(){
         const memData = Assembler.dataMemory.get(
             Assembler.registers.getValue(this.reg2 as Register) + 
@@ -144,6 +153,17 @@ class Lw extends MemInstruction{
     }
 }
 class Sw extends MemInstruction{
+    opcode: string = '0100011';
+    funct3: string = '010';
+    binaryRep(): string {
+        const immVal = numToBin(this.reg_num as number, 12);
+        return immVal.slice(0,7)+
+                regToBin(this.reg2 as Register) +
+                regToBin(this.reg1 as Register) +
+                this.funct3 +
+                immVal.slice(7) +
+                this.opcode
+    }
     execute(){
         Assembler.dataMemory.set(
             Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number),
@@ -231,15 +251,19 @@ class Sra extends RegInstruction {
 
 // Reg Immediate Operations
 class Addi extends RegImmInstruction{
+    funct3 = "000";
     func = funcList.add;
 }
 class Andi extends RegImmInstruction {
+    funct3 = "111";
     func = funcList.and;
 }
 class Ori extends RegImmInstruction {
+    funct3 = "110";
     func = funcList.or;
 }
 class Xori extends RegImmInstruction {
+    funct3 = "100";
     func = funcList.xor;
 }
 class Slti extends RegImmInstruction {
@@ -249,12 +273,16 @@ class Sltiu extends RegImmInstruction {
     func = (arg1: number, arg2: number): number => arg1 + arg2;
 }
 class Slli extends RegImmInstruction {
+    funct3 = "001";
     func = funcList.sll;
 }
 class Srli extends RegImmInstruction {
+    funct3 = "101";
     func = funcList.srl;
 }
 class Srai extends RegImmInstruction {
+    funct3 = "101";
+    funct7 = "0100000";
     func = funcList.sra;
 }
 
