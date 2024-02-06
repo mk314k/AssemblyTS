@@ -13,9 +13,10 @@ function getRegNum(arg:string|undefined):Register|number{
     if (labels.has(arg)){
         return labels.get(arg) as number;
     }else if(regValidStr(arg)){
+        console.log(arg);
         return arg;
     }else{
-        return parseInt(arg);
+        return parseFloat(arg);
     }
 }
 type pseudoMem = Map<number, AssemblyInstruction>;
@@ -42,9 +43,9 @@ export function parser(code:string, start_addr=540, memory?:Memory):pseudoMem|vo
                     const reg1 = getRegNum(idrd[1]);
                     if (reg1){
                         const reg2 = getRegNum(idrdres[1]);
-                        if (reg2){
+                        if (reg2 || reg2===0){
                             const reg3 = getRegNum(idrdres[2]);
-                            if (reg3){
+                            if (reg3 || reg3===0){
                                 const inst = new id(reg1, reg2, reg3);
                                 instMem.set(addr, inst);
                             }else{

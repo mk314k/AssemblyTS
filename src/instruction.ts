@@ -7,6 +7,12 @@ export class Assembler {
     static instMemory = new Memory();
     static dataMemory = new Memory();
     static pc = new Counter();
+    static consoleLog = "";
+    static consoleOut = (consoleElement:HTMLElement|null) => {
+        if (consoleElement){
+            consoleElement.innerHTML = Assembler.consoleLog;
+        }
+    }
 }
 
 export class AssemblyInstruction implements MemContent {
@@ -64,6 +70,7 @@ class RegInstruction extends AssemblyInstruction {
         );
     }
 }
+
 class RegImmInstruction extends AssemblyInstruction {
     constructor(
         rd:Register,
@@ -118,6 +125,7 @@ class BranchInstruction extends AssemblyInstruction {
         }else{
             throw new RegisterIndexError();
         }
+        this.opcode = "1100011";
     }
     execute(){
         Assembler.pc.jump(
@@ -127,6 +135,35 @@ class BranchInstruction extends AssemblyInstruction {
                 this.reg_num as number
             )
         );
+    }
+}
+
+class ConsoleInstruction extends AssemblyInstruction {
+    constructor(
+        reg:Register,
+        mode:string|number = 'dec'
+    ){
+        if (regValid(reg)){
+            super(reg, mode);
+        }else{
+            throw new RegisterIndexError();
+        }
+    }
+    binaryRep(): string {
+        return '1'.repeat(32);
+    }
+}
+// Console Instruction
+class Console extends ConsoleInstruction{
+    execute(){
+        Assembler.consoleLog += Assembler.registers.getValue(this.reg1 as Register) + "\n"
+    }
+}
+class ConsoleMem extends ConsoleInstruction{
+    execute(): void {
+        Assembler.consoleLog += Assembler.dataMemory.get(
+            Assembler.registers.getValue(this.reg1 as Register)
+        )?.numValue();
     }
 }
 
@@ -345,6 +382,9 @@ class Ret extends AssemblyInstruction{
 }
 
 export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
+    // console 
+    ['print', Console],
+    ['printm', ConsoleMem],
     // Reg operations
     ['add', Add],
     ['sub', Sub],
@@ -385,6 +425,5 @@ export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
     ['lui', Lui],
 
     // Jump operations
-
     ['ret', Ret]
 ]);
