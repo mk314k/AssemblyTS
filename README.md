@@ -1,2 +1,3 @@
-# Pyssemble-typescript
-Python like debugging for assembly codes, built using typescript
+# AssemblyTS
+
+Assembly Language Code Compiler using TypeScript.

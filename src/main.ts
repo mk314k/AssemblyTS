@@ -7,6 +7,8 @@ function main(): void {
   const registers:HTMLElement|null = document.getElementById("registers");
   const imemory:HTMLElement|null = document.getElementById("instruction-memory");
   const dmemory:HTMLElement|null = document.getElementById("data-memory");
+  const consoleLog:HTMLElement|null = document.getElementById("console");
+
   Assembler.dataMemory.outHTML(dmemory);
   Assembler.registers.outHTML(registers);
   Assembler.instMemory.outHTML(imemory);
@@ -37,6 +39,7 @@ function main(): void {
     }
     Assembler.dataMemory.outHTML(dmemory as HTMLElement);
     Assembler.registers.outHTML(registers);
+    Assembler.consoleOut(consoleLog);
   }
 
   if (registers !== null && imemory !== null && dmemory){
