@@ -2,42 +2,95 @@ import { Memory, MemContent, Data, numToBin} from "./memory";
 import { Counter, RegisterSet, Register, regValid, regToBin} from "./register";
 import {RegisterIndexError} from './exception';
 
+/**
+ * The Assembler class represents an Assembler (emulator for  hardware 
+ * components in a computer system.) It contains static properties and methods 
+ * for managing registers, instruction memory, data memory, program counter, 
+ * and console output for debugging purpose.
+ */
 export class Assembler {
-    static registers = new RegisterSet();
-    static instMemory = new Memory();
-    static dataMemory = new Memory();
-    static pc = new Counter();
-    static consoleLog = "";
-    static consoleOut = (consoleElement:HTMLElement|null) => {
-        if (consoleElement){
+    static registers = new RegisterSet();   // 32 Registers
+    static instMemory = new Memory();       // Instruction Memory
+    static dataMemory = new Memory();       // Data Memory
+    static pc = new Counter();              // Program counter for keeping track of the current instruction address
+    static consoleLog = "";                 // String for storing console output
+
+    /**
+     * Outputs the console log to the specified HTML element.
+     * 
+     * @param consoleElement - The HTML element where the console log will be displayed.
+     */
+    static consoleOut = (consoleElement: HTMLElement | null) => {
+        if (consoleElement) {
             consoleElement.innerHTML = Assembler.consoleLog;
         }
     }
 }
 
+
+/**
+ * Represents an assembly instruction.
+ */
 export class AssemblyInstruction implements MemContent {
+    /**
+     * Creates an instance of AssemblyInstruction.
+     * @param reg1 - The first register.
+     * @param reg2 - The second register.
+     * @param reg_num - The third register or a number.
+     */
     constructor(
-        public readonly reg1?:Register,
-        public readonly reg2?:Register,
-        public readonly reg_num?:Register
+        public readonly reg1?: Register,
+        public readonly reg2?: Register,
+        public readonly reg_num?: Register
     ){}
-    funct7 = "";
-    funct3 = "";
-    opcode = "";
-    func = (_:number, __:number, ___?:number):number=>{
+
+    funct7 = ""; // Function 7 field
+    funct3 = ""; // Function 3 field
+    opcode = ""; // Opcode field
+
+    /**
+     * Default function for the instruction.
+     * @param _ - Placeholder for the first parameter.
+     * @param __ - Placeholder for the second parameter.
+     * @param ___ - Optional placeholder for the third parameter.
+     * @returns Always throws an error since the function is not implemented.
+     */
+    func = (_: number, __: number, ___?: number): number => {
         throw new Error("function not implemented");
     };
+
+    /**
+     * Returns the binary representation of the instruction.
+     * @returns The binary representation of the instruction.
+     */
     binaryRep(): string {
         throw new Error("Not Implemented Binary");
     }
+
+    /**
+     * Returns the hexadecimal representation of the instruction.
+     * @returns The hexadecimal representation of the instruction.
+     */
     hexRep(): string {
         return this.numValue().toString(16);
     }
+
+    /**
+     * Returns the numerical value of the instruction.
+     * @returns The numerical value of the instruction.
+     */
     numValue(): number {
         return parseInt(this.binaryRep(), 2);
     }
-    execute():void{}
+
+    /**
+     * Executes the instruction.
+     */
+    execute(): void {
+        // Implementation will go here
+    }
 }
+
 
 class RegInstruction extends AssemblyInstruction {
     constructor(

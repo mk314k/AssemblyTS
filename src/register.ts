@@ -109,7 +109,9 @@ import { numToBin } from './memory';
   
     setValue(reg: Register, value: number): void {
       const index = regToIndex(reg);
-      this.registers[index] = value;
+      if (index != 0){
+        this.registers[index] = value;
+      }
     }
     outHTML(regElement:HTMLElement|null) {
       if (regElement){
