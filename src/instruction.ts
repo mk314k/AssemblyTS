@@ -44,23 +44,24 @@ export class AssemblyInstruction implements MemContent {
         public readonly reg_num?: Register
     ){}
 
+    // Values for binary representation for the instruction
     funct7 = ""; // Function 7 field
     funct3 = ""; // Function 3 field
     opcode = ""; // Opcode field
 
     /**
-     * Default function for the instruction.
+     * Left to be implemented by specific instruction if required
      * @param _ - Placeholder for the first parameter.
      * @param __ - Placeholder for the second parameter.
      * @param ___ - Optional placeholder for the third parameter.
-     * @returns Always throws an error since the function is not implemented.
+     * @throws an error since the function is not implemented.
      */
     func = (_: number, __: number, ___?: number): number => {
         throw new Error("function not implemented");
     };
 
     /**
-     * Returns the binary representation of the instruction.
+     * Left to be implemented by specific instructions
      * @returns The binary representation of the instruction.
      */
     binaryRep(): string {
@@ -76,7 +77,6 @@ export class AssemblyInstruction implements MemContent {
     }
 
     /**
-     * Returns the numerical value of the instruction.
      * @returns The numerical value of the instruction.
      */
     numValue(): number {
@@ -87,36 +87,58 @@ export class AssemblyInstruction implements MemContent {
      * Executes the instruction.
      */
     execute(): void {
-        // Implementation will go here
+       throw new Error("Not Implemented execute function");
     }
 }
 
 
+/**
+ * Represents an instruction that operates on three registers.
+ * Inherits from AssemblyInstruction.
+ */
 class RegInstruction extends AssemblyInstruction {
+    /**
+     * Creates an instance of RegInstruction.
+     * @param rd - The destination register.
+     * @param rs1 - The first source register.
+     * @param rs2 - The second source register.
+     */
     constructor(
-        rd:Register,
-        rs1:Register,
-        rs2:Register
+        rd: Register,
+        rs1: Register,
+        rs2: Register
     ){
+        // Check if register indices are valid
         if (regValid(rd) && regValid(rs1) && regValid(rs2)){
-            super(rd, rs1, rs2);
-        }else{
-            throw new RegisterIndexError();
+            super(rd, rs1, rs2); // Call the superclass constructor
+        } else {
+            throw new RegisterIndexError(); // Throw an error for invalid register indices
         }
-        this.funct7 = "0000000";
-        this.opcode = "0110011";
+        this.funct7 = "0000000"; // Initialize funct7 field
+        this.opcode = "0110011"; // Initialize opcode field
     }
+
+    /**
+     * Generates the binary representation of the instruction.
+     * @returns The binary representation of the instruction.
+     */
     binaryRep(): string {
         return this.funct7 +
                 regToBin(this.reg_num as Register) +
                 regToBin(this.reg2 as Register) +
                 this.funct3 +
                 regToBin(this.reg1 as Register) +
-                this.opcode
+                this.opcode;
     }
-    execute(){
+
+    /**
+     * Executes the instruction.
+     */
+    execute(): void {
+        // Update the value of the destination register based on the operation result
         Assembler.registers.setValue(
-            this.reg1 as Register, this.func(
+            this.reg1 as Register,
+            this.func(
                 Assembler.registers.getValue(this.reg2 as Register), 
                 Assembler.registers.getValue(this.reg_num as Register)
             ) as number
@@ -124,63 +146,113 @@ class RegInstruction extends AssemblyInstruction {
     }
 }
 
+/**
+ * Represents an instruction that operates on a register and an immediate value.
+ * Inherits from AssemblyInstruction.
+ */
 class RegImmInstruction extends AssemblyInstruction {
+    /**
+     * Creates an instance of RegImmInstruction.
+     * @param rd - The destination register.
+     * @param rs1 - The source register.
+     * @param rsval - The immediate value.
+     */
     constructor(
-        rd:Register,
-        rs1:Register,
-        rsval:number
+        rd: Register,
+        rs1: Register,
+        rsval: number
     ){
+        // Check if register indices are valid
         if (regValid(rd) && regValid(rs1)){
-            super(rd, rs1, rsval);
-        }else{
-            throw new RegisterIndexError();
+            super(rd, rs1, rsval); // Call the superclass constructor
+        } else {
+            throw new RegisterIndexError(); // Throw an error for invalid register indices
         }
-        this.opcode = "0010011";
+        this.opcode = "0010011"; // Initialize opcode field
     }
+
+    /**
+     * Generates the binary representation of the instruction.
+     * @returns The binary representation of the instruction.
+     */
     binaryRep(): string {
         return numToBin(this.reg_num as number, 12) +
                 regToBin(this.reg2 as Register) +
                 this.funct3 +
                 regToBin(this.reg1 as Register) +
-                this.opcode
+                this.opcode;
     }
-    execute(){
+
+    /**
+     * Executes the instruction.
+     */
+    execute(): void {
+        // Update the value of the destination register based on the operation result
         Assembler.registers.setValue(
-            this.reg1 as Register, this.func(
+            this.reg1 as Register,
+            this.func(
                 Assembler.registers.getValue(this.reg2 as Register), 
                 this.reg_num as number
             ) as number
         );
     }
 }
+
+/**
+ * Represents a memory instruction that operates on two registers and an offset.
+ * Inherits from AssemblyInstruction.
+ */
 class MemInstruction extends AssemblyInstruction {
+    /**
+     * Creates an instance of MemInstruction.
+     * @param rs2 - The second source register.
+     * @param offset - The offset value.
+     * @param rs1 - The first source register.
+     */
     constructor(
-        rs2:Register,
-        offset:number,
-        rs1:Register
+        rs2: Register,
+        offset: number,
+        rs1: Register
     ){
+        // Check if register indices are valid
         if (regValid(rs2) && regValid(rs1)){
-            super(rs2, rs1, offset);
-        }else{
-            throw new RegisterIndexError();
+            super(rs2, rs1, offset); // Call the superclass constructor
+        } else {
+            throw new RegisterIndexError(); // Throw an error for invalid register indices
         }
-        this.funct3 = "010";
+        this.funct3 = "010"; // Set the funct3 field
     }
 }
+
+/**
+ * Represents a branch instruction that operates on two registers and a label.
+ * Inherits from AssemblyInstruction.
+ */
 class BranchInstruction extends AssemblyInstruction {
+    /**
+     * Creates an instance of BranchInstruction.
+     * @param rs1 - The first source register.
+     * @param rs2 - The second source register.
+     * @param label - The label value.
+     */
     constructor(
-        rs1:Register,
-        rs2:Register,
-        label:number
+        rs1: Register,
+        rs2: Register,
+        label: number
     ){
+        // Check if register indices are valid
         if (regValid(rs2) && regValid(rs1)){
-            super(rs1, rs2, label);
-        }else{
-            throw new RegisterIndexError();
+            super(rs1, rs2, label); // Call the superclass constructor
+        } else {
+            throw new RegisterIndexError(); // Throw an error for invalid register indices
         }
-        this.opcode = "1100011";
+        this.opcode = "1100011"; // Set the opcode field
     }
-    execute(){
+
+    /**
+     * Executes the instruction by jumping to the specified address.
+     */
+    execute(): void {
         Assembler.pc.jump(
             this.func(
                 Assembler.registers.getValue(this.reg1 as Register),
@@ -191,28 +263,49 @@ class BranchInstruction extends AssemblyInstruction {
     }
 }
 
+/**
+ * Represents a console instruction that operates on a single register.
+ * Inherits from AssemblyInstruction.
+ */
 class ConsoleInstruction extends AssemblyInstruction {
+    /**
+     * Creates an instance of ConsoleInstruction.
+     * @param reg - The register.
+     * @param mode - The mode for console operation (optional, default is 'dec').
+     */
     constructor(
-        reg:Register,
-        mode:string|number = 'dec'
+        reg: Register,
+        mode: string | number = 'dec'
     ){
+        // Check if register index is valid
         if (regValid(reg)){
-            super(reg, mode);
-        }else{
-            throw new RegisterIndexError();
+            super(reg, mode); // Call the superclass constructor
+        } else {
+            throw new RegisterIndexError(); // Throw an error for invalid register index
         }
     }
+
+    /**
+     * Generates the binary representation of the instruction.
+     * @returns The binary representation of the instruction.
+     */
     binaryRep(): string {
-        return '1'.repeat(32);
+        return '1'.repeat(32); // Placeholder binary representation
     }
 }
+
 // Console Instruction
-class Console extends ConsoleInstruction{
-    execute(){
-        Assembler.consoleLog += Assembler.registers.getValue(this.reg1 as Register) + "\n"
+// Represents a console instruction to print the value of a register to the console
+class Console extends ConsoleInstruction {
+    // Executes the instruction by appending the register value to the console log
+    execute(): void {
+        Assembler.consoleLog += Assembler.registers.getValue(this.reg1 as Register) + "\n";
     }
 }
-class ConsoleMem extends ConsoleInstruction{
+
+// Represents a console instruction to print the value stored in memory to the console
+class ConsoleMem extends ConsoleInstruction {
+    // Executes the instruction by appending the memory value to the console log
     execute(): void {
         Assembler.consoleLog += Assembler.dataMemory.get(
             Assembler.registers.getValue(this.reg1 as Register)
@@ -220,18 +313,22 @@ class ConsoleMem extends ConsoleInstruction{
     }
 }
 
-// Memory Operation
-class Lw extends MemInstruction{
-    opcode: string = '0000011';
-    funct3: string = '010';
+// Represents a load word (lw) instruction that loads data from memory into a register
+class Lw extends MemInstruction {
+    opcode: string = '0000011'; // Set opcode for load word instruction
+    funct3: string = '010'; // Set funct3 for load word instruction
+
+    // Generates the binary representation of the lw instruction
     binaryRep(): string {
         return numToBin(this.reg_num as number, 12) +
                 regToBin(this.reg2 as Register) +
                 this.funct3 +
                 regToBin(this.reg1 as Register) +
-                this.opcode
+                this.opcode;
     }
-    execute(){
+
+    // Executes the lw instruction by loading data from memory into the specified register
+    execute(): void {
         const memData = Assembler.dataMemory.get(
             Assembler.registers.getValue(this.reg2 as Register) + 
             (this.reg_num as number)
@@ -242,9 +339,13 @@ class Lw extends MemInstruction{
         );
     }
 }
-class Sw extends MemInstruction{
-    opcode: string = '0100011';
-    funct3: string = '010';
+
+// Represents a store word (sw) instruction that stores data from a register into memory
+class Sw extends MemInstruction {
+    opcode: string = '0100011'; // Set opcode for store word instruction
+    funct3: string = '010'; // Set funct3 for store word instruction
+
+    // Generates the binary representation of the sw instruction
     binaryRep(): string {
         const immVal = numToBin(this.reg_num as number, 12);
         return immVal.slice(0,7)+
@@ -252,9 +353,11 @@ class Sw extends MemInstruction{
                 regToBin(this.reg1 as Register) +
                 this.funct3 +
                 immVal.slice(7) +
-                this.opcode
+                this.opcode;
     }
-    execute(){
+
+    // Executes the sw instruction by storing data from the specified register into memory
+    execute(): void {
         Assembler.dataMemory.set(
             Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number),
             new Data(Assembler.registers.getValue(this.reg1 as Register))
@@ -262,35 +365,45 @@ class Sw extends MemInstruction{
     }
 }
 
-// Register loading
-class Li extends RegImmInstruction{
+
+// Represents a load immediate (li) instruction that loads a constant value into a register
+class Li extends RegImmInstruction {
+    // Constructor for the li instruction
     constructor(
-        rd:Register,
-        liConstant:number
-    ){
-        super(rd, rd, liConstant);
+        rd: Register,
+        liConstant: number
+    ) {
+        super(rd, rd, liConstant); // Call the superclass constructor
     }
-    execute(){
+
+    // Executes the li instruction by loading the constant value into the specified register
+    execute(): void {
         Assembler.registers.setValue(
             this.reg1 as Register,
             this.reg_num as number
         );
     }
 }
-class Lui extends RegImmInstruction{
+
+// Represents a load upper immediate (lui) instruction that loads a constant upper value into a register
+class Lui extends RegImmInstruction {
+    // Constructor for the lui instruction
     constructor(
-        rd:Register,
-        luiConstant:number
-    ){
-        super(rd, rd, luiConstant);
+        rd: Register,
+        luiConstant: number
+    ) {
+        super(rd, rd, luiConstant); // Call the superclass constructor
     }
-    execute(){
+
+    // Executes the lui instruction by loading the constant upper value into the specified register
+    execute(): void {
         Assembler.registers.setValue(
             this.reg1 as Register,
             this.reg_num as number
         );
     }
 }
+
 
 let funcList = {
     add: (arg1: number, arg2: number): number => arg1 + arg2,
@@ -420,19 +533,28 @@ class Bgeu extends BranchInstruction{
 //     arg1 == arg2 ? arg3 as number : Assembler.pc.val;
 // }
 
-class Ret extends AssemblyInstruction{
-    constructor(){
+// Represents a return instruction extending AssemblyInstruction
+class Ret extends AssemblyInstruction {
+    constructor() {
         super();
     }
+
+    // Generates the binary representation of the return instruction
     binaryRep(): string {
-        return '1100'+'0000'.repeat(7);
+        return '1100' + '0000'.repeat(7);
     }
+
+    // Executes the return instruction
     execute(): void {
+        // Jumps to the address stored in the 'ra' register minus 4
+        // -4 is here because pc will step up after each instruction
+        // cancelling the -4
         Assembler.pc.jump(
             Assembler.registers.getValue('ra') - 4
         );
     }
 }
+
 
 export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
     // console 
