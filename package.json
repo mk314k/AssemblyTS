@@ -11,8 +11,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/node": "^22.0.2",
     "gh-pages": "^5.0.0",
     "typescript": "^5.0.2",
     "vite": "^4.3.9"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5"
   }
 }
