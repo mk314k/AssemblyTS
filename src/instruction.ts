@@ -15,6 +15,9 @@ export class Assembler {
     static dataMemory = new Memory();       // Data Memory
     static pc = new Counter();              // Program counter for keeping track of the current instruction address
     static consoleLog = "";                 // String for storing console output
+    static regElem:HTMLElement|null;
+    static memElem:HTMLElement|null;
+    static isDataMemActive = false;
 
     /**
      * Outputs the console log to the specified HTML element.
@@ -24,6 +27,41 @@ export class Assembler {
     static consoleOut = () => {
         consoleBox.log(this.consoleLog);
     }
+
+    static init(){
+        this.regElem = document.getElementById("registers");
+        this.memElem = document.getElementById("memory");
+        Assembler.registers.outHTML(this.regElem);
+        if (this.isDataMemActive){
+            Assembler.dataMemory.outHTML(this.memElem);
+        }else{
+            Assembler.instMemory.outHTML(this.memElem);
+        }
+    }
+    static showInst(){
+        if (!this.isDataMemActive){
+            Assembler.instMemory.outHTML(this.memElem);
+        }
+    }
+    static showData(){
+        if (this.isDataMemActive){
+            Assembler.dataMemory.outHTML(this.memElem);
+        }
+    }
+    static execute(addr:number): void {
+        Assembler.pc.jump(addr);
+        while (Assembler.pc.val !== 0) {
+          const inst = Assembler.instMemory.get(Assembler.pc.val) as AssemblyInstruction;
+          inst.execute();
+          Assembler.pc.step();
+        }
+        if (this.isDataMemActive){
+            Assembler.dataMemory.outHTML(this.memElem);
+        }
+        Assembler.registers.outHTML(this.regElem);
+        Assembler.consoleOut();
+    }
+
 }
 
 

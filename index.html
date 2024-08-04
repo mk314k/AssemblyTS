@@ -15,9 +15,9 @@
     </header>
     <main class="flex-horizontal">
         <div class="flex-vertical tools">
-            <input type="text" id="compile" class="tool-input" value="504" required>
+            <input type="text" id="buildAddr" class="tool-input" value="504" required>
             <span class="tool-span flex-vertical"><span>Build</span><span>Address</span></span>
-            <input type="text" id="compile" class="tool-input" value="504" required>
+            <input type="text" id="runAddr" class="tool-input" value="504" required>
             <span class="tool-span flex-vertical"><span>Run</span><span>Address</span></span>
             <div class="tool"></div>
             <div class="tool flex-vertical" id="buildRun">
@@ -37,7 +37,13 @@
                 <span id="gitStatus" class="tool-span">Login</span>
             </div>
         </div>
-        <div class="memory flex-vertical" id="instruction-memory"></div>
+        <div class="memory flex-vertical">
+            <div class="flex-horizontal">
+                <div id="imemory" class="memory-option">Instruction</div>
+                <div id="dmemory" class="memory-option">Data</div>
+            </div>
+            <div id="memory"></div>
+        </div>
         <div class="flex-vertical">
             <div class="registers flex-horizontal" id="registers"></div>
             <div class="code-container flex-horizontal" id="code-container">
