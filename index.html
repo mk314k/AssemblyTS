@@ -6,7 +6,6 @@
     <title>AssemblyTS</title>
     <link rel="stylesheet" href="index.css">
     <script src="https://kit.fontawesome.com/7ca2746f93.js" crossorigin="anonymous"></script>
-    <script type="module" src="index.js"></script>
   </head>
   <body class="flex-vertical">
     <header class="flex-vertical">
@@ -44,27 +43,7 @@
             <div class="code-container flex-horizontal" id="code-container">
                 <div class="flex-vertical line-num" id="lineNum"></div>
                 <div name="code" id="code" contenteditable="true"></div>
-                <div id="codeTab" class="flex-vertical code-tab">
-                    <div class="code-tab-layer">
-                        username
-                        <div class="code-tab-layer">
-                            Repo
-                            <div class="code-tab-layer">FileName1</div>
-                            <div class="code-tab-layer">FileName2</div>
-                            <div class="code-tab-layer">FileName3</div>
-                            <div class="code-tab-layer">FileName4</div>
-                            <div class="code-tab-layer">FileName5</div>
-                        </div>
-                    </div>
-                    <div class="code-tab-layer">
-                        Local
-                        <div class="code-tab-layer">FileName1</div>
-                        <div class="code-tab-layer">FileName2</div>
-                        <div class="code-tab-layer">FileName3</div>
-                        <div class="code-tab-layer">FileName4</div>
-                        <div class="code-tab-layer">FileName5</div>
-                    </div>
-                </div>
+                <div id="codeTab" class="flex-vertical code-tab"></div>
             </div>
             <div name="console" id="console" readonly></div>
         </div>
@@ -73,6 +52,9 @@
     <footer>
         <!-- Footer section -->
         <div class="flex-horizontal" id="footer-elements">
+            <div>
+                <a href = "https://github.com/mk314k/AssemblyTS/blob/main/docs/documentation.md">Documentation</a>
+            </div>
             <div class="flex-horizontal" id ="social-icons"></div>
             <div id="source-code">
                 <!-- Source code link -->
