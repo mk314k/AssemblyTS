@@ -1,6 +1,7 @@
 import { Memory, MemContent, Data, numToBin} from "./memory";
 import { Counter, RegisterSet, Register, regValid, regToBin} from "./register";
 import {RegisterIndexError} from './exception';
+import { consoleBox } from "./consoleBox";
 
 /**
  * The Assembler class represents an Assembler (emulator for  hardware 
@@ -20,10 +21,8 @@ export class Assembler {
      * 
      * @param consoleElement - The HTML element where the console log will be displayed.
      */
-    static consoleOut = (consoleElement: HTMLElement | null) => {
-        if (consoleElement) {
-            consoleElement.innerHTML = Assembler.consoleLog;
-        }
+    static consoleOut = () => {
+        consoleBox.log(this.consoleLog);
     }
 }
 

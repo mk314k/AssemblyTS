@@ -1,0 +1,278 @@
+/* 
+    Common classes and variables
+*/
+
+:root{
+    --header-height: 4vh;
+    --footer-height: 2vh;
+
+    /* main component heights and widths */
+    --main-height: calc(100vh - var(--header-height) - var(--footer-height));
+    --register-height: 4em;
+    --console-height: 20vh;
+    --code-height: calc(var(--main-height) - var(--register-height) - var(--console-height) - 2vh);
+
+    --tools-width: 4vw;
+    --memory-width: 16vw;
+    --lnum-width: 2em;
+
+    --pop-width: 36vmin;
+    --pop-height: 36vmin;
+}
+.flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.flex-horizontal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+.flex-vertical{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+  
+  
+/*  Body and Dividing Section */
+body{
+    background-color: #141414;
+    color: rgb(205, 205, 205);
+    margin: 0;
+    --header-colr: #454545a3;
+    --tool-colr: #505050ad;
+    --mem-colr: #6e6e6e94;
+    --code-colr: #4242424a;
+}
+  
+/* Header */
+header{
+    background-color: var(--header-colr);
+    width: 100vw;
+    height: var(--header-height);
+}
+    .header {
+        font-family: 'Luminari', fantasy; 
+        font-weight: bold;
+        font-size: 2em;
+    }
+
+/* main body */
+main{
+    width: 100vw;
+    box-sizing: border-box;
+    height: var(--main-height);
+}
+    .tools{
+        width: var(--tools-width);
+        height: 100%;
+        background-color: var(--tool-colr);
+        color: rgb(153, 153, 153);
+    }
+    .tool-input{
+        width: 90%;
+        font-size: 1em;
+    }
+    .tool{
+        width: calc(100% - 32px);
+        padding: 16px;
+        cursor: pointer;
+    }
+    .tool:hover{
+        color: rgb(255, 255, 255);
+    }
+    .tool-span{
+        font-size: 15px !important;
+        margin-bottom: 10px;
+    }
+    #git{
+        position: absolute;
+        bottom: 2%;
+        font-size: 2.5em;
+    }
+
+    .registers{
+        width: 77vw;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: thin;
+        scroll-behavior: smooth;
+        align-items: start;
+        justify-content: start;
+        background-color: var(--tool-colr);
+        border: 1px solid rgb(226, 222, 222);
+    }
+        .register{
+            border: 1px solid rgb(231, 215, 215);
+            padding-left: 2px;
+            padding-right: 3px;
+        }
+    .line-num{
+        width: var(--lnum-width);
+        height: var(--code-height);
+        background-color: var(--code-colr);
+        justify-content: flex-start;
+        margin-left: 8px;
+        overflow: hidden;
+    }
+    #code{
+        background-color: var(--code-colr);
+        margin: 5px;
+        margin-left: 0;
+        width: calc(100vw - var(--tools-width) - 2*var(--memory-width) - var(--lnum-width));
+        height: var(--code-height);
+        /* resize: vertical; */
+        overflow-y: auto;
+    }
+    #code:focus-visible{
+        outline: none !important;
+    }
+    .code-tab{
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 20px;
+        width: var(--memory-width);
+        background-color: var(--mem-colr);
+        height: var(--code-height);
+        font-size: 2em;
+    }
+        .code-tab-layer{
+            margin-left: 20px;
+            cursor: pointer;
+            color: rgb(153, 153, 153);
+        }
+        .code-tab-layer:hover{
+            color: rgb(255, 255, 255);
+        }
+  #console{
+    background-color: var(--code-colr);
+    border-top: #242222;
+    margin: 2px;
+    width: calc(100vw - var(--tools-width) - var(--memory-width) - var(--lnum-width));
+    height: var(--console-height);
+    resize: vertical;
+  }
+  
+  .memory{
+    height: 100%;
+    width: var(--memory-width);
+    background-color: var(--mem-colr);
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+  }
+  /* .mem-byte{
+    width: 100%;
+    justify-content: flex-start !important;
+    border: 0.5px solid black;
+  }
+  .mem-byte .address{
+    border: 0.5px solid black;
+    margin-right: 10px;
+  } */
+
+  .pop-up{
+    display: none;
+    position: fixed;
+    top: calc(50vh - 0.5 * var(--pop-height));
+    left: calc(50vw - 0.5 * var(--pop-width));
+    width: var(--pop-width);
+    height: var(--pop-height);
+    z-index: 100;
+    background-color: #6183a173;
+    border-radius: 10%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #200e0e;
+  }
+    .pop-title {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+    .pop-input {
+        width: 90%;
+        padding: 10px;
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+        font-size: 18px;
+        margin: 8px;
+    }
+    .pop-label {
+        display: block;
+        margin: 8px;
+        font-size: 18px;
+    }
+    .pop-input::placeholder {
+        color: #999999;
+    }
+
+    .pop-button {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+        .github-auth {
+            background: #333333;
+            color: #ffffff;
+        }
+
+        .github-auth:hover {
+            background: #444444;
+        }
+
+        .pat-auth {
+            background: #007bff;
+            color: #ffffff;
+        }
+
+        .pat-auth:hover {
+            background: #0069d9;
+        }
+
+        .username-auth {
+            background: #28a745;
+            color: #ffffff;
+        }
+
+        .username-auth:hover {
+            background: #218838;
+        }
+        
+  
+/* Footer */
+footer{
+    position: fixed;
+    bottom: 0vh;
+    background-color: var(--header-colr);
+    width: 100vw;
+    height: var(--footer-height);
+}
+  #footer-elements{
+    font-size: calc(0.8*var(--footer-height));
+    justify-content: flex-end;
+    padding-right: 20px;
+  }
+  
+  .icon{
+    margin: 3px;
+  }
+  
+  
+  @media screen and (max-width:628px){
+      .build-run{
+        top: 0;
+      }
+  }
+  @media screen and (max-width:360px){
+    .build-run{
+      justify-content: flex-end;
+    }
+  }

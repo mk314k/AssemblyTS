@@ -1,6 +1,9 @@
 import { Assembler, AssemblyInstruction } from './instruction';
 import { parser } from './parser';
+import { CodeEditor } from './editor';
 import './style.css'
+import { handleLogin } from './login';
+import { consoleBox } from './consoleBox';
 
 
 /**
@@ -11,8 +14,17 @@ function main(): void {
   const registers: HTMLElement | null = document.getElementById("registers");
   const imemory: HTMLElement | null = document.getElementById("instruction-memory");
   const dmemory: HTMLElement | null = document.getElementById("data-memory");
-  const consoleLog: HTMLElement | null = document.getElementById("console");
+  // const consoleLog: HTMLElement | null = document.getElementById("console");
 
+  CodeEditor.init();
+  consoleBox.init();
+
+  const gitButton = document.getElementById("git");
+  gitButton?.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      handleLogin();
+  });
+  
   // Output initial state of data memory, registers, and instruction memory
   Assembler.dataMemory.outHTML(dmemory);
   Assembler.registers.outHTML(registers);
@@ -20,20 +32,18 @@ function main(): void {
 
   // Compile assembly code
   function compile(): void {
-    const codeArea = document.getElementById("code") as HTMLTextAreaElement;
-    const code = codeArea.value;
-    const addrArea = document.getElementById("buildAddr") as HTMLTextAreaElement;
+    const addrArea = document.getElementById("buildAddr") as HTMLInputElement;
     let addr = parseInt(addrArea.value);
     if (isNaN(addr)) {
       addr = 540;
     }
-    parser(code, addr, Assembler.instMemory);
+    parser(CodeEditor.code, addr, Assembler.instMemory);
     Assembler.instMemory.outHTML(imemory as HTMLElement);
   }
 
   // Execute compiled assembly code
   function execute(): void {
-    const addrArea = document.getElementById("runAddr") as HTMLTextAreaElement;
+    const addrArea = document.getElementById("runAddr") as HTMLInputElement;
     let addr = parseInt(addrArea.value);
     if (isNaN(addr)) {
       addr = 540;
@@ -46,7 +56,7 @@ function main(): void {
     }
     Assembler.dataMemory.outHTML(dmemory as HTMLElement);
     Assembler.registers.outHTML(registers);
-    Assembler.consoleOut(consoleLog);
+    Assembler.consoleOut();
   }
 
   // Attach event listeners to buttons for compiling and executing code
@@ -73,7 +83,6 @@ function main(): void {
     );
   }
 }
-
 
 // Call the main function when the DOM is ready
 document.addEventListener("DOMContentLoaded", main);
