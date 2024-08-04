@@ -3,7 +3,7 @@ import { CodeEditor } from './editor';
 
 const GITHUB_CLIENT_ID: string = 'Ov23liZl7f0TzzDD0CSA';
 const TOKEN_URI: string = 'https://purpletreeauth.netlify.app/.netlify/functions/api/auth/github/callback';
-const REDIRECT_URI: string = 'http://localhost:5173/';
+const REDIRECT_URI: string = 'https://mk314k.github.io/AssemblyTS/';
 
 interface RepoFileInfo{
     name:string;
@@ -38,22 +38,17 @@ export class GitUser{
     public static setToken(pat:string){
         GitUser.token = pat;
     }
-    public static async syncDOM(){
+    public static async syncDOM(auth=false){
         const gitStatus = document.getElementById('gitStatus');
         if (gitStatus){
             const repoResponse = await fetch(`https://api.github.com/repos/${GitUser.userName}/${GitUser.repo}/contents/`);
             if (repoResponse.status === 200){
                 gitStatus.innerText = 'Logout';
-                const codeTab = document.getElementById('codeTab');
                 const repoFiles:RepoFileInfo[] = await repoResponse.json();
-                if (codeTab){
-                    codeTab.innerText = `${GitUser.userName}\n${GitUser.repo}`
-                    for (const file of repoFiles){
-                        if (file.name.endsWith('.asm')){
-                            codeTab.innerText += `\n${file.name}`
-                        }
-                    }
-                }
+                codeTabPane.fetchRepoContents(repoFiles);
+            }else if(auth){
+                await this.createRepo();
+                await this.syncDOM();
             }else{
                 GitUser.reset();
             }
@@ -73,6 +68,7 @@ export class GitUser{
                     const user = await GitUser.getUserInfo(GitUser.token);
                     GitUser.userName = user;
                 }
+                await this.syncDOM(true);
             } catch (error) {
                 console.error('Error getting token:', error);
             }
@@ -86,6 +82,34 @@ export class GitUser{
             }
         });
         return response.data;
+    };
+
+    private static createRepo = async (): Promise<void> => {
+        if (this.token !== ''){
+            await axios.post('https://api.github.com/user/repos', {
+                name: this.repo,
+                private: false
+            }, {
+                headers: {
+                    Authorization: `token ${this.token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+    };
+    public static writeFileToRepo = async (path: string, content: string): Promise<void> => {
+        if (this.token){
+            const base64Content = btoa(content); // Encode content to Base64
+            await axios.put(`https://api.github.com/repos/${this.repo}/contents/${path}`, {
+                message: `Editing ${path}`,
+                content: base64Content
+            }, {
+                headers: {
+                    Authorization: `token ${this.token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
     };
 
 
@@ -140,70 +164,3 @@ export class codeTabPane{
     }
     
 }
-
-
-
-
-// const fetchRepos = async (token: string): Promise<any[]> => {
-//     const response = await axios.get('https://api.github.com/user/repos', {
-//         headers: {
-//             Authorization: `token ${token}`
-//         }
-//     });
-//     return response.data;
-// };
-
-// const checkRepoExists = async (token: string, repoName: string): Promise<boolean> => {
-//     const response = await axios.get('https://api.github.com/user/repos', {
-//         headers: {
-//             Authorization: `token ${token}`
-//         }
-//     });
-//     return response.data.some((repo: any) => repo.name === repoName);
-// };
-
-// const createRepo = async (token: string, repoName: string): Promise<any> => {
-//     const response = await axios.post('https://api.github.com/user/repos', {
-//         name: repoName,
-//         private: false
-//     }, {
-//         headers: {
-//             Authorization: `token ${token}`,
-//             'Content-Type': 'application/json'
-//         }
-//     });
-//     return response.data;
-// };
-
-// const listFilesInRepo = async (token: string, repoName: string, extension: string): Promise<any[]> => {
-//     const response = await axios.get(`https://api.github.com/repos/${repoName}/contents`, {
-//         headers: {
-//             Authorization: `token ${token}`
-//         }
-//     });
-//     return response.data.filter((file: any) => file.name.endsWith(`.${extension}`));
-// };
-
-// const writeFileToRepo = async (token: string, repoName: string, path: string, content: string): Promise<any> => {
-//     const base64Content = btoa(content); // Encode content to Base64
-//     const response = await axios.put(`https://api.github.com/repos/${repoName}/contents/${path}`, {
-//         message: `Add ${path}`,
-//         content: base64Content
-//     }, {
-//         headers: {
-//             Authorization: `token ${token}`,
-//             'Content-Type': 'application/json'
-//         }
-//     });
-//     return response.data;
-// };
-
-// const displayRepos = (repos: any[]) => {
-//     const reposList = document.getElementById('repos');
-//     reposList!.innerHTML = '';
-//     repos.forEach((repo: any) => {
-//         const listItem = document.createElement('li');
-//         listItem.textContent = repo.name;
-//         reposList!.appendChild(listItem);
-//     });
-// };

@@ -13,7 +13,7 @@
     --code-height: calc(var(--main-height) - var(--register-height) - var(--console-height) - 2vh);
 
     --tools-width: 4vw;
-    --memory-width: 16vw;
+    --memory-width: 16vw; /*16*/
     --lnum-width: 2em;
 
     --pop-width: 36vmin;
@@ -74,7 +74,7 @@ main{
         width: var(--tools-width);
         height: 100%;
         background-color: var(--tool-colr);
-        color: rgb(153, 153, 153);
+        color: #999999;
     }
     .tool-input{
         width: 90%;
@@ -161,6 +161,7 @@ main{
   }
   
   .memory{
+    justify-content: flex-start;
     height: 100%;
     width: var(--memory-width);
     background-color: var(--mem-colr);
@@ -168,15 +169,26 @@ main{
     scroll-behavior: smooth;
     scrollbar-width: thin;
   }
-  /* .mem-byte{
-    width: 100%;
+  .memory-option{
+    background-color: #777777;
+    padding: 0 5px 0 5px;
+    margin-left: 2px;
+    margin-bottom: 10px;
+    border-radius: 25%;
+    cursor: pointer;
+  }
+  .memory-option:hover{
+    color: white;
+  }
+  .mem-byte{
+    width: calc(0.7 * var(--memory-width));
     justify-content: flex-start !important;
     border: 0.5px solid black;
   }
   .mem-byte .address{
     border: 0.5px solid black;
-    margin-right: 10px;
-  } */
+    margin-right: 15px;
+  }
 
   .pop-up{
     display: none;
