@@ -144,66 +144,66 @@ export class codeTabPane{
 
 
 
-const fetchRepos = async (token: string): Promise<any[]> => {
-    const response = await axios.get('https://api.github.com/user/repos', {
-        headers: {
-            Authorization: `token ${token}`
-        }
-    });
-    return response.data;
-};
+// const fetchRepos = async (token: string): Promise<any[]> => {
+//     const response = await axios.get('https://api.github.com/user/repos', {
+//         headers: {
+//             Authorization: `token ${token}`
+//         }
+//     });
+//     return response.data;
+// };
 
-const checkRepoExists = async (token: string, repoName: string): Promise<boolean> => {
-    const response = await axios.get('https://api.github.com/user/repos', {
-        headers: {
-            Authorization: `token ${token}`
-        }
-    });
-    return response.data.some((repo: any) => repo.name === repoName);
-};
+// const checkRepoExists = async (token: string, repoName: string): Promise<boolean> => {
+//     const response = await axios.get('https://api.github.com/user/repos', {
+//         headers: {
+//             Authorization: `token ${token}`
+//         }
+//     });
+//     return response.data.some((repo: any) => repo.name === repoName);
+// };
 
-const createRepo = async (token: string, repoName: string): Promise<any> => {
-    const response = await axios.post('https://api.github.com/user/repos', {
-        name: repoName,
-        private: false
-    }, {
-        headers: {
-            Authorization: `token ${token}`,
-            'Content-Type': 'application/json'
-        }
-    });
-    return response.data;
-};
+// const createRepo = async (token: string, repoName: string): Promise<any> => {
+//     const response = await axios.post('https://api.github.com/user/repos', {
+//         name: repoName,
+//         private: false
+//     }, {
+//         headers: {
+//             Authorization: `token ${token}`,
+//             'Content-Type': 'application/json'
+//         }
+//     });
+//     return response.data;
+// };
 
-const listFilesInRepo = async (token: string, repoName: string, extension: string): Promise<any[]> => {
-    const response = await axios.get(`https://api.github.com/repos/${repoName}/contents`, {
-        headers: {
-            Authorization: `token ${token}`
-        }
-    });
-    return response.data.filter((file: any) => file.name.endsWith(`.${extension}`));
-};
+// const listFilesInRepo = async (token: string, repoName: string, extension: string): Promise<any[]> => {
+//     const response = await axios.get(`https://api.github.com/repos/${repoName}/contents`, {
+//         headers: {
+//             Authorization: `token ${token}`
+//         }
+//     });
+//     return response.data.filter((file: any) => file.name.endsWith(`.${extension}`));
+// };
 
-const writeFileToRepo = async (token: string, repoName: string, path: string, content: string): Promise<any> => {
-    const base64Content = btoa(content); // Encode content to Base64
-    const response = await axios.put(`https://api.github.com/repos/${repoName}/contents/${path}`, {
-        message: `Add ${path}`,
-        content: base64Content
-    }, {
-        headers: {
-            Authorization: `token ${token}`,
-            'Content-Type': 'application/json'
-        }
-    });
-    return response.data;
-};
+// const writeFileToRepo = async (token: string, repoName: string, path: string, content: string): Promise<any> => {
+//     const base64Content = btoa(content); // Encode content to Base64
+//     const response = await axios.put(`https://api.github.com/repos/${repoName}/contents/${path}`, {
+//         message: `Add ${path}`,
+//         content: base64Content
+//     }, {
+//         headers: {
+//             Authorization: `token ${token}`,
+//             'Content-Type': 'application/json'
+//         }
+//     });
+//     return response.data;
+// };
 
-const displayRepos = (repos: any[]) => {
-    const reposList = document.getElementById('repos');
-    reposList!.innerHTML = '';
-    repos.forEach((repo: any) => {
-        const listItem = document.createElement('li');
-        listItem.textContent = repo.name;
-        reposList!.appendChild(listItem);
-    });
-};
+// const displayRepos = (repos: any[]) => {
+//     const reposList = document.getElementById('repos');
+//     reposList!.innerHTML = '';
+//     repos.forEach((repo: any) => {
+//         const listItem = document.createElement('li');
+//         listItem.textContent = repo.name;
+//         reposList!.appendChild(listItem);
+//     });
+// };
