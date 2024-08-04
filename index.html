@@ -2,46 +2,74 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- <link rel="icon" type="image/svg+xml" href="./vite.svg" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AssemblyTS</title>
+    
     <script src="https://kit.fontawesome.com/7ca2746f93.js" crossorigin="anonymous"></script>
-    <script src="index.js"></script>
-    <script type="module" crossorigin src="./assets/index-b40ca1c1.js"></script>
-    <link rel="stylesheet" href="./assets/index-b03f499b.css">
+    <script type="module" crossorigin src="./assets/index-48bd0ea1.js"></script>
+    <link rel="stylesheet" href="./assets/index-6494997c.css">
   </head>
-  <body>
+  <body class="flex-vertical">
     <header class="flex-vertical">
       <nav class="flex-horizontal">
           <div class="header">AssemblyTS</div>
       </nav>
     </header>
-    <main>
-        <div id="root">
-            <div class="flex-horizontal build-run">
-                <button id="buildRun"><i class="fa-solid fa-gears"></i></button>
-                <div class="hover-text">build and run</div>
-                <div class="flex-horizontal">
-                    <button id="build"><i class="fa-solid fa-gear"></i></button>
-                    <div class="hover-text">build</div>
-                    <textarea id ="buildAddr" ></textarea>
-                </div>
-                <div class="flex-horizontal">
-                    <button id="run"><i class="fa-solid fa-terminal"></i></button>
-                    <div class="hover-text">run</div>
-                    <textarea id ="runAddr" ></textarea>
-                </div>
+    <main class="flex-horizontal">
+        <div class="flex-vertical tools">
+            <input type="text" id="compile" class="tool-input" value="504" required>
+            <span class="tool-span flex-vertical"><span>Build</span><span>Address</span></span>
+            <input type="text" id="compile" class="tool-input" value="504" required>
+            <span class="tool-span flex-vertical"><span>Run</span><span>Address</span></span>
+            <div class="tool"></div>
+            <div class="tool flex-vertical" id="buildRun">
+                <i class="fa-solid fa-gears"></i>
+                <span class="tool-span flex-vertical"><span>Build</span><span>&Run</span></span>
             </div>
-            <div class="registers flex-horizontal" id="registers"></div>
-            <div class="flex-horizontal">
-                <div class="memory flex-vertical" id="instruction-memory"></div>
-                <div class="code-container flex-vertical" id="code-container">
-                    <textarea name="code" id="code"></textarea>
-                    <textarea name="console" id="console" readonly></textarea>
-                </div>
-                <div class="memory flex-vertical" id="data-memory"></div>
+            <div class="tool flex-vertical" id="build">
+                <i class="fa-solid fa-gear"></i>
+                <span>Build</span>
+            </div>
+            <div class="tool flex-vertical" id="run">
+                <i class="fa-solid fa-terminal"></i>
+                <span>Run</span>
+            </div>
+            <div class="tool flex-vertical" id="git">
+                <i class="fa-brands fa-github"></i>
+                <span id="gitStatus" class="tool-span">Login</span>
             </div>
         </div>
+        <div class="memory flex-vertical" id="instruction-memory"></div>
+        <div class="flex-vertical">
+            <div class="registers flex-horizontal" id="registers"></div>
+            <div class="code-container flex-horizontal" id="code-container">
+                <div class="flex-vertical line-num" id="lineNum"></div>
+                <div name="code" id="code" contenteditable="true"></div>
+                <div id="codeTab" class="flex-vertical code-tab">
+                    <div class="code-tab-layer">
+                        username
+                        <div class="code-tab-layer">
+                            Repo
+                            <div class="code-tab-layer">FileName1</div>
+                            <div class="code-tab-layer">FileName2</div>
+                            <div class="code-tab-layer">FileName3</div>
+                            <div class="code-tab-layer">FileName4</div>
+                            <div class="code-tab-layer">FileName5</div>
+                        </div>
+                    </div>
+                    <div class="code-tab-layer">
+                        Local
+                        <div class="code-tab-layer">FileName1</div>
+                        <div class="code-tab-layer">FileName2</div>
+                        <div class="code-tab-layer">FileName3</div>
+                        <div class="code-tab-layer">FileName4</div>
+                        <div class="code-tab-layer">FileName5</div>
+                    </div>
+                </div>
+            </div>
+            <div name="console" id="console" readonly></div>
+        </div>
+        <div class="pop-up flex-vertical" id="dialogBox"></div>
     </main>
     <footer>
         <!-- Footer section -->
