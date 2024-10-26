@@ -6,56 +6,66 @@ import { Memory } from "./memory";
 // Represents a mapping of labels to memory addresses
 const labels: Map<string, number> = new Map();
 
-// Function to determine the register number based on the argument provided
+
 function getRegNum(arg: string | undefined): Register | number {
+    /** 
+     * Function to determine the register number based on the argument provided
+     * @param arg - label or reg or (number in string form)
+    */
     if (arg === undefined) {
         return '';
     }
     arg = arg.trim();
-    // Check if the argument exists in the labels map
+
     if (labels.has(arg)) {
-        // Return the memory address associated with the label
         return labels.get(arg) as number;
     } else if (regValidStr(arg)) {
-        console.log(arg);
-        // Return the register number if it's valid
         return arg;
     } else {
-        // Convert the argument to a number and return
         return parseFloat(arg);
     }
 }
 
-// Define a type for pseudo memory, which is a mapping of memory addresses to assembly instructions
+// Type for pseudo memory, which has all required properties similar to Memory; Used for type safety
 type pseudoMem = Map<number, AssemblyInstruction>;
 
-// Function to parse the assembly code and populate the memory with instructions
 export function parser(code: string, start_addr = 540, memory?: Memory): pseudoMem | void {
+    /**
+     * Function to parse the assembly code and populate the memory with instructions
+     * @param code
+     * @param start_addr
+     * @param memory
+     */
+
     // Split the code into lines
     const lines = code.split("\n");
     let instMem: Memory | pseudoMem | undefined = memory;
+
     // If memory is not provided, initialize a new pseudo memory
     if (instMem === undefined) {
         instMem = new Map<number, AssemblyInstruction>;
     }
     let addr = start_addr;
-    // Clear existing labels
+
+    // Avoid using previous code labels
     labels.clear();
-    // Iterate through each line of the code
+    
     for (let line of lines) {
+        // Remove white spaces in either ends and comments
+        line = line.split('#')[0];
         line = line.trim();
-        // If the line is not empty
+        
+ 
         if (line) {
             // If the line ends with ':', it's a label declaration
             if (line.endsWith(':')) {
-                // Set the label with the corresponding memory address
                 labels.set(line.slice(0, line.length - 1), addr)
             } else {
                 // Replace '(' and ')' with ',' for splitting
                 line = line.replace(/\(/g, ',').replace(/\)/g, '');
                 const idrdres = line.split(',');
                 const idrd = idrdres[0].split(' ');
-                // Check if the instruction exists in the instruction map
+                // Only instructions existing in the instruction map are processed
                 if (instructions.has(idrd[0])) {
                     const id = instructions.get(idrd[0]) as typeof AssemblyInstruction;
                     // Get the register numbers or values for the instruction
