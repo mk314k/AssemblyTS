@@ -11,7 +11,10 @@ import { consoleBox } from './consoleBox';
  */
 function main(): void {
   CodeEditor.init(
-    `# Load two immediate values into registers a0 and a1
+    `# A sample assembly program here. Please see documentation link below for the syntax currently available
+      # In bottom right, there is github link, welcoming any contribution 
+      # be it adding more instructions or ideas in this project
+      # Load two immediate values into registers a0 and a1
       li a0, 5            # Load 5 into register a0
       li a1, 3            # Load 3 into register a1
 
