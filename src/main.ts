@@ -10,7 +10,24 @@ import { consoleBox } from './consoleBox';
  * Initializes the main function responsible for compiling and executing assembly code.
  */
 function main(): void {
-  CodeEditor.init();
+  CodeEditor.init(
+    `# A sample assembly program here. Please see documentation link below for the syntax currently available
+      # In bottom right, there is github link, welcoming any contribution 
+      # be it adding more instructions or ideas in this project
+      # Load two immediate values into registers a0 and a1
+      li a0, 5            # Load 5 into register a0
+      li a1, 3            # Load 3 into register a1
+
+      # Add the values in a0 and a1, store the result in a2
+      add a2, a0, a1      # a2 = a0 + a1 (i.e., a2 = 5 + 3)
+
+      # Print the result (stored in a2)
+      print a2            # This will print 8
+
+      # End of program
+      ret                 # Return from the program
+    `
+  );
   consoleBox.init();
   Assembler.init();
   memOptionStyle('imemory', 'dmemory');

@@ -131,3 +131,5 @@ experiment
 .pnp.*
 
 ign-*.*
+
+package-lock.json
