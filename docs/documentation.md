@@ -18,7 +18,7 @@ AssemblyTS utilizes 32-bit RISC-V integer registers (`RV32I`) for data storage a
 | x18-x27  | s2-s11         | Saved registers      |
 | x28-x31  | t3-t6          | Temporary registers  |
 
-Both Register name and its Symbolic name can be used interchangeably.
+Both Register name (`x0`–`x31`) and its Symbolic ABI name (`zero`–`t6`) can be used interchangeably.
 
 ## Console Instructions
 
