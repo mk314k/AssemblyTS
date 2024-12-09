@@ -972,7 +972,8 @@ footer {
   }
 }
 
-  .pop-up{
+@media screen and (max-width: 680px) {
+  .code-tab {
     display: none;
     position: fixed;
     top: calc(50vh - 0.5 * var(--pop-height));
