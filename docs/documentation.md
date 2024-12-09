@@ -30,61 +30,67 @@ Both Register name (`x0`–`x31`) and its Symbolic ABI name (`zero`–`t6`) can 
 ## Register Operations (R-Type)
 
 - **add**: Add the values of two registers and store the result in a destination register.
-  - **Syntax**: `add <destination_register>, <source_register1>, <source_register2>`
-- **sub**: Subtract the value of one register from another and store the result in a destination register.
-  - **Syntax**: `sub <destination_register>, <source_register1>, <source_register2>`
-- **and**: Perform a bitwise AND operation between two registers and store the result in a destination register.
-  - **Syntax**: `and <destination_register>, <source_register1>, <source_register2>`
-- **or**: Perform a bitwise OR operation between two registers and store the result in a destination register.
-  - **Syntax**: `or <destination_register>, <source_register1>, <source_register2>`
-- **xor**: Perform a bitwise XOR operation between two registers and store the result in a destination register.
-  - **Syntax**: `xor <destination_register>, <source_register1>, <source_register2>`
-- **sll**: Perform a logical left shift operation on a register and store the result in a destination register.
-  - **Syntax**: `sll <destination_register>, <source_register>, <shift_amount>`
-- **srl**: Perform a logical right shift operation on a register and store the result in a destination register.
-  - **Syntax**: `srl <destination_register>, <source_register>, <shift_amount>`
-- **sra**: Perform an arithmetic right shift operation on a register and store the result in a destination register.
-  - **Syntax**: `sra <destination_register>, <source_register>, <shift_amount>`
+  - **Syntax**: `add <rd>, <rs1>, <rs2>`
+- **sub**: Subtract `<rs2>` from `<rs1>` and store the result in `<rd>`.
+  - **Syntax**: `sub <rd>, <rs1>, <rs2>`
+- **and**: Perform a bitwise AND operation between two registers.
+  - **Syntax**: `and <rd>, <rs1>, <rs2>`
+- **or**: Perform a bitwise OR operation between two registers.
+  - **Syntax**: `or <rd>, <rs1>, <rs2>`
+- **xor**: Perform a bitwise XOR operation between two registers.
+  - **Syntax**: `xor <rd>, <rs1>, <rs2>`
+- **sll**: Perform a logical left shift on `<rs1>` by `<rs2>[4:0]`.
+  - **Syntax**: `sll <rd>, <rs1>, <rs2>`
+- **srl**: Perform a logical right shift on `<rs1>` by `<rs2>[4:0]`.
+  - **Syntax**: `srl <rd>, <rs1>, <rs2>`
+- **sra**: Perform an arithmetic right shift on `<rs1>` by `<rs2>[4:0]`.
+  - **Syntax**: `sra <rd>, <rs1>, <rs2>`
+- **slt**: Set `<rd>` to `1` if `<rs1> < <rs2>` (signed); otherwise `0`.
+  - **Syntax**: `slt <rd>, <rs1>, <rs2>`
+- **sltu**: Set `<rd>` to `1` if `<rs1> < <rs2>` (unsigned); otherwise `0`.
+  - **Syntax**: `sltu <rd>, <rs1>, <rs2>`
 
-## Register Immediate Operations
+## Register Immediate Operations (I-Type)
 
-- **addi**: Add an immediate value to a register and store the result in a destination register.
-  - **Syntax**: `addi <destination_register>, <source_register>, <immediate_value>`
-- **andi**: Perform a bitwise AND operation between an immediate value and a register and store the result in a destination register.
-  - **Syntax**: `andi <destination_register>, <source_register>, <immediate_value>`
-- **ori**: Perform a bitwise OR operation between an immediate value and a register and store the result in a destination register.
-  - **Syntax**: `ori <destination_register>, <source_register>, <immediate_value>`
-- **xori**: Perform a bitwise XOR operation between an immediate value and a register and store the result in a destination register.
-  - **Syntax**: `xori <destination_register>, <source_register>, <immediate_value>`
-- **slti**: Set a register to 1 if it is less than an immediate value; otherwise, set it to 0.
-  - **Syntax**: `slti <destination_register>, <source_register>, <immediate_value>`
-- **sltiu**: Set a register to 1 if it is less than an unsigned immediate value; otherwise, set it to 0.
-  - **Syntax**: `sltiu <destination_register>, <source_register>, <immediate_value>`
-- **slli**: Perform a logical left shift operation on a register by an immediate value and store the result in a destination register.
-  - **Syntax**: `slli <destination_register>, <source_register>, <shift_amount>`
-- **srli**: Perform a logical right shift operation on a register by an immediate value and store the result in a destination register.
-  - **Syntax**: `srli <destination_register>, <source_register>, <shift_amount>`
-- **srai**: Perform an arithmetic right shift operation on a register by an immediate value and store the result in a destination register.
-  - **Syntax**: `srai <destination_register>, <source_register>, <shift_amount>`
+- **addi**: Add a 12-bit signed immediate value to `<rs1>` and store the result in `<rd>`.
+  - **Syntax**: `addi <rd>, <rs1>, <imm>`
+- **andi**: Perform a bitwise AND between `<rs1>` and `<imm>`.
+  - **Syntax**: `andi <rd>, <rs1>, <imm>`
+- **ori**: Perform a bitwise OR between `<rs1>` and `<imm>`.
+  - **Syntax**: `ori <rd>, <rs1>, <imm>`
+- **xori**: Perform a bitwise XOR between `<rs1>` and `<imm>`.
+  - **Syntax**: `xori <rd>, <rs1>, <imm>`
+- **slti**: Set `<rd>` to `1` if `<rs1> < <imm>` (signed); otherwise `0`.
+  - **Syntax**: `slti <rd>, <rs1>, <imm>`
+- **sltiu**: Set `<rd>` to `1` if `<rs1> < <imm>` (unsigned); otherwise `0`.
+  - **Syntax**: `sltiu <rd>, <rs1>, <imm>`
+- **slli**: Logical left shift `<rs1>` by immediate `<shamt>`.
+  - **Syntax**: `slli <rd>, <rs1>, <shamt>`
+- **srli**: Logical right shift `<rs1>` by immediate `<shamt>`.
+  - **Syntax**: `srli <rd>, <rs1>, <shamt>`
+- **srai**: Arithmetic right shift `<rs1>` by immediate `<shamt>`.
+  - **Syntax**: `srai <rd>, <rs1>, <shamt>`
 
-## Branch Instructions
+## Branch Instructions (B-Type & Pseudo-Branches)
 
-- **beq**: Branch if two registers are equal.
-  - **Syntax**: `beq <register1>, <register2>, <offset>`
-- **bne**: Branch if two registers are not equal.
-  - **Syntax**: `bne <register1>, <register2>, <offset>`
-- **blt**: Branch if one register is less than another.
-  - **Syntax**: `blt <register1>, <register2>, <offset>`
-- **bge**: Branch if one register is greater than or equal to another.
-  - **Syntax**: `bge <register1>, <register2>, <offset>`
-- **bgt**: Branch if one register is greater than another.
-  - **Syntax**: `bgt <register1>, <register2>, <offset>`
-- **ble**: Branch if one register is less than or equal to another.
-  - **Syntax**: `ble <register1>, <register2>, <offset>`
-- **bltu**: Branch if one register is less than another (unsigned).
-  - **Syntax**: `bltu <register1>, <register2>, <offset>`
-- **bgeu**: Branch if one register is greater than or equal to another (unsigned).
-  - **Syntax**: `bgeu <register1>, <register2>, <offset>`
+Branch targets can be either a **label** (resolved automatically to a PC-relative byte offset `label_addr - PC`) or a numeric **PC-relative byte offset**.
+
+- **beq**: Branch if `<rs1> == <rs2>`.
+  - **Syntax**: `beq <rs1>, <rs2>, <label_or_offset>`
+- **bne**: Branch if `<rs1> != <rs2>`.
+  - **Syntax**: `bne <rs1>, <rs2>, <label_or_offset>`
+- **blt**: Branch if `<rs1> < <rs2>` (signed).
+  - **Syntax**: `blt <rs1>, <rs2>, <label_or_offset>`
+- **bge**: Branch if `<rs1> >= <rs2>` (signed).
+  - **Syntax**: `bge <rs1>, <rs2>, <label_or_offset>`
+- **bgt**: Branch if `<rs1> > <rs2>` (signed pseudo-instruction, encoded as `blt <rs2>, <rs1>, <offset>`).
+  - **Syntax**: `bgt <rs1>, <rs2>, <label_or_offset>`
+- **ble**: Branch if `<rs1> <= <rs2>` (signed pseudo-instruction, encoded as `bge <rs2>, <rs1>, <offset>`).
+  - **Syntax**: `ble <rs1>, <rs2>, <label_or_offset>`
+- **bltu**: Branch if `<rs1> < <rs2>` (unsigned).
+  - **Syntax**: `bltu <rs1>, <rs2>, <label_or_offset>`
+- **bgeu**: Branch if `<rs1> >= <rs2>` (unsigned).
+  - **Syntax**: `bgeu <rs1>, <rs2>, <label_or_offset>`
 
 ## Memory Operations
 
