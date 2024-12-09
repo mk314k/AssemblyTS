@@ -27,7 +27,7 @@ Both Register name (`x0`–`x31`) and its Symbolic ABI name (`zero`–`t6`) can 
 - **printm**: Print the 32-bit word stored in data memory at the address held in `<register>`.
   - **Syntax**: `printm <register>`
 
-## Register Operations
+## Register Operations (R-Type)
 
 - **add**: Add the values of two registers and store the result in a destination register.
   - **Syntax**: `add <destination_register>, <source_register1>, <source_register2>`
