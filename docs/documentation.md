@@ -94,17 +94,23 @@ Branch targets can be either a **label** (resolved automatically to a PC-relativ
 
 ## Memory Operations
 
-- **lw**: Load a word from memory into a register.
-  - **Syntax**: `lw <destination_register>, <offset>(<memory_address>)`
-- **sw**: Store a word from a register into memory.
-  - **Syntax**: `sw <source_register>, <offset>(<memory_address>)`
+- **lw**: Load a 32-bit word from data memory at `<rs1> + <offset>` into `<rd>`.
+  - **Syntax**: `lw <rd>, <offset>(<rs1>)`
+- **sw**: Store a 32-bit word from `<rs2>` into data memory at `<rs1> + <offset>`.
+  - **Syntax**: `sw <rs2>, <offset>(<rs1>)`
 
-## Register Loading Operations
+## Upper Immediate & Pseudo-Instructions
 
-- **li**: Load an immediate value into a register.
-  - **Syntax**: `li <register>, <immediate_value>`
-- **lui**: Load a 20-bit immediate value into the upper 20 bits of a register.
-  - **Syntax**: `lui <register>, <immediate_value>`
+- **li**: Load an immediate value into `<rd>`.
+  - **Syntax**: `li <rd>, <imm>`
+- **lui**: Load a 20-bit immediate value into the upper 20 bits of `<rd>` (`<imm> << 12`).
+  - **Syntax**: `lui <rd>, <imm>`
+- **auipc**: Add upper 20-bit immediate to PC (`<rd> = PC + (<imm> << 12)`).
+  - **Syntax**: `auipc <rd>, <imm>`
+- **mv**: Copy value from `<rs1>` to `<rd>` (`addi <rd>, <rs1>, 0`).
+  - **Syntax**: `mv <rd>, <rs1>`
+- **nop**: No operation (`addi x0, x0, 0`).
+  - **Syntax**: `nop`
 
 ## Jump Operations
 
