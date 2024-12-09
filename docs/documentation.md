@@ -114,5 +114,11 @@ Branch targets can be either a **label** (resolved automatically to a PC-relativ
 
 ## Jump Operations
 
-- **ret**: Return from a subroutine.
+- **jal**: Jump and Link (`<rd> = PC + 4; PC = PC + <offset>`). If `<rd>` is omitted, defaults to `ra` (`x1`).
+  - **Syntax**: `jal <rd>, <label_or_offset>` or `jal <label_or_offset>`
+- **jalr**: Jump and Link Register (`<rd> = PC + 4; PC = (<rs1> + <offset>) & ~1`).
+  - **Syntax**: `jalr <rd>, <rs1>, <offset>` or `jalr <rd>, <offset>(<rs1>)` or `jalr <rs1>`
+- **j**: Unconditional jump pseudo-instruction (`jal x0, <label_or_offset>`).
+  - **Syntax**: `j <label_or_offset>`
+- **ret**: Return from subroutine (`jalr x0, ra, 0`).
   - **Syntax**: `ret`
