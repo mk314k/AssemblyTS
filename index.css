@@ -967,9 +967,8 @@ footer {
     --memory-width: 190px;
     --explorer-width: 165px;
   }
-  .mem-byte .address{
-    border: 0.5px solid black;
-    margin-right: 15px;
+  .panel-hint {
+    display: none;
   }
 
   .pop-up{
