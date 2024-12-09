@@ -24,7 +24,7 @@ Both Register name (`x0`–`x31`) and its Symbolic ABI name (`zero`–`t6`) can 
 
 - **print**: Print the signed 32-bit decimal value of a register to the console.
   - **Syntax**: `print <register>`
-- **printm**: Print the value stored in memory to the console. The value in the register serve as memory address.
+- **printm**: Print the 32-bit word stored in data memory at the address held in `<register>`.
   - **Syntax**: `printm <register>`
 
 ## Register Operations
