@@ -975,16 +975,6 @@ footer {
 @media screen and (max-width: 680px) {
   .code-tab {
     display: none;
-    position: fixed;
-    top: calc(50vh - 0.5 * var(--pop-height));
-    left: calc(50vw - 0.5 * var(--pop-width));
-    width: var(--pop-width);
-    height: var(--pop-height);
-    z-index: 100;
-    background-color: #6183a173;
-    border-radius: 10%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    color: #200e0e;
   }
     .pop-title {
         margin-bottom: 20px;
