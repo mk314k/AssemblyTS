@@ -4,9 +4,9 @@ export class CodeEditor {
   public static lineNum = 0;
   public static code = '';
 
-    public static init(code='') {
-        this.editor = document.getElementById('code');
-        this.lineElem = document.getElementById('lineNum');
+  public static init(code = ''): void {
+    this.editor = document.getElementById('code');
+    this.lineElem = document.getElementById('lineNum');
 
         if (this.editor) {
             this.editor.addEventListener('input', this.updateCode.bind(this));
