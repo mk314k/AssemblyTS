@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "axios": "^1.7.2",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "statebinderk": "0.0.2"
   }
 }
