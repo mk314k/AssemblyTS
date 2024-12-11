@@ -1,13 +1,24 @@
-export class consoleBox{
-    public static consoleElem:HTMLElement|null;
-    public static init(){
-        consoleBox.consoleElem = document.getElementById('console');
-    }
-    public static log(logText:string){
-        if (consoleBox.consoleElem){
-            consoleBox.consoleElem.innerText += `${logText}\n`;
-        }else{
-            console.log(logText);
+import { StateVar } from 'statebinderk';
+
+interface ConsoleEntry {
+  text: string;
+  type: 'output' | 'error' | 'info' | 'clear';
+}
+
+export class consoleBox {
+  public static consoleState: StateVar<ConsoleEntry>;
+
+  public static init(): void {
+    consoleBox.consoleState = new StateVar<ConsoleEntry>(
+      { text: '', type: 'clear' },
+      'console',
+      (elem, entry) => {
+        if (entry.type === 'clear') {
+          elem.innerHTML = '';
+          return;
+        }
+        if (!entry.text && entry.type === 'output') {
+          return;
         }
     }
 }
