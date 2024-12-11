@@ -1,8 +1,8 @@
 export class CodeEditor {
-    private static editor: HTMLElement | null;
-    private static lineElem: HTMLElement | null;
-    public static lineNum = 0;
-    public static code = '';
+  private static editor: HTMLElement | null;
+  private static lineElem: HTMLElement | null;
+  public static lineNum = 0;
+  public static code = '';
 
     public static init(code='') {
         this.editor = document.getElementById('code');
