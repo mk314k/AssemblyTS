@@ -46,20 +46,11 @@ export class CodeEditor {
     }
   }
 
-    private static handleKeyDown(event: KeyboardEvent) {
-        if (this.lineElem) {
-            if (event.key === 'Enter') {
-                this.updateLineNumbers(1);
-            } else if (event.key === 'Backspace') {
-                const selection = window.getSelection();
-                if (selection && selection.rangeCount > 0) {
-                    const range = selection.getRangeAt(0);
-                    if (range.startOffset === 0 && range.endOffset === 0) {
-                        this.updateLineNumbers(-1);
-                    }
-                }
-            }
-        }
+  private static handleKeyDown(event: KeyboardEvent): void {
+    // Support Tab key for indentation inside the editor
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      document.execCommand('insertText', false, '    ');
     }
 
     private static syncScroll() {
