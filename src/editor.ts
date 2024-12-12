@@ -54,10 +54,9 @@ export class CodeEditor {
     }
   }
 
-    private static syncScroll() {
-        if (this.lineElem && this.editor) {
-            this.lineElem.scrollTop = this.editor.scrollTop;
-        }
+  private static syncScroll(): void {
+    if (this.lineElem && this.editor) {
+      this.lineElem.scrollTop = this.editor.scrollTop;
     }
 
     private static updateLineNumbers(ch:number) {
