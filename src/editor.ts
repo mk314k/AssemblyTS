@@ -22,11 +22,27 @@ export class CodeEditor {
     } else {
       this.renderLineNumbers(1);
     }
-    public static changeCode(newCode:string){
-        if (this.editor && this.lineElem){
-            this.code = newCode;
-            this.editor.innerText = newCode;
-        }
+  }
+
+  private static countLines(text: string): number {
+    if (!text) return 1;
+    // Normalize trailing newline quirks from contenteditable innerText
+    const normalized = text.replace(/\r\n/g, '\n');
+    const lines = normalized.split('\n');
+    return Math.max(1, lines.length);
+  }
+
+  private static updateCode(e: Event): void {
+    const target = e.target as HTMLElement;
+    this.code = target.innerText;
+    this.renderLineNumbers(this.countLines(this.code));
+  }
+
+  public static changeCode(newCode: string): void {
+    if (this.editor && this.lineElem) {
+      this.code = newCode;
+      this.editor.innerText = newCode;
+      this.renderLineNumbers(this.countLines(newCode));
     }
 
     private static handleKeyDown(event: KeyboardEvent) {
