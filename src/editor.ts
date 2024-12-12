@@ -52,6 +52,7 @@ export class CodeEditor {
       event.preventDefault();
       document.execCommand('insertText', false, '    ');
     }
+  }
 
     private static syncScroll() {
         if (this.lineElem && this.editor) {
