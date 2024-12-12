@@ -44,6 +44,7 @@ export class CodeEditor {
       this.editor.innerText = newCode;
       this.renderLineNumbers(this.countLines(newCode));
     }
+  }
 
     private static handleKeyDown(event: KeyboardEvent) {
         if (this.lineElem) {
