@@ -17,8 +17,10 @@ export class CodeEditor {
       this.editor.addEventListener('scroll', this.syncScroll.bind(this));
     }
 
-    private static updateCode(e: Event) {
-        this.code = (e.target as HTMLElement).innerText;
+    if (code !== '') {
+      this.changeCode(code);
+    } else {
+      this.renderLineNumbers(1);
     }
     public static changeCode(newCode:string){
         if (this.editor && this.lineElem){
