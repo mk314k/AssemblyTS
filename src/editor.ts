@@ -8,21 +8,13 @@ export class CodeEditor {
     this.editor = document.getElementById('code');
     this.lineElem = document.getElementById('lineNum');
 
-        if (this.editor) {
-            this.editor.addEventListener('input', this.updateCode.bind(this));
-            this.editor.addEventListener('keydown', this.handleKeyDown.bind(this));
-            this.editor.addEventListener('scroll', this.syncScroll.bind(this));
-        }
-
-        
-        if (code !== ''){
-            this.changeCode(code);
-            const codeLine = code.split('\n').length;
-            console.log(codeLine);
-            this.updateLineNumbers(codeLine);
-        }else{
-            this.updateLineNumbers(1);
-        }
+    if (this.editor) {
+      this.editor.setAttribute('spellcheck', 'false');
+      this.editor.setAttribute('autocorrect', 'off');
+      this.editor.setAttribute('autocapitalize', 'off');
+      this.editor.addEventListener('input', this.updateCode.bind(this));
+      this.editor.addEventListener('keydown', this.handleKeyDown.bind(this));
+      this.editor.addEventListener('scroll', this.syncScroll.bind(this));
     }
 
     private static updateCode(e: Event) {
