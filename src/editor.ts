@@ -58,6 +58,7 @@ export class CodeEditor {
     if (this.lineElem && this.editor) {
       this.lineElem.scrollTop = this.editor.scrollTop;
     }
+  }
 
     private static updateLineNumbers(ch:number) {
         const prevLine = this.lineNum;
