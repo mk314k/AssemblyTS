@@ -60,25 +60,14 @@ export class CodeEditor {
     }
   }
 
-    private static updateLineNumbers(ch:number) {
-        const prevLine = this.lineNum;
-        this.lineNum = Math.max(1, this.lineNum + ch);
-        const lineDiff = this.lineNum - prevLine;
-        if (this.lineElem) {
-            if (ch === 1){
-                this.lineElem.innerText += `${this.lineNum}\n`;
-            }else if (lineDiff !== 0){
-                let lines = this.lineElem.innerText.split('\n').filter(line => line.trim() !== '');
-                if (lineDiff > 0) {
-                    for (let i = 1; i <= lineDiff; i++) {
-                        lines.push(`${prevLine + i}`);
-                    }
-                } else if (lineDiff < 0) {
-                    lines = lines.slice(0, prevLine + lineDiff);
-                }
-                this.lineElem.innerText = lines.join('\n') + '\n';
-            }
-        }
+  private static renderLineNumbers(totalLines: number): void {
+    this.lineNum = Math.max(1, totalLines);
+    if (this.lineElem) {
+      const nums: string[] = [];
+      for (let i = 1; i <= this.lineNum; i++) {
+        nums.push(`${i}`);
+      }
+      this.lineElem.innerText = nums.join('\n') + '\n';
     }
 }
 
