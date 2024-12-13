@@ -69,5 +69,6 @@ export class CodeEditor {
       }
       this.lineElem.innerText = nums.join('\n') + '\n';
     }
+  }
 }
 
