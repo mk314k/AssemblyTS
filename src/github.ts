@@ -7,9 +7,9 @@ const GITHUB_CLIENT_ID: string = 'Ov23liZl7f0TzzDD0CSA';
 const TOKEN_URI: string = 'https://purpletreeauth.netlify.app/.netlify/functions/api/auth/github/callback';
 const REDIRECT_URI: string = 'https://mk314k.github.io/AssemblyTS/';
 
-interface RepoFileInfo{
-    name:string;
-    url:string;
+interface RepoFileInfo {
+  name: string;
+  url: string;
 }
 interface RepoFileContent{
     name:string;
