@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { StateVar } from 'statebinderk';
 import { CodeEditor } from './editor';
 
 const GITHUB_CLIENT_ID: string = 'Ov23liZl7f0TzzDD0CSA';
