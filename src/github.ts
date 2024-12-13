@@ -11,9 +11,10 @@ interface RepoFileInfo {
   name: string;
   url: string;
 }
-interface RepoFileContent{
-    name:string;
-    content:string;
+
+interface RepoFileContent {
+  name: string;
+  content: string;
 }
 
 export class GitUser{
