@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { StateVar } from 'statebinderk';
 import { CodeEditor } from './editor';
+import { consoleBox } from './consoleBox';
 
 const GITHUB_CLIENT_ID: string = 'Ov23liZl7f0TzzDD0CSA';
 const TOKEN_URI: string = 'https://purpletreeauth.netlify.app/.netlify/functions/api/auth/github/callback';
