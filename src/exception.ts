@@ -6,7 +6,7 @@ export class RegisterIndexError extends Error {
 }
 
 export class SyntaxError extends Error {
-  constructor(msg:string) {
+  constructor(msg: string) {
     super(msg);
     this.name = "SyntaxError";
   }
