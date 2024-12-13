@@ -1,8 +1,7 @@
 export class RegisterIndexError extends Error {
-    constructor() {
-      super("Invalid register index");
-      this.name = "RegisterIndexError";
-    }
+  constructor(msg = "Invalid register index") {
+    super(msg);
+    this.name = "RegisterIndexError";
   }
 
 export class SyntaxError extends Error {
