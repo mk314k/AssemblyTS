@@ -3,6 +3,7 @@ export class RegisterIndexError extends Error {
     super(msg);
     this.name = "RegisterIndexError";
   }
+}
 
 export class SyntaxError extends Error {
   constructor(msg:string) {
