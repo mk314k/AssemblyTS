@@ -49,8 +49,31 @@ export class GitUser {
     GitUser.token = pat.trim();
   }
 
-    public static setToken(pat:string){
-        GitUser.token = pat;
+  public static async syncDOM(auth = false): Promise<void> {
+    try {
+      const headers: Record<string, string> = {};
+      if (GitUser.token) {
+        headers['Authorization'] = `token ${GitUser.token}`;
+      }
+      const repoResponse = await fetch(
+        `https://api.github.com/repos/${GitUser.userName}/${GitUser.repo}/contents/`,
+        { headers }
+      );
+      if (repoResponse.status === 200) {
+        GitUser.authLabelState.transition('Logout');
+        const repoFiles: RepoFileInfo[] = await repoResponse.json();
+        await codeTabPane.fetchRepoContents(repoFiles);
+        consoleBox.log(`Connected to GitHub repository: ${GitUser.userName}/${GitUser.repo}`, 'info');
+      } else if (auth) {
+        await this.createRepo();
+        await this.syncDOM();
+      } else {
+        consoleBox.log(`Could not find repository "${GitUser.userName}/${GitUser.repo}".`, 'error');
+        GitUser.reset();
+      }
+    } catch (err) {
+      consoleBox.log('Failed to connect to GitHub API.', 'error');
+      GitUser.reset();
     }
     public static async syncDOM(auth=false){
         const gitStatus = document.getElementById('gitStatus');
