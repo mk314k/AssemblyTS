@@ -42,6 +42,12 @@ export class GitUser {
     if (repo === '') {
       repo = 'AssemblyTS_codes';
     }
+    GitUser.repo = repo;
+  }
+
+  public static setToken(pat: string): void {
+    GitUser.token = pat.trim();
+  }
 
     public static setToken(pat:string){
         GitUser.token = pat;
