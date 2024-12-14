@@ -17,10 +17,13 @@ interface RepoFileContent {
   content: string;
 }
 
-export class GitUser{
-    public static userName:string = '';
-    private static token:string = '';
-    public static repo:string = '';
+export class GitUser {
+  public static userName: string = '';
+  private static token: string = '';
+  public static repo: string = '';
+  public static authLabelState = new StateVar<string>('Login', 'gitStatus', (elem, label) => {
+    elem.innerText = label;
+  });
 
     constructor(){}
 
