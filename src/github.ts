@@ -85,25 +85,6 @@ export class GitUser {
       window.location.href = authUrl;
       return;
     }
-    public static async loginAuth(){
-        const authUrl = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=repo`;
-        window.location.href = authUrl;
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        if (code) {
-            window.location.href = REDIRECT_URI;
-            try {
-                const res = await axios.get(TOKEN_URI, { params: { code } });
-                GitUser.token = res.data.token;
-                if (GitUser.token) {
-                    const user = await GitUser.getUserInfo(GitUser.token);
-                    GitUser.userName = user;
-                }
-                await this.syncDOM(true);
-            } catch (error) {
-                console.error('Error getting token:', error);
-            }
-        }
 
     }
     private static getUserInfo = async (token: string): Promise<string> => {
