@@ -27,11 +27,14 @@ export class GitUser {
 
   constructor() {}
 
-    public static reset(){
-        GitUser.userName = '';
-        GitUser.repo = '';
-        GitUser.token = '';
-    }
+  public static reset(): void {
+    GitUser.userName = '';
+    GitUser.repo = '';
+    GitUser.token = '';
+    GitUser.authLabelState.transition('Login');
+    codeTabPane.repoCodes.clear();
+    codeTabPane.showHTML();
+  }
 
     public static addRepo(){
         let repo = (document.getElementById('repository') as HTMLInputElement).value;
