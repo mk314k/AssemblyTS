@@ -36,12 +36,11 @@ export class GitUser {
     codeTabPane.showHTML();
   }
 
-    public static addRepo(){
-        let repo = (document.getElementById('repository') as HTMLInputElement).value;
-        if (repo === ''){
-            repo = 'AssemblyTS_codes'
-        }
-        GitUser.repo = repo;
+  public static addRepo(): void {
+    const repoInput = document.getElementById('repository') as HTMLInputElement | null;
+    let repo = repoInput ? repoInput.value.trim() : '';
+    if (repo === '') {
+      repo = 'AssemblyTS_codes';
     }
 
     public static setToken(pat:string){
