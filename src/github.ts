@@ -25,7 +25,7 @@ export class GitUser {
     elem.innerText = label;
   });
 
-    constructor(){}
+  constructor() {}
 
     public static reset(){
         GitUser.userName = '';
