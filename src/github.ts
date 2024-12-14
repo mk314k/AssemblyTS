@@ -75,21 +75,15 @@ export class GitUser {
       consoleBox.log('Failed to connect to GitHub API.', 'error');
       GitUser.reset();
     }
-    public static async syncDOM(auth=false){
-        const gitStatus = document.getElementById('gitStatus');
-        if (gitStatus){
-            const repoResponse = await fetch(`https://api.github.com/repos/${GitUser.userName}/${GitUser.repo}/contents/`);
-            if (repoResponse.status === 200){
-                gitStatus.innerText = 'Logout';
-                const repoFiles:RepoFileInfo[] = await repoResponse.json();
-                codeTabPane.fetchRepoContents(repoFiles);
-            }else if(auth){
-                await this.createRepo();
-                await this.syncDOM();
-            }else{
-                GitUser.reset();
-            }
-        }   
+  }
+
+  public static async loginAuth(): Promise<void> {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    if (!code) {
+      const authUrl = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=repo`;
+      window.location.href = authUrl;
+      return;
     }
     public static async loginAuth(){
         const authUrl = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=repo`;
