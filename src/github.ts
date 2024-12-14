@@ -86,6 +86,16 @@ export class GitUser {
       return;
     }
 
+    try {
+      const res = await axios.get(TOKEN_URI, { params: { code } });
+      GitUser.token = res.data.token;
+      if (GitUser.token) {
+        const user = await GitUser.getUserInfo(GitUser.token);
+        GitUser.userName = user;
+      }
+      await this.syncDOM(true);
+    } catch (error) {
+      console.error('Error getting token:', error);
     }
     private static getUserInfo = async (token: string): Promise<string> => {
         const response = await axios.get('https://api.github.com/user', {
