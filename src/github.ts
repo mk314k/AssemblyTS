@@ -150,7 +150,7 @@ export class codeTabPane {
   public static repoCodes = new Map<string, string>();
   public static localCodes = new Map<string, string>();
 
-}
+  constructor() {}
 
 export class codeTabPane{
     public static repoCodes = new Map<string, string>;
