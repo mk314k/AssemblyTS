@@ -152,19 +152,14 @@ export class codeTabPane {
 
   constructor() {}
 
-export class codeTabPane{
-    public static repoCodes = new Map<string, string>;
-    public static localCodes = new Map<string, string>;
-    constructor(){}
-    public static async fetchRepoContents(repoFiles:RepoFileInfo[]){
-        for (const file of repoFiles){
-            if (file.name.endsWith('.asm')){
-                const response = await fetch(file.url);
-                if (response.status === 200){
-                    const fileData:RepoFileContent = await response.json();
-                    codeTabPane.repoCodes.set(fileData.name, atob(fileData.content))
-                }
-            }
+  public static async fetchRepoContents(repoFiles: RepoFileInfo[]): Promise<void> {
+    codeTabPane.repoCodes.clear();
+    for (const file of repoFiles) {
+      if (file.name.endsWith('.asm') || file.name.endsWith('.s')) {
+        const response = await fetch(file.url);
+        if (response.status === 200) {
+          const fileData: RepoFileContent = await response.json();
+          codeTabPane.repoCodes.set(fileData.name, atob(fileData.content));
         }
     }
     public static showHTML(){
