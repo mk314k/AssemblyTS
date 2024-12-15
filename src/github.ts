@@ -141,7 +141,10 @@ export class GitUser {
             'Content-Type': 'application/json'
           }
         }
-    };
+      );
+    }
+  };
+}
 
 
 }
