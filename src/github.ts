@@ -161,6 +161,7 @@ export class codeTabPane {
           const fileData: RepoFileContent = await response.json();
           codeTabPane.repoCodes.set(fileData.name, atob(fileData.content));
         }
+      }
     }
     public static showHTML(){
         if (GitUser.repo !== '' && GitUser.userName !== ''){
