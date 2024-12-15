@@ -122,19 +122,24 @@ export class GitUser {
             'Content-Type': 'application/json'
           }
         }
-    };
-    public static writeFileToRepo = async (path: string, content: string): Promise<void> => {
-        if (this.token){
-            const base64Content = btoa(content); // Encode content to Base64
-            await axios.put(`https://api.github.com/repos/${this.repo}/contents/${path}`, {
-                message: `Editing ${path}`,
-                content: base64Content
-            }, {
-                headers: {
-                    Authorization: `token ${this.token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
+      );
+    }
+  };
+
+  public static writeFileToRepo = async (path: string, content: string): Promise<void> => {
+    if (this.token && this.userName && this.repo) {
+      const base64Content = btoa(content);
+      await axios.put(
+        `https://api.github.com/repos/${this.userName}/${this.repo}/contents/${path}`,
+        {
+          message: `Editing ${path}`,
+          content: base64Content
+        },
+        {
+          headers: {
+            Authorization: `token ${this.token}`,
+            'Content-Type': 'application/json'
+          }
         }
     };
 
