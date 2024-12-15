@@ -97,26 +97,30 @@ export class GitUser {
     } catch (error) {
       console.error('Error getting token:', error);
     }
-    private static getUserInfo = async (token: string): Promise<string> => {
-        const response = await axios.get('https://api.github.com/user', {
-            headers: {
-                Authorization: `token ${token}`
-            }
-        });
-        return response.data;
-    };
+  }
 
-    private static createRepo = async (): Promise<void> => {
-        if (this.token !== ''){
-            await axios.post('https://api.github.com/user/repos', {
-                name: this.repo,
-                private: false
-            }, {
-                headers: {
-                    Authorization: `token ${this.token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
+  private static getUserInfo = async (token: string): Promise<string> => {
+    const response = await axios.get('https://api.github.com/user', {
+      headers: {
+        Authorization: `token ${token}`
+      }
+    });
+    return typeof response.data === 'string' ? response.data : response.data.login;
+  };
+
+  private static createRepo = async (): Promise<void> => {
+    if (this.token !== '') {
+      await axios.post(
+        'https://api.github.com/user/repos',
+        {
+          name: this.repo,
+          private: false
+        },
+        {
+          headers: {
+            Authorization: `token ${this.token}`,
+            'Content-Type': 'application/json'
+          }
         }
     };
     public static writeFileToRepo = async (path: string, content: string): Promise<void> => {
