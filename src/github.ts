@@ -163,35 +163,8 @@ export class codeTabPane {
         }
       }
     }
-    public static showHTML(){
-        if (GitUser.repo !== '' && GitUser.userName !== ''){
-            const codeTab = document.getElementById('codeTab');
-            if (codeTab){
-                codeTab.innerHTML = `
-                    <div class="code-tab-layer">
-                        ${GitUser.userName}
-                        <div class="code-tab-layer">
-                            ${GitUser.repo}
-                            ${codeTabPane.repoCodes.forEach(
-                                (_, fname)=>{
-                                    return `<div id="tab-${fname}" class="code-tab-layer">${fname}</div>`
-                                }
-                            )}
-                        </div>
-                    </div>
-                `
-                this.repoCodes.forEach(
-                    (content, fname)=>{
-                        const tabf = document.getElementById(`tab-${fname}`);
-                        if (tabf){
-                            tabf.addEventListener('click', ()=>{
-                                tabf.style.color = 'blue';
-                                CodeEditor.changeCode(content);
-                            });
-                        }
-                    }
-                );
-            }
+    codeTabPane.showHTML();
+  }
 
         }
     }
