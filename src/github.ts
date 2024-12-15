@@ -166,6 +166,34 @@ export class codeTabPane {
     codeTabPane.showHTML();
   }
 
+  public static showHTML(): void {
+    const codeTab = document.getElementById('codeTab');
+    if (!codeTab) return;
+
+    if (GitUser.repo !== '' && GitUser.userName !== '') {
+      const fileItems = Array.from(codeTabPane.repoCodes.keys())
+        .map(fname => `<div id="tab-${fname}" class="code-tab-layer file-item"><i class="fa-regular fa-file-code"></i> ${fname}</div>`)
+        .join('');
+
+      codeTab.innerHTML = `
+        <div class="explorer-header">EXPLORER</div>
+        <div class="code-tab-layer repo-user">
+          <div><i class="fa-brands fa-github"></i> ${GitUser.userName}</div>
+          <div class="code-tab-layer repo-folder">
+            <div><i class="fa-regular fa-folder-open"></i> ${GitUser.repo}</div>
+            ${fileItems || '<div class="explorer-empty">No .asm files found</div>'}
+          </div>
+        </div>
+      `;
+
+      this.repoCodes.forEach((content, fname) => {
+        const tabf = document.getElementById(`tab-${fname}`);
+        if (tabf) {
+          tabf.addEventListener('click', () => {
+            document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active-file'));
+            tabf.classList.add('active-file');
+            CodeEditor.changeCode(content);
+          });
         }
     }
     
