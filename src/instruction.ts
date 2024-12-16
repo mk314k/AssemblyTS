@@ -3,6 +3,8 @@ import { Counter, RegisterSet, Register, regValid, regToBin } from "./register";
 import { RegisterIndexError, SyntaxError } from "./exception";
 import { consoleBox } from "./consoleBox";
 
+const MAX_EXECUTION_STEPS = 10000;
+
 /**
  * The Assembler class represents an Assembler (emulator for  hardware 
  * components in a computer system.) It contains static properties and methods 
