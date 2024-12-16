@@ -12,42 +12,71 @@ const MAX_EXECUTION_STEPS = 10000;
  * and console output for debugging purpose.
  */
 export class Assembler {
-    static registers = new RegisterSet();   // 32 Registers
-    static instMemory = new Memory();       // Instruction Memory
-    static dataMemory = new Memory();       // Data Memory
-    static pc = new Counter();              // Program counter for keeping track of the current instruction address
-    static consoleLog = "";                 // String for storing console output
-    static regElem:HTMLElement|null;
-    static memElem:HTMLElement|null;
-    static isDataMemActive = false;
+  static registers = new RegisterSet();   // 32 Registers
+  static instMemory = new Memory();       // Instruction Memory
+  static dataMemory = new Memory();       // Data Memory
+  static pc = new Counter();              // Program counter for keeping track of the current instruction address
+  static consoleLog = "";                 // String for storing console output
+  static regElem: HTMLElement | null;
+  static memElem: HTMLElement | null;
+  static isDataMemActive = false;
 
-    /**
-     * Outputs the console log to the specified HTML element.
-     * 
-     * @param consoleElement - The HTML element where the console log will be displayed.
-     */
-    static consoleOut = () => {
-        consoleBox.log(this.consoleLog);
+  /**
+   * Outputs the console log to the specified HTML element.
+   */
+  static consoleOut = () => {
+    if (this.consoleLog.trim().length > 0) {
+      consoleBox.log(this.consoleLog, 'output');
     }
+  };
 
-    static init(){
-        this.regElem = document.getElementById("registers");
-        this.memElem = document.getElementById("memory");
-        Assembler.registers.outHTML(this.regElem);
-        if (this.isDataMemActive){
-            Assembler.dataMemory.outHTML(this.memElem);
-        }else{
-            Assembler.instMemory.outHTML(this.memElem);
-        }
+  static init(): void {
+    this.regElem = document.getElementById("registers");
+    this.memElem = document.getElementById("memory");
+    Assembler.registers.outHTML(this.regElem);
+    if (this.isDataMemActive) {
+      Assembler.dataMemory.outHTML(this.memElem);
+    } else {
+      Assembler.instMemory.outHTML(this.memElem);
     }
-    static showInst(){
-        if (!this.isDataMemActive){
-            Assembler.instMemory.outHTML(this.memElem);
-        }
+  }
+
+  static reset(): void {
+    Assembler.registers.reset();
+    Assembler.instMemory.clear();
+    Assembler.dataMemory.clear();
+    Assembler.pc.jump(0);
+    Assembler.consoleLog = "";
+    Assembler.registers.outHTML(this.regElem);
+    if (this.isDataMemActive) {
+      Assembler.dataMemory.outHTML(this.memElem);
+    } else {
+      Assembler.instMemory.outHTML(this.memElem);
     }
-    static showData(){
-        if (this.isDataMemActive){
-            Assembler.dataMemory.outHTML(this.memElem);
+  }
+
+  static showInst(): void {
+    if (!this.isDataMemActive) {
+      Assembler.instMemory.outHTML(this.memElem);
+    }
+  }
+
+  static showData(): void {
+    if (this.isDataMemActive) {
+      Assembler.dataMemory.outHTML(this.memElem);
+    }
+  }
+
+  static execute(addr: number): void {
+    Assembler.consoleLog = "";
+    Assembler.pc.jump(addr);
+    let steps = 0;
+
+    while (Assembler.pc.val !== 0) {
+      const inst = Assembler.instMemory.get(Assembler.pc.val) as AssemblyInstruction | undefined;
+      if (!inst) {
+        if (steps === 0) {
+          consoleBox.log(`No instruction found at run address ${addr}. Did you build the code first?`, 'error');
         }
     }
     static execute(addr:number): void {
