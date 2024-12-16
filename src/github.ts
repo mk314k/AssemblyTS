@@ -195,6 +195,18 @@ export class codeTabPane {
             CodeEditor.changeCode(content);
           });
         }
+      });
+    } else {
+      codeTab.innerHTML = `
+        <div class="explorer-header">WORKSPACE</div>
+        <div class="code-tab-layer file-item active-file" id="tab-main-asm">
+          <i class="fa-regular fa-file-code"></i> main.asm
+        </div>
+        <div class="explorer-hint">
+          <i class="fa-brands fa-github"></i>
+          <span>Connect GitHub from the sidebar to browse & load remote <code>.asm</code> files.</span>
+        </div>
+      `;
     }
     
 }
