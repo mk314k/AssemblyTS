@@ -78,19 +78,16 @@ export class Assembler {
         if (steps === 0) {
           consoleBox.log(`No instruction found at run address ${addr}. Did you build the code first?`, 'error');
         }
-    }
-    static execute(addr:number): void {
-        Assembler.pc.jump(addr);
-        while (Assembler.pc.val !== 0) {
-          const inst = Assembler.instMemory.get(Assembler.pc.val) as AssemblyInstruction;
-          inst.execute();
-          Assembler.pc.step();
-        }
-        if (this.isDataMemActive){
-            Assembler.dataMemory.outHTML(this.memElem);
-        }
-        Assembler.registers.outHTML(this.regElem);
-        Assembler.consoleOut();
+        break;
+      }
+
+      inst.execute();
+      Assembler.pc.step();
+      steps++;
+
+      if (steps >= MAX_EXECUTION_STEPS) {
+        throw new SyntaxError(`Execution halted after ${MAX_EXECUTION_STEPS} steps (possible infinite loop).`);
+      }
     }
 
 }
