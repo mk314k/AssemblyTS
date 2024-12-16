@@ -208,5 +208,5 @@ export class codeTabPane {
         </div>
       `;
     }
-    
+  }
 }
