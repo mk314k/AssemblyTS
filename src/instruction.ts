@@ -6,9 +6,9 @@ import { consoleBox } from "./consoleBox";
 const MAX_EXECUTION_STEPS = 10000;
 
 /**
- * The Assembler class represents an Assembler (emulator for  hardware 
- * components in a computer system.) It contains static properties and methods 
- * for managing registers, instruction memory, data memory, program counter, 
+ * The Assembler class represents an Assembler (emulator for hardware
+ * components in a computer system.) It contains static properties and methods
+ * for managing registers, instruction memory, data memory, program counter,
  * and console output for debugging purpose.
  */
 export class Assembler {
