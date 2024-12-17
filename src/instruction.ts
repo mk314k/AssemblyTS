@@ -116,13 +116,10 @@ export class AssemblyInstruction implements MemContent {
     public readonly reg_num?: Register
   ) {}
 
-    /**
-     * Returns the hexadecimal representation of the instruction.
-     * @returns The hexadecimal representation of the instruction.
-     */
-    hexRep(): string {
-        return this.numValue().toString(16);
-    }
+  // Values for binary representation for the instruction
+  funct7 = "0000000"; // Function 7 field
+  funct3 = "000";     // Function 3 field
+  opcode = "0000000"; // Opcode field
 
     /**
      * @returns The numerical value of the instruction.
