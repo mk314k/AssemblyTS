@@ -121,12 +121,12 @@ export class AssemblyInstruction implements MemContent {
   funct3 = "000";     // Function 3 field
   opcode = "0000000"; // Opcode field
 
-    /**
-     * @returns The numerical value of the instruction.
-     */
-    numValue(): number {
-        return parseInt(this.binaryRep(), 2);
-    }
+  /**
+   * Left to be implemented by specific instruction if required
+   */
+  func = (_: number, __: number, ___?: number): number => {
+    throw new Error("function not implemented");
+  };
 
     /**
      * Executes the instruction.
