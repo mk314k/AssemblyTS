@@ -128,13 +128,13 @@ export class AssemblyInstruction implements MemContent {
     throw new Error("function not implemented");
   };
 
-    /**
-     * Executes the instruction.
-     */
-    execute(): void {
-       throw new Error("Not Implemented execute function");
-    }
-}
+  /**
+   * Left to be implemented by specific instructions
+   * @returns The binary representation of the instruction.
+   */
+  binaryRep(): string {
+    throw new Error("Not Implemented Binary");
+  }
 
 
 /**
