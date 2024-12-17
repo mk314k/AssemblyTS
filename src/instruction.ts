@@ -136,6 +136,28 @@ export class AssemblyInstruction implements MemContent {
     throw new Error("Not Implemented Binary");
   }
 
+  /**
+   * Returns the hexadecimal representation of the instruction.
+   * @returns The hexadecimal representation of the instruction.
+   */
+  hexRep(): string {
+    return (this.numValue() >>> 0).toString(16).padStart(8, '0');
+  }
+
+  /**
+   * @returns The numerical value of the instruction.
+   */
+  numValue(): number {
+    return parseInt(this.binaryRep(), 2) >>> 0;
+  }
+
+  /**
+   * Executes the instruction.
+   */
+  execute(): void {
+    throw new Error("Not Implemented execute function");
+  }
+}
 
 /**
  * Represents an instruction that operates on three registers.
