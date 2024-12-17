@@ -90,6 +90,14 @@ export class Assembler {
       }
     }
 
+    if (this.isDataMemActive) {
+      Assembler.dataMemory.outHTML(this.memElem);
+    } else {
+      Assembler.instMemory.outHTML(this.memElem);
+    }
+    Assembler.registers.outHTML(this.regElem);
+    Assembler.consoleOut();
+  }
 }
 
 
