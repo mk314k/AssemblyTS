@@ -104,41 +104,17 @@ export class Assembler {
  * Represents an assembly instruction.
  */
 export class AssemblyInstruction implements MemContent {
-    /**
-     * Creates an instance of AssemblyInstruction.
-     * @param reg1 - The first register.
-     * @param reg2 - The second register.
-     * @param reg_num - The third register or a number.
-     */
-    constructor(
-        public readonly reg1?: Register,
-        public readonly reg2?: Register,
-        public readonly reg_num?: Register
-    ){}
-
-    // Values for binary representation for the instruction
-    funct7 = ""; // Function 7 field
-    funct3 = ""; // Function 3 field
-    opcode = ""; // Opcode field
-
-    /**
-     * Left to be implemented by specific instruction if required
-     * @param _ - Placeholder for the first parameter.
-     * @param __ - Placeholder for the second parameter.
-     * @param ___ - Optional placeholder for the third parameter.
-     * @throws an error since the function is not implemented.
-     */
-    func = (_: number, __: number, ___?: number): number => {
-        throw new Error("function not implemented");
-    };
-
-    /**
-     * Left to be implemented by specific instructions
-     * @returns The binary representation of the instruction.
-     */
-    binaryRep(): string {
-        throw new Error("Not Implemented Binary");
-    }
+  /**
+   * Creates an instance of AssemblyInstruction.
+   * @param reg1 - The first register (or operand).
+   * @param reg2 - The second register (or operand).
+   * @param reg_num - The third register or an immediate/offset value.
+   */
+  constructor(
+    public readonly reg1?: Register,
+    public readonly reg2?: Register,
+    public readonly reg_num?: Register
+  ) {}
 
     /**
      * Returns the hexadecimal representation of the instruction.
