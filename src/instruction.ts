@@ -189,19 +189,15 @@ class RegInstruction extends AssemblyInstruction {
     );
   }
 
-    /**
-     * Executes the instruction.
-     */
-    execute(): void {
-        // Update the value of the destination register based on the operation result
-        Assembler.registers.setValue(
-            this.reg1 as Register,
-            this.func(
-                Assembler.registers.getValue(this.reg2 as Register), 
-                Assembler.registers.getValue(this.reg_num as Register)
-            ) as number
-        );
-    }
+  execute(): void {
+    Assembler.registers.setValue(
+      this.reg1 as Register,
+      this.func(
+        Assembler.registers.getValue(this.reg2 as Register),
+        Assembler.registers.getValue(this.reg_num as Register)
+      )
+    );
+  }
 }
 
 /**
