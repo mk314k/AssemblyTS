@@ -164,25 +164,15 @@ export class AssemblyInstruction implements MemContent {
  * Format: funct7[31:25] | rs2[24:20] | rs1[19:15] | funct3[14:12] | rd[11:7] | opcode[6:0]
  */
 class RegInstruction extends AssemblyInstruction {
-    /**
-     * Creates an instance of RegInstruction.
-     * @param rd - The destination register.
-     * @param rs1 - The first source register.
-     * @param rs2 - The second source register.
-     */
-    constructor(
-        rd: Register,
-        rs1: Register,
-        rs2: Register
-    ){
-        // Check if register indices are valid
-        if (regValid(rd) && regValid(rs1) && regValid(rs2)){
-            super(rd, rs1, rs2); // Call the superclass constructor
-        } else {
-            throw new RegisterIndexError(); // Throw an error for invalid register indices
-        }
-        this.funct7 = "0000000"; // Initialize funct7 field
-        this.opcode = "0110011"; // Initialize opcode field
+  constructor(
+    rd: Register,
+    rs1: Register,
+    rs2: Register
+  ) {
+    if (regValid(rd) && regValid(rs1) && regValid(rs2)) {
+      super(rd, rs1, rs2);
+    } else {
+      throw new RegisterIndexError();
     }
 
     /**
