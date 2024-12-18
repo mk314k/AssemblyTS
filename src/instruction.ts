@@ -160,8 +160,8 @@ export class AssemblyInstruction implements MemContent {
 }
 
 /**
- * Represents an instruction that operates on three registers.
- * Inherits from AssemblyInstruction.
+ * R-Type Instruction: operates on three registers (rd, rs1, rs2).
+ * Format: funct7[31:25] | rs2[24:20] | rs1[19:15] | funct3[14:12] | rd[11:7] | opcode[6:0]
  */
 class RegInstruction extends AssemblyInstruction {
     /**
