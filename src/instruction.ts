@@ -205,24 +205,15 @@ class RegInstruction extends AssemblyInstruction {
  * Format: imm[11:0] | rs1[19:15] | funct3[14:12] | rd[11:7] | opcode[6:0]
  */
 class RegImmInstruction extends AssemblyInstruction {
-    /**
-     * Creates an instance of RegImmInstruction.
-     * @param rd - The destination register.
-     * @param rs1 - The source register.
-     * @param rsval - The immediate value.
-     */
-    constructor(
-        rd: Register,
-        rs1: Register,
-        rsval: number
-    ){
-        // Check if register indices are valid
-        if (regValid(rd) && regValid(rs1)){
-            super(rd, rs1, rsval); // Call the superclass constructor
-        } else {
-            throw new RegisterIndexError(); // Throw an error for invalid register indices
-        }
-        this.opcode = "0010011"; // Initialize opcode field
+  constructor(
+    rd: Register,
+    rs1: Register,
+    rsval: number
+  ) {
+    if (regValid(rd) && regValid(rs1) && typeof rsval === 'number' && !isNaN(rsval)) {
+      super(rd, rs1, rsval);
+    } else {
+      throw new RegisterIndexError("Invalid register or immediate value");
     }
 
     /**
