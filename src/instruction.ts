@@ -201,8 +201,8 @@ class RegInstruction extends AssemblyInstruction {
 }
 
 /**
- * Represents an instruction that operates on a register and an immediate value.
- * Inherits from AssemblyInstruction.
+ * I-Type Instruction: operates on a register and a 12-bit immediate value (rd, rs1, imm).
+ * Format: imm[11:0] | rs1[19:15] | funct3[14:12] | rd[11:7] | opcode[6:0]
  */
 class RegImmInstruction extends AssemblyInstruction {
     /**
