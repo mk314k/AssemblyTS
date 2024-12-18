@@ -218,17 +218,15 @@ class RegImmInstruction extends AssemblyInstruction {
     this.opcode = "0010011";
   }
 
-    /**
-     * Generates the binary representation of the instruction.
-     * @returns The binary representation of the instruction.
-     */
-    binaryRep(): string {
-        return numToBin(this.reg_num as number, 12) +
-                regToBin(this.reg2 as Register) +
-                this.funct3 +
-                regToBin(this.reg1 as Register) +
-                this.opcode;
-    }
+  binaryRep(): string {
+    return (
+      numToBin(this.reg_num as number, 12) +
+      regToBin(this.reg2 as Register) +
+      this.funct3 +
+      regToBin(this.reg1 as Register) +
+      this.opcode
+    );
+  }
 
     /**
      * Executes the instruction.
