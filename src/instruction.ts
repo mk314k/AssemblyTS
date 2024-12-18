@@ -215,6 +215,8 @@ class RegImmInstruction extends AssemblyInstruction {
     } else {
       throw new RegisterIndexError("Invalid register or immediate value");
     }
+    this.opcode = "0010011";
+  }
 
     /**
      * Generates the binary representation of the instruction.
