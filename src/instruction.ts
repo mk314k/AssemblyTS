@@ -228,19 +228,33 @@ class RegImmInstruction extends AssemblyInstruction {
     );
   }
 
-    /**
-     * Executes the instruction.
-     */
-    execute(): void {
-        // Update the value of the destination register based on the operation result
-        Assembler.registers.setValue(
-            this.reg1 as Register,
-            this.func(
-                Assembler.registers.getValue(this.reg2 as Register), 
-                this.reg_num as number
-            ) as number
-        );
-    }
+  execute(): void {
+    Assembler.registers.setValue(
+      this.reg1 as Register,
+      this.func(
+        Assembler.registers.getValue(this.reg2 as Register),
+        this.reg_num as number
+      )
+    );
+  }
+}
+
+/**
+ * I-Type Shift Immediate Instruction (slli, srli, srai):
+ * Format: funct7[31:25] | shamt[24:20] | rs1[19:15] | funct3[14:12] | rd[11:7] | opcode[6:0]
+ */
+class ShiftImmInstruction extends RegImmInstruction {
+  binaryRep(): string {
+    const shamt = (this.reg_num as number) & 0x1f;
+    return (
+      this.funct7 +
+      numToBin(shamt, 5) +
+      regToBin(this.reg2 as Register) +
+      this.funct3 +
+      regToBin(this.reg1 as Register) +
+      this.opcode
+    );
+  }
 }
 
 /**
