@@ -174,6 +174,9 @@ class RegInstruction extends AssemblyInstruction {
     } else {
       throw new RegisterIndexError();
     }
+    this.funct7 = "0000000";
+    this.opcode = "0110011";
+  }
 
     /**
      * Generates the binary representation of the instruction.
