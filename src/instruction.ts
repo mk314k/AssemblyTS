@@ -340,21 +340,14 @@ function imm12Bit(binStr: string, bitIndex: number): string {
  * Console Instruction: custom debugging instruction operating on a single register.
  */
 class ConsoleInstruction extends AssemblyInstruction {
-    /**
-     * Creates an instance of ConsoleInstruction.
-     * @param reg - The register.
-     * @param mode - The mode for console operation (optional, default is 'dec').
-     */
-    constructor(
-        reg: Register,
-        mode: string | number = 'dec'
-    ){
-        // Check if register index is valid
-        if (regValid(reg)){
-            super(reg, mode); // Call the superclass constructor
-        } else {
-            throw new RegisterIndexError(); // Throw an error for invalid register index
-        }
+  constructor(
+    reg: Register,
+    mode: string | number = 'dec'
+  ) {
+    if (regValid(reg)) {
+      super(reg, mode);
+    } else {
+      throw new RegisterIndexError();
     }
 
     /**
