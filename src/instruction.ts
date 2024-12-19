@@ -282,24 +282,15 @@ class MemInstruction extends AssemblyInstruction {
  * Note: `offset` is a PC-relative byte offset (target_addr - current_PC).
  */
 class BranchInstruction extends AssemblyInstruction {
-    /**
-     * Creates an instance of BranchInstruction.
-     * @param rs1 - The first source register.
-     * @param rs2 - The second source register.
-     * @param label - The label value.
-     */
-    constructor(
-        rs1: Register,
-        rs2: Register,
-        label: number
-    ){
-        // Check if register indices are valid
-        if (regValid(rs2) && regValid(rs1)){
-            super(rs1, rs2, label); // Call the superclass constructor
-        } else {
-            throw new RegisterIndexError(); // Throw an error for invalid register indices
-        }
-        this.opcode = "1100011"; // Set the opcode field
+  constructor(
+    rs1: Register,
+    rs2: Register,
+    offset: number
+  ) {
+    if (regValid(rs2) && regValid(rs1) && typeof offset === 'number' && !isNaN(offset)) {
+      super(rs1, rs2, offset);
+    } else {
+      throw new RegisterIndexError("Invalid register or branch offset");
     }
 
     /**
