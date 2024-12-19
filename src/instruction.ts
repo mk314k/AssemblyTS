@@ -271,6 +271,8 @@ class MemInstruction extends AssemblyInstruction {
     } else {
       throw new RegisterIndexError("Invalid register or memory offset");
     }
+    this.funct3 = "010";
+  }
 }
 
 /**
