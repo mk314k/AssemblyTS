@@ -258,8 +258,7 @@ class ShiftImmInstruction extends RegImmInstruction {
 }
 
 /**
- * Represents a memory instruction that operates on two registers and an offset.
- * Inherits from AssemblyInstruction.
+ * Memory Instruction: operates on a register, byte offset, and base address register.
  */
 class MemInstruction extends AssemblyInstruction {
     /**
