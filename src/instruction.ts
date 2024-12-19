@@ -261,24 +261,15 @@ class ShiftImmInstruction extends RegImmInstruction {
  * Memory Instruction: operates on a register, byte offset, and base address register.
  */
 class MemInstruction extends AssemblyInstruction {
-    /**
-     * Creates an instance of MemInstruction.
-     * @param rs2 - The second source register.
-     * @param offset - The offset value.
-     * @param rs1 - The first source register.
-     */
-    constructor(
-        rs2: Register,
-        offset: number,
-        rs1: Register
-    ){
-        // Check if register indices are valid
-        if (regValid(rs2) && regValid(rs1)){
-            super(rs2, rs1, offset); // Call the superclass constructor
-        } else {
-            throw new RegisterIndexError(); // Throw an error for invalid register indices
-        }
-        this.funct3 = "010"; // Set the funct3 field
+  constructor(
+    rs2: Register,
+    offset: number,
+    rs1: Register
+  ) {
+    if (regValid(rs2) && regValid(rs1) && typeof offset === 'number' && !isNaN(offset)) {
+      super(rs2, rs1, offset);
+    } else {
+      throw new RegisterIndexError("Invalid register or memory offset");
     }
 }
 
