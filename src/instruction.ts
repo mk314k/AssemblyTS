@@ -295,18 +295,37 @@ class BranchInstruction extends AssemblyInstruction {
     this.opcode = "1100011";
   }
 
-    /**
-     * Executes the instruction by jumping to the specified address.
-     */
-    execute(): void {
-        Assembler.pc.jump(
-            this.func(
-                Assembler.registers.getValue(this.reg1 as Register),
-                Assembler.registers.getValue(this.reg2 as Register),
-                this.reg_num as number
-            )
-        );
-    }
+  binaryRep(): string {
+    // 13-bit signed byte offset: index 0 is bit 12 (MSB), index 12 is bit 0 (LSB, always 0)
+    const imm13 = numToBin(this.reg_num as number, 13);
+    const bit12 = imm12Bit(imm13, 12);
+    const bits10_5 = imm13.slice(2, 8);
+    const bits4_1 = imm13.slice(8, 12);
+    const bit11 = imm12Bit(imm13, 11);
+
+    return (
+      bit12 +
+      bits10_5 +
+      regToBin(this.reg2 as Register) +
+      regToBin(this.reg1 as Register) +
+      this.funct3 +
+      bits4_1 +
+      bit11 +
+      this.opcode
+    );
+  }
+
+  execute(): void {
+    // Target PC is current PC + relative byte offset; subtract 4 to compensate for pc.step()
+    const targetAddr = Assembler.pc.val + (this.reg_num as number) - 4;
+    Assembler.pc.jump(
+      this.func(
+        Assembler.registers.getValue(this.reg1 as Register),
+        Assembler.registers.getValue(this.reg2 as Register),
+        targetAddr
+      )
+    );
+  }
 }
 
 /**
