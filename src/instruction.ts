@@ -329,8 +329,15 @@ class BranchInstruction extends AssemblyInstruction {
 }
 
 /**
- * Represents a console instruction that operates on a single register.
- * Inherits from AssemblyInstruction.
+ * Helper to extract bit `bitIndex` from an N-bit binary string where index 0 is MSB (bit N-1).
+ */
+function imm12Bit(binStr: string, bitIndex: number): string {
+  const n = binStr.length;
+  return binStr[n - 1 - bitIndex] ?? '0';
+}
+
+/**
+ * Console Instruction: custom debugging instruction operating on a single register.
  */
 class ConsoleInstruction extends AssemblyInstruction {
     /**
