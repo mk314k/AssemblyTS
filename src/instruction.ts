@@ -292,6 +292,8 @@ class BranchInstruction extends AssemblyInstruction {
     } else {
       throw new RegisterIndexError("Invalid register or branch offset");
     }
+    this.opcode = "1100011";
+  }
 
     /**
      * Executes the instruction by jumping to the specified address.
