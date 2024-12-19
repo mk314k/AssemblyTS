@@ -276,8 +276,10 @@ class MemInstruction extends AssemblyInstruction {
 }
 
 /**
- * Represents a branch instruction that operates on two registers and a label.
- * Inherits from AssemblyInstruction.
+ * B-Type Branch Instruction: operates on two registers and a PC-relative byte offset.
+ * Standard RV32I B-type encoding:
+ *   imm[12] | imm[10:5] | rs2 | rs1 | funct3 | imm[4:1] | imm[11] | opcode(1100011)
+ * Note: `offset` is a PC-relative byte offset (target_addr - current_PC).
  */
 class BranchInstruction extends AssemblyInstruction {
     /**
