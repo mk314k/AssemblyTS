@@ -363,7 +363,7 @@ class Console extends ConsoleInstruction {
   }
 }
 
-// Represents a console instruction to print the value stored in memory to the console
+// ConsoleMem Instruction: prints the value stored in memory at address in register
 class ConsoleMem extends ConsoleInstruction {
     // Executes the instruction by appending the memory value to the console log
     execute(): void {
