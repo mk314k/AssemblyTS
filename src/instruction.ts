@@ -372,7 +372,7 @@ class ConsoleMem extends ConsoleInstruction {
   }
 }
 
-// Represents a load word (lw) instruction that loads data from memory into a register
+// Load word (lw) I-type instruction: loads 32-bit word from data memory into destination register
 class Lw extends MemInstruction {
     opcode: string = '0000011'; // Set opcode for load word instruction
     funct3: string = '010'; // Set funct3 for load word instruction
