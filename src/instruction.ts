@@ -349,6 +349,7 @@ class ConsoleInstruction extends AssemblyInstruction {
     } else {
       throw new RegisterIndexError();
     }
+  }
 
     /**
      * Generates the binary representation of the instruction.
