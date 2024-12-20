@@ -351,13 +351,9 @@ class ConsoleInstruction extends AssemblyInstruction {
     }
   }
 
-    /**
-     * Generates the binary representation of the instruction.
-     * @returns The binary representation of the instruction.
-     */
-    binaryRep(): string {
-        return '1'.repeat(32); // Placeholder binary representation
-    }
+  binaryRep(): string {
+    return '1'.repeat(32);
+  }
 }
 
 // Console Instruction
