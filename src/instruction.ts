@@ -377,17 +377,24 @@ class Lw extends MemInstruction {
   opcode = '0000011';
   funct3 = '010';
 
-    // Executes the lw instruction by loading data from memory into the specified register
-    execute(): void {
-        const memData = Assembler.dataMemory.get(
-            Assembler.registers.getValue(this.reg2 as Register) + 
-            (this.reg_num as number)
-        ) as MemContent;
-        Assembler.registers.setValue(
-            this.reg1 as Register,
-            memData.numValue()
-        );
-    }
+  binaryRep(): string {
+    return (
+      numToBin(this.reg_num as number, 12) +
+      regToBin(this.reg2 as Register) +
+      this.funct3 +
+      regToBin(this.reg1 as Register) +
+      this.opcode
+    );
+  }
+
+  execute(): void {
+    const addr = Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number);
+    const memData = Assembler.dataMemory.get(addr);
+    Assembler.registers.setValue(
+      this.reg1 as Register,
+      memData ? memData.numValue() : 0
+    );
+  }
 }
 
 // Represents a store word (sw) instruction that stores data from a register into memory
