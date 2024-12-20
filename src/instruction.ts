@@ -358,10 +358,9 @@ class ConsoleInstruction extends AssemblyInstruction {
 
 // Console Instruction: prints the value of a register to the console
 class Console extends ConsoleInstruction {
-    // Executes the instruction by appending the register value to the console log
-    execute(): void {
-        Assembler.consoleLog += Assembler.registers.getValue(this.reg1 as Register) + "\n";
-    }
+  execute(): void {
+    Assembler.consoleLog += Assembler.registers.getValue(this.reg1 as Register) + "\n";
+  }
 }
 
 // Represents a console instruction to print the value stored in memory to the console
