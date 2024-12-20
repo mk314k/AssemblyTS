@@ -397,7 +397,7 @@ class Lw extends MemInstruction {
   }
 }
 
-// Represents a store word (sw) instruction that stores data from a register into memory
+// Store word (sw) S-type instruction: stores 32-bit word from source register into data memory
 class Sw extends MemInstruction {
     opcode: string = '0100011'; // Set opcode for store word instruction
     funct3: string = '010'; // Set funct3 for store word instruction
