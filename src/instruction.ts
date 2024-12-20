@@ -374,17 +374,8 @@ class ConsoleMem extends ConsoleInstruction {
 
 // Load word (lw) I-type instruction: loads 32-bit word from data memory into destination register
 class Lw extends MemInstruction {
-    opcode: string = '0000011'; // Set opcode for load word instruction
-    funct3: string = '010'; // Set funct3 for load word instruction
-
-    // Generates the binary representation of the lw instruction
-    binaryRep(): string {
-        return numToBin(this.reg_num as number, 12) +
-                regToBin(this.reg2 as Register) +
-                this.funct3 +
-                regToBin(this.reg1 as Register) +
-                this.opcode;
-    }
+  opcode = '0000011';
+  funct3 = '010';
 
     // Executes the lw instruction by loading data from memory into the specified register
     execute(): void {
