@@ -365,12 +365,11 @@ class Console extends ConsoleInstruction {
 
 // ConsoleMem Instruction: prints the value stored in memory at address in register
 class ConsoleMem extends ConsoleInstruction {
-    // Executes the instruction by appending the memory value to the console log
-    execute(): void {
-        Assembler.consoleLog += Assembler.dataMemory.get(
-            Assembler.registers.getValue(this.reg1 as Register)
-        )?.numValue();
-    }
+  execute(): void {
+    const addr = Assembler.registers.getValue(this.reg1 as Register);
+    const val = Assembler.dataMemory.get(addr)?.numValue() ?? 0;
+    Assembler.consoleLog += val + "\n";
+  }
 }
 
 // Represents a load word (lw) instruction that loads data from memory into a register
