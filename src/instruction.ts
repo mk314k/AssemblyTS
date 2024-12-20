@@ -356,8 +356,7 @@ class ConsoleInstruction extends AssemblyInstruction {
   }
 }
 
-// Console Instruction
-// Represents a console instruction to print the value of a register to the console
+// Console Instruction: prints the value of a register to the console
 class Console extends ConsoleInstruction {
     // Executes the instruction by appending the register value to the console log
     execute(): void {
