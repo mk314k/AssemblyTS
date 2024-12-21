@@ -402,14 +402,17 @@ class Sw extends MemInstruction {
   opcode = '0100011';
   funct3 = '010';
 
-    // Executes the sw instruction by storing data from the specified register into memory
-    execute(): void {
-        Assembler.dataMemory.set(
-            Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number),
-            new Data(Assembler.registers.getValue(this.reg1 as Register))
-        );
-    }
-}
+  binaryRep(): string {
+    const immVal = numToBin(this.reg_num as number, 12);
+    return (
+      immVal.slice(0, 7) +
+      regToBin(this.reg1 as Register) +
+      regToBin(this.reg2 as Register) +
+      this.funct3 +
+      immVal.slice(7) +
+      this.opcode
+    );
+  }
 
 
 // Represents a load immediate (li) instruction that loads a constant value into a register
