@@ -414,6 +414,14 @@ class Sw extends MemInstruction {
     );
   }
 
+  execute(): void {
+    const addr = Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number);
+    Assembler.dataMemory.set(
+      addr,
+      new Data(Assembler.registers.getValue(this.reg1 as Register))
+    );
+  }
+}
 
 // Represents a load immediate (li) instruction that loads a constant value into a register
 class Li extends RegImmInstruction {
