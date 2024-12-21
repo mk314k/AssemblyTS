@@ -423,7 +423,7 @@ class Sw extends MemInstruction {
   }
 }
 
-// Represents a load immediate (li) instruction that loads a constant value into a register
+// Load immediate (li) pseudo-instruction: addi rd, x0, imm
 class Li extends RegImmInstruction {
     // Constructor for the li instruction
     constructor(
