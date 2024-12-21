@@ -399,19 +399,8 @@ class Lw extends MemInstruction {
 
 // Store word (sw) S-type instruction: stores 32-bit word from source register into data memory
 class Sw extends MemInstruction {
-    opcode: string = '0100011'; // Set opcode for store word instruction
-    funct3: string = '010'; // Set funct3 for store word instruction
-
-    // Generates the binary representation of the sw instruction
-    binaryRep(): string {
-        const immVal = numToBin(this.reg_num as number, 12);
-        return immVal.slice(0,7)+
-                regToBin(this.reg2 as Register) +
-                regToBin(this.reg1 as Register) +
-                this.funct3 +
-                immVal.slice(7) +
-                this.opcode;
-    }
+  opcode = '0100011';
+  funct3 = '010';
 
     // Executes the sw instruction by storing data from the specified register into memory
     execute(): void {
