@@ -429,13 +429,12 @@ class Li extends RegImmInstruction {
     super(rd, 'x0', liConstant);
   }
 
-    // Executes the li instruction by loading the constant value into the specified register
-    execute(): void {
-        Assembler.registers.setValue(
-            this.reg1 as Register,
-            this.reg_num as number
-        );
-    }
+  execute(): void {
+    Assembler.registers.setValue(
+      this.reg1 as Register,
+      this.reg_num as number
+    );
+  }
 }
 
 // Represents a load upper immediate (lui) instruction that loads a constant upper value into a register
