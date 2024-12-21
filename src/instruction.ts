@@ -425,13 +425,9 @@ class Sw extends MemInstruction {
 
 // Load immediate (li) pseudo-instruction: addi rd, x0, imm
 class Li extends RegImmInstruction {
-    // Constructor for the li instruction
-    constructor(
-        rd: Register,
-        liConstant: number
-    ) {
-        super(rd, rd, liConstant); // Call the superclass constructor
-    }
+  constructor(rd: Register, liConstant: number) {
+    super(rd, 'x0', liConstant);
+  }
 
     // Executes the li instruction by loading the constant value into the specified register
     execute(): void {
