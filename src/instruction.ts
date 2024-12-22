@@ -458,26 +458,79 @@ class Nop extends RegImmInstruction {
     super('x0', 'x0', 0);
   }
 
-let funcList = {
-    add: (arg1: number, arg2: number): number => arg1 + arg2,
-    sub: (arg1: number, arg2: number): number => arg1 - arg2,
-    and: (arg1: number, arg2: number): number => arg1 & arg2,
-    or: (arg1: number, arg2: number): number => arg1 | arg2,
-    xor: (arg1: number, arg2: number): number => arg1 ^ arg2,
-    sll: (arg1: number, arg2: number): number => arg1 + arg2,
-    srl: (arg1: number, arg2: number): number => arg1 + arg2,
-    sra: (arg1: number, arg2: number): number => arg1 + arg2
-}
-// Reg operations
-class Add extends RegInstruction{
-    funct3 = "000";
-    func = funcList.add;
+  execute(): void {
+    // Do nothing
+  }
 }
 
-class Sub extends RegInstruction{
-    funct3 = "000";
-    funct7 = "0100000";
-    func = funcList.sub;
+// Load upper immediate (lui) U-type instruction: loads a 20-bit constant into upper 20 bits of rd
+class Lui extends RegImmInstruction {
+  constructor(rd: Register, luiConstant: number) {
+    super(rd, 'x0', luiConstant);
+    this.opcode = "0110111";
+  }
+
+  binaryRep(): string {
+    return (
+      numToBin(this.reg_num as number, 20) +
+      regToBin(this.reg1 as Register) +
+      this.opcode
+    );
+  }
+
+  execute(): void {
+    Assembler.registers.setValue(
+      this.reg1 as Register,
+      (this.reg_num as number) << 12
+    );
+  }
+}
+
+// Add upper immediate to PC (auipc) U-type instruction: rd = PC + (imm << 12)
+class Auipc extends RegImmInstruction {
+  constructor(rd: Register, upConstant: number) {
+    super(rd, 'x0', upConstant);
+    this.opcode = "0010111";
+  }
+
+  binaryRep(): string {
+    return (
+      numToBin(this.reg_num as number, 20) +
+      regToBin(this.reg1 as Register) +
+      this.opcode
+    );
+  }
+
+  execute(): void {
+    Assembler.registers.setValue(
+      this.reg1 as Register,
+      (Assembler.pc.val + ((this.reg_num as number) << 12)) | 0
+    );
+  }
+}
+
+const funcList = {
+  add: (arg1: number, arg2: number): number => (arg1 + arg2) | 0,
+  sub: (arg1: number, arg2: number): number => (arg1 - arg2) | 0,
+  and: (arg1: number, arg2: number): number => arg1 & arg2,
+  or: (arg1: number, arg2: number): number => arg1 | arg2,
+  xor: (arg1: number, arg2: number): number => arg1 ^ arg2,
+  sll: (arg1: number, arg2: number): number => arg1 << (arg2 & 0x1f),
+  srl: (arg1: number, arg2: number): number => arg1 >>> (arg2 & 0x1f),
+  sra: (arg1: number, arg2: number): number => arg1 >> (arg2 & 0x1f),
+  slt: (arg1: number, arg2: number): number => (arg1 < arg2 ? 1 : 0),
+  sltu: (arg1: number, arg2: number): number => ((arg1 >>> 0) < (arg2 >>> 0) ? 1 : 0),
+};
+
+// R-Type Register-Register Operations
+class Add extends RegInstruction {
+  funct3 = "000";
+  func = funcList.add;
+}
+class Sub extends RegInstruction {
+  funct3 = "000";
+  funct7 = "0100000";
+  func = funcList.sub;
 }
 class And extends RegInstruction {
     funct3 = "111";
