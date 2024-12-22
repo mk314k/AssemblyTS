@@ -541,8 +541,8 @@ class Or extends RegInstruction {
   func = funcList.or;
 }
 class Xor extends RegInstruction {
-    funct3 = "100";
-    func = funcList.xor;
+  funct3 = "100";
+  func = funcList.xor;
 }
 class Sll extends RegInstruction {
     funct3 = "001";
