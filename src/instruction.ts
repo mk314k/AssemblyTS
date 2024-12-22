@@ -533,8 +533,8 @@ class Sub extends RegInstruction {
   func = funcList.sub;
 }
 class And extends RegInstruction {
-    funct3 = "111";
-    func = funcList.and;
+  funct3 = "111";
+  func = funcList.and;
 }
 class Or extends RegInstruction {
     funct3 = "110";
