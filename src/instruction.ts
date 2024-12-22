@@ -444,13 +444,12 @@ class Mv extends RegImmInstruction {
     this.funct3 = "000";
   }
 
-    // Executes the lui instruction by loading the constant upper value into the specified register
-    execute(): void {
-        Assembler.registers.setValue(
-            this.reg1 as Register,
-            this.reg_num as number
-        );
-    }
+  execute(): void {
+    Assembler.registers.setValue(
+      this.reg1 as Register,
+      Assembler.registers.getValue(this.reg2 as Register)
+    );
+  }
 }
 
 
