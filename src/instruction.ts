@@ -452,6 +452,11 @@ class Mv extends RegImmInstruction {
   }
 }
 
+// No-operation (nop) pseudo-instruction: addi x0, x0, 0
+class Nop extends RegImmInstruction {
+  constructor() {
+    super('x0', 'x0', 0);
+  }
 
 let funcList = {
     add: (arg1: number, arg2: number): number => arg1 + arg2,
