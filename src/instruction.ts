@@ -437,15 +437,12 @@ class Li extends RegImmInstruction {
   }
 }
 
-// Represents a load upper immediate (lui) instruction that loads a constant upper value into a register
-class Lui extends RegImmInstruction {
-    // Constructor for the lui instruction
-    constructor(
-        rd: Register,
-        luiConstant: number
-    ) {
-        super(rd, rd, luiConstant); // Call the superclass constructor
-    }
+// Move (mv) pseudo-instruction: addi rd, rs1, 0
+class Mv extends RegImmInstruction {
+  constructor(rd: Register, rs1: Register) {
+    super(rd, rs1, 0);
+    this.funct3 = "000";
+  }
 
     // Executes the lui instruction by loading the constant upper value into the specified register
     execute(): void {
