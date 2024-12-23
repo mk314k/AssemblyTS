@@ -591,9 +591,10 @@ class Sltiu extends RegImmInstruction {
   funct3 = "011";
   func = funcList.sltu;
 }
-class Slli extends RegImmInstruction {
-    funct3 = "001";
-    func = funcList.sll;
+class Slli extends ShiftImmInstruction {
+  funct3 = "001";
+  funct7 = "0000000";
+  func = funcList.sll;
 }
 class Srli extends RegImmInstruction {
     funct3 = "101";
