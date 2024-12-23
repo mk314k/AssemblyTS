@@ -588,7 +588,8 @@ class Slti extends RegImmInstruction {
   func = funcList.slt;
 }
 class Sltiu extends RegImmInstruction {
-    func = (arg1: number, arg2: number): number => arg1 + arg2;
+  funct3 = "011";
+  func = funcList.sltu;
 }
 class Slli extends RegImmInstruction {
     funct3 = "001";
