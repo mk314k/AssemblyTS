@@ -584,7 +584,8 @@ class Xori extends RegImmInstruction {
   func = funcList.xor;
 }
 class Slti extends RegImmInstruction {
-    func = (arg1: number, arg2: number): number => arg1 + arg2;
+  funct3 = "010";
+  func = funcList.slt;
 }
 class Sltiu extends RegImmInstruction {
     func = (arg1: number, arg2: number): number => arg1 + arg2;
