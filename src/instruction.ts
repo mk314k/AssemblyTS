@@ -580,8 +580,8 @@ class Ori extends RegImmInstruction {
   func = funcList.or;
 }
 class Xori extends RegImmInstruction {
-    funct3 = "100";
-    func = funcList.xor;
+  funct3 = "100";
+  func = funcList.xor;
 }
 class Slti extends RegImmInstruction {
     func = (arg1: number, arg2: number): number => arg1 + arg2;
