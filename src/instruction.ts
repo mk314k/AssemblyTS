@@ -566,10 +566,10 @@ class Sltu extends RegInstruction {
   func = funcList.sltu;
 }
 
-// Reg Immediate Operations
-class Addi extends RegImmInstruction{
-    funct3 = "000";
-    func = funcList.add;
+// I-Type Register-Immediate Operations
+class Addi extends RegImmInstruction {
+  funct3 = "000";
+  func = funcList.add;
 }
 class Andi extends RegImmInstruction {
     funct3 = "111";
