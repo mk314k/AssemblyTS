@@ -553,9 +553,17 @@ class Srl extends RegInstruction {
   func = funcList.srl;
 }
 class Sra extends RegInstruction {
-    funct3 = "101";
-    funct7 = "0100000";
-    func = funcList.sra;
+  funct3 = "101";
+  funct7 = "0100000";
+  func = funcList.sra;
+}
+class Slt extends RegInstruction {
+  funct3 = "010";
+  func = funcList.slt;
+}
+class Sltu extends RegInstruction {
+  funct3 = "011";
+  func = funcList.sltu;
 }
 
 // Reg Immediate Operations
