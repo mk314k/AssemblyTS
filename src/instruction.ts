@@ -576,8 +576,8 @@ class Andi extends RegImmInstruction {
   func = funcList.and;
 }
 class Ori extends RegImmInstruction {
-    funct3 = "110";
-    func = funcList.or;
+  funct3 = "110";
+  func = funcList.or;
 }
 class Xori extends RegImmInstruction {
     funct3 = "100";
