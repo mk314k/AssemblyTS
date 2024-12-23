@@ -596,9 +596,10 @@ class Slli extends ShiftImmInstruction {
   funct7 = "0000000";
   func = funcList.sll;
 }
-class Srli extends RegImmInstruction {
-    funct3 = "101";
-    func = funcList.srl;
+class Srli extends ShiftImmInstruction {
+  funct3 = "101";
+  funct7 = "0000000";
+  func = funcList.srl;
 }
 class Srai extends RegImmInstruction {
     funct3 = "101";
