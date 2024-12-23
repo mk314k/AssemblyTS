@@ -572,8 +572,8 @@ class Addi extends RegImmInstruction {
   func = funcList.add;
 }
 class Andi extends RegImmInstruction {
-    funct3 = "111";
-    func = funcList.and;
+  funct3 = "111";
+  func = funcList.and;
 }
 class Ori extends RegImmInstruction {
     funct3 = "110";
