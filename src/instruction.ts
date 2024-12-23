@@ -549,8 +549,8 @@ class Sll extends RegInstruction {
   func = funcList.sll;
 }
 class Srl extends RegInstruction {
-    funct3 = "101";
-    func = funcList.srl;
+  funct3 = "101";
+  func = funcList.srl;
 }
 class Sra extends RegInstruction {
     funct3 = "101";
