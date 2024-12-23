@@ -601,10 +601,10 @@ class Srli extends ShiftImmInstruction {
   funct7 = "0000000";
   func = funcList.srl;
 }
-class Srai extends RegImmInstruction {
-    funct3 = "101";
-    funct7 = "0100000";
-    func = funcList.sra;
+class Srai extends ShiftImmInstruction {
+  funct3 = "101";
+  funct7 = "0100000";
+  func = funcList.sra;
 }
 
 // Branch 
