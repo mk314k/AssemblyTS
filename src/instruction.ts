@@ -639,10 +639,16 @@ class Bgeu extends BranchInstruction {
     (arg1 >>> 0) >= (arg2 >>> 0) ? (targetAddr as number) : Assembler.pc.val;
 }
 
-    // Generates the binary representation of the return instruction
-    binaryRep(): string {
-        return '1100' + '0000'.repeat(7);
-    }
+/**
+ * Pseudo-Branch Instructions:
+ * In RISC-V, `ble rs1, rs2, offset` is encoded as `bge rs2, rs1, offset`
+ * and `bgt rs1, rs2, offset` is encoded as `blt rs2, rs1, offset` (swapping rs1 and rs2).
+ */
+class Ble extends Bge {
+  constructor(rs1: Register, rs2: Register, offset: number) {
+    super(rs2, rs1, offset);
+  }
+}
 
     // Executes the return instruction
     execute(): void {
