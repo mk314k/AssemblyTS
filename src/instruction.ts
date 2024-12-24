@@ -623,9 +623,10 @@ class Blt extends BranchInstruction {
   func = (arg1: number, arg2: number, targetAddr?: number): number =>
     arg1 < arg2 ? (targetAddr as number) : Assembler.pc.val;
 }
-class Ble extends BranchInstruction {
-    func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 <= arg2 ? arg3 as number : Assembler.pc.val;
+class Bge extends BranchInstruction {
+  funct3 = "101";
+  func = (arg1: number, arg2: number, targetAddr?: number): number =>
+    arg1 >= arg2 ? (targetAddr as number) : Assembler.pc.val;
 }
 class Bgt extends BranchInstruction {
     func = (arg1: number, arg2: number, arg3?:number): number => 
