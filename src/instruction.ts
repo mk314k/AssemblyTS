@@ -638,34 +638,6 @@ class Bgeu extends BranchInstruction {
   func = (arg1: number, arg2: number, targetAddr?: number): number =>
     (arg1 >>> 0) >= (arg2 >>> 0) ? (targetAddr as number) : Assembler.pc.val;
 }
-class Bge extends BranchInstruction {
-    func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 >= arg2 ? arg3 as number : Assembler.pc.val;
-}
-class Bltu extends BranchInstruction{
-    func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
-}
-class Bgeu extends BranchInstruction{
-    func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
-}
-
-// Jump
-// class Jal {
-//     func = (arg1: number, arg2: number, arg3?:number): number => 
-//     arg1 == arg2 ? arg3 as number : Assembler.pc.val;
-// }
-// class Jalr{
-//     func = (arg1: number, arg2: number, arg3?:number): number => 
-//     arg1 == arg2 ? arg3 as number : Assembler.pc.val;
-// }
-
-// Represents a return instruction extending AssemblyInstruction
-class Ret extends AssemblyInstruction {
-    constructor() {
-        super();
-    }
 
     // Generates the binary representation of the return instruction
     binaryRep(): string {
