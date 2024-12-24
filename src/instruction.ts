@@ -607,10 +607,11 @@ class Srai extends ShiftImmInstruction {
   func = funcList.sra;
 }
 
-// Branch 
-class Beq extends BranchInstruction{
-    func = (arg1: number, arg2: number, arg3?:number): number => 
-    arg1 == arg2 ? arg3 as number : Assembler.pc.val;
+// B-Type Branch Instructions
+class Beq extends BranchInstruction {
+  funct3 = "000";
+  func = (arg1: number, arg2: number, targetAddr?: number): number =>
+    arg1 === arg2 ? (targetAddr as number) : Assembler.pc.val;
 }
 class Bne extends BranchInstruction {
     func = (arg1: number, arg2: number, arg3?:number): number => 
