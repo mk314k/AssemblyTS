@@ -789,48 +789,57 @@ class Ret extends Jalr {
 }
 
 export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
-    // console 
-    ['print', Console],
-    ['printm', ConsoleMem],
-    // Reg operations
-    ['add', Add],
-    ['sub', Sub],
-    ['and', And],
-    ['or', Or],
-    ['xor', Xor],
-    ['sll', Sll],
-    ['srl', Srl],
-    ['sra', Sra],
+  // Console
+  ['print', Console],
+  ['printm', ConsoleMem],
 
-    // Reg Immediate Operations
-    ['addi', Addi],
-    ['andi', Andi],
-    ['ori', Ori],
-    ['xori', Xori],
-    ['slti', Slti],
-    ['sltiu', Sltiu],
-    ['slli', Slli],
-    ['srli', Srli],
-    ['srai', Srai],
+  // R-Type Register Operations
+  ['add', Add],
+  ['sub', Sub],
+  ['and', And],
+  ['or', Or],
+  ['xor', Xor],
+  ['sll', Sll],
+  ['srl', Srl],
+  ['sra', Sra],
+  ['slt', Slt],
+  ['sltu', Sltu],
 
-    // Branch 
-    ['beq', Beq],
-    ['bne', Bne],
-    ['blt', Blt],
-    ['bge', Bge],
-    ['bgt', Bgt],
-    ['ble', Ble],
-    ['bltu', Bltu],
-    ['bgeu', Bgeu],
+  // I-Type Register Immediate Operations
+  ['addi', Addi],
+  ['andi', Andi],
+  ['ori', Ori],
+  ['xori', Xori],
+  ['slti', Slti],
+  ['sltiu', Sltiu],
+  ['slli', Slli],
+  ['srli', Srli],
+  ['srai', Srai],
 
-    // Mem Operations
-    ['lw', Lw],
-    ['sw', Sw],
+  // B-Type Branch Operations
+  ['beq', Beq],
+  ['bne', Bne],
+  ['blt', Blt],
+  ['bge', Bge],
+  ['bgt', Bgt],
+  ['ble', Ble],
+  ['bltu', Bltu],
+  ['bgeu', Bgeu],
 
-    // Reg Loading Operations
-    ['li', Li],
-    ['lui', Lui],
+  // Load/Store Memory Operations
+  ['lw', Lw],
+  ['sw', Sw],
 
-    // Jump operations
-    ['ret', Ret]
+  // Upper Immediate & Pseudo-Instructions
+  ['li', Li],
+  ['lui', Lui],
+  ['auipc', Auipc],
+  ['mv', Mv],
+  ['nop', Nop],
+
+  // Jump Operations
+  ['jal', Jal],
+  ['jalr', Jalr],
+  ['j', J],
+  ['ret', Ret]
 ]);
