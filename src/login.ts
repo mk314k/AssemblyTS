@@ -19,11 +19,20 @@ export const loginHTML = `
 `;
 
 export const loginPAT = `
-    <h2 class="pop-title">Login</h2>
-    <input type="text" id="userName" class="pop-input" placeholder="Username" required>
-    <input type="password" id="PAT" class="pop-input" placeholder="Personal Access Token" required>
-    <button id="login" class="pop-button github-auth">Login</button>
-`
+  <div class="pop-header">
+    <h2 class="pop-title"><i class="fa-solid fa-key"></i> PAT Authentication</h2>
+    <button id="closePop" class="pop-close" title="Close">&times;</button>
+  </div>
+  <p class="pop-subtitle">Enter your GitHub username and Personal Access Token</p>
+  <div class="pop-field">
+    <input type="text" id="userName" class="pop-input" placeholder="GitHub Username" required>
+    <input type="password" id="PAT" class="pop-input" placeholder="Personal Access Token (ghp_...)" required>
+  </div>
+  <div class="pop-actions">
+    <button id="login" class="pop-button pat-auth">Connect Repository</button>
+  </div>
+`;
+
 export const loginUser = `
     <h2 class="pop-title">Login</h2>
     <div class="pop-label">
