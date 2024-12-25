@@ -1,3 +1,4 @@
+import { StateVar, StyleVar } from "statebinderk";
 import { GitUser } from "./github";
 
 export const loginHTML = `
