@@ -2,15 +2,21 @@ import { StateVar, StyleVar } from "statebinderk";
 import { GitUser } from "./github";
 
 export const loginHTML = `
-    <h2 class="pop-title">Login</h2>
-    <div class="flex-horizontal">
-        <label for="repository" class="pop-label">Repository</label>
-        <input type="text" id="repository" class="pop-input" placeholder="AssemblyTS_codes">
-    </div>
-    <button id="loginGit" class="pop-button github-auth">Login using GithubAuth</button>
-    <button id="loginPAT" class="pop-button pat-auth">Login using PAT</button>
-    <button id="loginUser" class="pop-button username-auth">Login using Username</button>
-`
+  <div class="pop-header">
+    <h2 class="pop-title"><i class="fa-brands fa-github"></i> GitHub Integration</h2>
+    <button id="closePop" class="pop-close" title="Close">&times;</button>
+  </div>
+  <p class="pop-subtitle">Sync or browse assembly files from a GitHub repository</p>
+  <div class="pop-field">
+    <label for="repository" class="pop-label">Repository Name</label>
+    <input type="text" id="repository" class="pop-input" placeholder="AssemblyTS_codes">
+  </div>
+  <div class="pop-actions">
+    <button id="loginGit" class="pop-button github-auth"><i class="fa-brands fa-github"></i> Login using GitHub OAuth</button>
+    <button id="loginPAT" class="pop-button pat-auth"><i class="fa-solid fa-key"></i> Login using Personal Access Token</button>
+    <button id="loginUser" class="pop-button username-auth"><i class="fa-solid fa-user"></i> Read-Only via Username</button>
+  </div>
+`;
 
 export const loginPAT = `
     <h2 class="pop-title">Login</h2>
