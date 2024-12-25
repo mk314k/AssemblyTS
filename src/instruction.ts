@@ -672,6 +672,121 @@ function parseJalArgs(arg1: Register | number, arg2?: number): [Register, number
   return [rd, offset];
 }
 
+class Jal extends AssemblyInstruction {
+  constructor(arg1: Register | number, arg2?: number) {
+    const [rd, offset] = parseJalArgs(arg1, arg2);
+    super(rd, undefined, offset);
+    this.opcode = "1101111";
+  }
+
+  binaryRep(): string {
+    const imm21 = numToBin(this.reg_num as number, 21);
+    const bit20 = imm12Bit(imm21, 20);
+    const bits10_1 = imm21.slice(10, 20);
+    const bit11 = imm12Bit(imm21, 11);
+    const bits19_12 = imm21.slice(1, 9);
+
+    return (
+      bit20 +
+      bits10_1 +
+      bit11 +
+      bits19_12 +
+      regToBin(this.reg1 as Register) +
+      this.opcode
+    );
+  }
+
+  execute(): void {
+    // Save return address (PC + 4) into destination register rd
+    Assembler.registers.setValue(this.reg1 as Register, Assembler.pc.val + 4);
+    // Jump to PC + offset (minus 4 because pc.step() adds +4 after execute)
+    Assembler.pc.jump(Assembler.pc.val + (this.reg_num as number) - 4);
+  }
+}
+
+/**
+ * Unconditional Jump (j) Pseudo-Instruction: expands to `jal x0, offset`
+ */
+class J extends Jal {
+  constructor(offset: number) {
+    super('x0', offset);
+  }
+}
+
+/**
+ * I-Type Jump and Link Register (jalr) Instruction:
+ * Supports `jalr rd, rs1, offset`, `jalr rd, offset(rs1)`, or shorthand `jalr rs1` (rd='ra', offset=0).
+ * Format: imm[11:0] | rs1[19:15] | funct3(000) | rd[11:7] | opcode(1100111)
+ */
+function parseJalrArgs(
+  arg1: Register,
+  arg2?: Register | number,
+  arg3?: Register | number
+): [Register, Register, number] {
+  let rd: Register = 'ra';
+  let rs1: Register = arg1;
+  let offset = 0;
+
+  if (arg2 === undefined) {
+    // Shorthand: `jalr rs1` -> `jalr ra, rs1, 0`
+    rd = 'ra';
+    rs1 = arg1;
+    offset = 0;
+  } else if (typeof arg2 === 'number' && arg3 !== undefined && regValid(arg3)) {
+    // Memory-style syntax: `jalr rd, offset(rs1)` -> parser splits as (rd, offset, rs1)
+    rd = arg1;
+    offset = arg2;
+    rs1 = arg3 as Register;
+  } else if (regValid(arg2)) {
+    // 3-arg or 2-reg syntax: `jalr rd, rs1, offset`
+    rd = arg1;
+    rs1 = arg2 as Register;
+    offset = typeof arg3 === 'number' && !isNaN(arg3) ? arg3 : 0;
+  } else {
+    throw new RegisterIndexError("Invalid arguments for jalr");
+  }
+
+  if (!regValid(rd) || !regValid(rs1) || typeof offset !== 'number' || isNaN(offset)) {
+    throw new RegisterIndexError("Invalid register or offset for jalr");
+  }
+  return [rd, rs1, offset];
+}
+
+class Jalr extends AssemblyInstruction {
+  constructor(arg1: Register, arg2?: Register | number, arg3?: Register | number) {
+    const [rd, rs1, offset] = parseJalrArgs(arg1, arg2, arg3);
+    super(rd, rs1, offset);
+    this.opcode = "1100111";
+    this.funct3 = "000";
+  }
+
+  binaryRep(): string {
+    return (
+      numToBin(this.reg_num as number, 12) +
+      regToBin(this.reg2 as Register) +
+      this.funct3 +
+      regToBin(this.reg1 as Register) +
+      this.opcode
+    );
+  }
+
+  execute(): void {
+    const nextPc = Assembler.pc.val + 4;
+    // Compute target address with LSB cleared per RISC-V spec: (rs1 + offset) & ~1
+    const targetAddr = (Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number)) & ~1;
+    Assembler.registers.setValue(this.reg1 as Register, nextPc);
+    Assembler.pc.jump(targetAddr - 4);
+  }
+}
+
+/**
+ * Return (ret) Pseudo-Instruction: expands to `jalr x0, x1, 0`
+ */
+class Ret extends Jalr {
+  constructor() {
+    super('x0', 'ra', 0);
+  }
+}
 
 export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
     // console 
