@@ -650,15 +650,26 @@ class Ble extends Bge {
   }
 }
 
-    // Executes the return instruction
-    execute(): void {
-        // Jumps to the address stored in the 'ra' register minus 4
-        // -4 is here because pc will step up after each instruction
-        // cancelling the -4
-        Assembler.pc.jump(
-            Assembler.registers.getValue('ra') - 4
-        );
-    }
+class Bgt extends Blt {
+  constructor(rs1: Register, rs2: Register, offset: number) {
+    super(rs2, rs1, offset);
+  }
+}
+
+/**
+ * J-Type Jump and Link (jal) Instruction:
+ * Supports `jal rd, label_or_offset` or `jal label_or_offset` (defaults rd to `ra` / `x1`).
+ * Standard RV32I J-type encoding:
+ *   imm[20] | imm[10:1] | imm[11] | imm[19:12] | rd[11:7] | opcode(1101111)
+ */
+function parseJalArgs(arg1: Register | number, arg2?: number): [Register, number] {
+  const hasExplicitRd = arg2 !== undefined && typeof arg2 === 'number' && !isNaN(arg2);
+  const rd: Register = hasExplicitRd ? (arg1 as Register) : 'ra';
+  const offset: number = hasExplicitRd ? (arg2 as number) : (arg1 as number);
+  if (!regValid(rd) || typeof offset !== 'number' || isNaN(offset)) {
+    throw new RegisterIndexError("Invalid register or jump target for jal");
+  }
+  return [rd, offset];
 }
 
 
