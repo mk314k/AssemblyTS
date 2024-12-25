@@ -34,18 +34,20 @@ export const loginPAT = `
 `;
 
 export const loginUser = `
-    <h2 class="pop-title">Login</h2>
-    <div class="pop-label">
-        * This will be read-only access. You will not be able to save your code.
-    </div>
-    <input type="text" id="userName" class="pop-input" placeholder="Username" required>
-    <button id="login" class="pop-button github-auth">Login</button>
-`
-const hidePopBox = (popBox:HTMLElement) => {
-    popBox.innerHTML = '';
-    popBox.style.display = 'none';
-    window.removeEventListener('click', handleClickOut);
-}
+  <div class="pop-header">
+    <h2 class="pop-title"><i class="fa-solid fa-user"></i> Public Read-Only Access</h2>
+    <button id="closePop" class="pop-close" title="Close">&times;</button>
+  </div>
+  <div class="pop-note">
+    Read-only mode: browse and load public <code>.asm</code> files without a token.
+  </div>
+  <div class="pop-field">
+    <input type="text" id="userName" class="pop-input" placeholder="GitHub Username" required>
+  </div>
+  <div class="pop-actions">
+    <button id="login" class="pop-button username-auth">Load Repository</button>
+  </div>
+`;
 
 const handleClickOut = (e:MouseEvent) =>{
     const popBox:HTMLElement|null = document.getElementById('dialogBox');
