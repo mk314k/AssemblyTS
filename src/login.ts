@@ -49,28 +49,13 @@ export const loginUser = `
   </div>
 `;
 
-const handleClickOut = (e:MouseEvent) =>{
-    const popBox:HTMLElement|null = document.getElementById('dialogBox');
-    if (popBox && e.target !== popBox && !popBox.contains(e.target as Node)){
-        hidePopBox(popBox);
-    }
-}
-const handleUserOrPAT = async(e:MouseEvent, popBox:HTMLElement, isPAT:boolean) =>{
-    e.stopPropagation();
-    GitUser.addRepo();
-    popBox.innerHTML = isPAT ? loginPAT : loginUser;
-    document.getElementById('login')?.addEventListener('click', async(ev)=>{
-        ev.stopPropagation();
-        const userName = (document.getElementById('userName') as HTMLInputElement).value;
-        GitUser.userName = userName;
-        if (isPAT){
-            const token = (document.getElementById('PAT') as HTMLInputElement).value;
-            GitUser.setToken(token);
-        }
-        await GitUser.syncDOM();
-        hidePopBox(popBox);
-    })
-}
+// Reactive state bindings for the dialog modal using statebinderk
+const dialogVisibility = new StyleVar<boolean>(
+  false,
+  'dialogBox',
+  'display',
+  (isOpen) => (isOpen ? 'flex' : 'none')
+);
 
 export const handleLogin = () => {
     if (GitUser.repo === ''){
