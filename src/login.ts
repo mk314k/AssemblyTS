@@ -105,3 +105,26 @@ const handleUserOrPAT = async (e: MouseEvent, isPAT: boolean): Promise<void> => 
   });
 };
 
+export const handleLogin = (): void => {
+  if (GitUser.repo === '') {
+    dialogVisibility.transition(true);
+    dialogContent.transition(loginHTML);
+    window.addEventListener('click', handleClickOut);
+    bindCloseButton();
+
+    document.getElementById('loginGit')?.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      GitUser.addRepo();
+      await GitUser.loginAuth();
+      hidePopBox();
+    });
+    document.getElementById('loginPAT')?.addEventListener('click', (e) => {
+      handleUserOrPAT(e, true);
+    });
+    document.getElementById('loginUser')?.addEventListener('click', (e) => {
+      handleUserOrPAT(e, false);
+    });
+  } else {
+    GitUser.reset();
+  }
+};
