@@ -71,6 +71,19 @@ const hidePopBox = (): void => {
   window.removeEventListener('click', handleClickOut);
 };
 
+const handleClickOut = (e: MouseEvent): void => {
+  const popBox: HTMLElement | null = document.getElementById('dialogBox');
+  if (popBox && e.target !== popBox && !popBox.contains(e.target as Node)) {
+    hidePopBox();
+  }
+};
+
+const bindCloseButton = (): void => {
+  document.getElementById('closePop')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    hidePopBox();
+  });
+};
 
 
 
