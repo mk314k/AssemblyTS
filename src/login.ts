@@ -91,4 +91,17 @@ const handleUserOrPAT = async (e: MouseEvent, isPAT: boolean): Promise<void> => 
   dialogContent.transition(isPAT ? loginPAT : loginUser);
   bindCloseButton();
 
+  document.getElementById('login')?.addEventListener('click', async (ev) => {
+    ev.stopPropagation();
+    const userName = (document.getElementById('userName') as HTMLInputElement).value.trim();
+    if (!userName) return;
+    GitUser.userName = userName;
+    if (isPAT) {
+      const token = (document.getElementById('PAT') as HTMLInputElement).value.trim();
+      GitUser.setToken(token);
+    }
+    await GitUser.syncDOM();
+    hidePopBox();
+  });
+};
 
