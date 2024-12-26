@@ -57,35 +57,19 @@ const dialogVisibility = new StyleVar<boolean>(
   (isOpen) => (isOpen ? 'flex' : 'none')
 );
 
-export const handleLogin = () => {
-    if (GitUser.repo === ''){
-        const popBox = document.getElementById('dialogBox');
-        if (popBox){
-            popBox.style.display = 'flex';
-            window.addEventListener('click', handleClickOut);
-            popBox.innerHTML = loginHTML;
-            document.getElementById('loginGit')?.addEventListener('click', async(e)=>{
-                e.stopPropagation();
-                GitUser.addRepo();
-                await GitUser.loginAuth();
-                hidePopBox(popBox);
-            })
-            document.getElementById('loginPAT')?.addEventListener('click', (e)=>{
-                handleUserOrPAT(e, popBox, true);
-            })
-            document.getElementById('loginUser')?.addEventListener('click', (e)=>{
-                handleUserOrPAT(e, popBox, false);
-            })
-        }
-    }else{
-        const gitStatus = document.getElementById('gitStatus');
-        if(gitStatus){
-            gitStatus.innerText = 'Login';
-            GitUser.reset();
-        }
-    }
-    
-}
+const dialogContent = new StateVar<string>(
+  '',
+  'dialogBox',
+  (elem, html) => {
+    elem.innerHTML = html;
+  }
+);
+
+const hidePopBox = (): void => {
+  dialogContent.transition('');
+  dialogVisibility.transition(false);
+  window.removeEventListener('click', handleClickOut);
+};
 
 
 
