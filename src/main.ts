@@ -2,7 +2,7 @@ import { StateVar, StateVarList } from 'statebinderk';
 import { Assembler } from './instruction';
 import { parser } from './parser';
 import { CodeEditor } from './editor';
-import './style.css'
+import './style.css';
 import { handleLogin } from './login';
 import { consoleBox } from './consoleBox';
 
