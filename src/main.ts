@@ -5,6 +5,7 @@ import { CodeEditor } from './editor';
 import './style.css';
 import { handleLogin } from './login';
 import { consoleBox } from './consoleBox';
+import { codeTabPane, GitUser } from './github';
 
 
 /**
