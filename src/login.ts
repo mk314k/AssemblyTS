@@ -85,5 +85,10 @@ const bindCloseButton = (): void => {
   });
 };
 
+const handleUserOrPAT = async (e: MouseEvent, isPAT: boolean): Promise<void> => {
+  e.stopPropagation();
+  GitUser.addRepo();
+  dialogContent.transition(isPAT ? loginPAT : loginUser);
+  bindCloseButton();
 
 
