@@ -166,9 +166,11 @@ function main(): void {
       Assembler.showData();
     }
   });
-  document.getElementById('imemory')?.addEventListener('click', ()=>{
-    if (Assembler.isDataMemActive){
-      memOptionStyle('imemory', 'dmemory');
+
+  document.getElementById('imemory')?.addEventListener('click', () => {
+    if (Assembler.isDataMemActive) {
+      Assembler.isDataMemActive = false;
+      memTabState.listTransition([true, false]);
       Assembler.showInst();
     }
   });
