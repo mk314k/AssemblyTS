@@ -159,18 +159,10 @@ function main(): void {
     }
   });
 
-  function memOptionStyle(activeMem:string, inactiveMem:string){
-      const activeElem = document.getElementById(activeMem);
-      const inactiveElem = document.getElementById(inactiveMem);
-      if (activeElem && inactiveElem){
-        Assembler.isDataMemActive = (activeMem === 'dmemory');
-        activeElem.style.color = 'white';
-        inactiveElem.style.color = '#999999';
-      }
-  }
-  document.getElementById('dmemory')?.addEventListener('click', ()=>{
-    if (!Assembler.isDataMemActive){
-      memOptionStyle('dmemory', 'imemory');
+  document.getElementById('dmemory')?.addEventListener('click', () => {
+    if (!Assembler.isDataMemActive) {
+      Assembler.isDataMemActive = true;
+      memTabState.listTransition([false, true]);
       Assembler.showData();
     }
   });
