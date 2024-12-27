@@ -175,7 +175,7 @@ function main(): void {
     }
   });
 
-  function getAddr(id:string):number{
+  function getAddr(id: string): number {
     const addrArea = document.getElementById(id) as HTMLInputElement;
     let addr = parseInt(addrArea.value);
     if (isNaN(addr)) {
