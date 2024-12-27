@@ -147,7 +147,8 @@ function main(): void {
   CodeEditor.init(SAMPLE_PROGRAMS['quickstart.asm']);
   consoleBox.init();
   Assembler.init();
-  memOptionStyle('imemory', 'dmemory');
+  renderLocalExamples('quickstart.asm');
+  memTabState.listTransition([true, false]);
 
   const gitButton = document.getElementById("git");
   gitButton?.addEventListener('click', (e)=>{
