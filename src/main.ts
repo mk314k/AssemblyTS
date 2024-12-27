@@ -151,9 +151,12 @@ function main(): void {
   memTabState.listTransition([true, false]);
 
   const gitButton = document.getElementById("git");
-  gitButton?.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      handleLogin();
+  gitButton?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    handleLogin();
+    if (GitUser.repo === '') {
+      renderLocalExamples();
+    }
   });
 
   function memOptionStyle(activeMem:string, inactiveMem:string){
