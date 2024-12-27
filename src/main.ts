@@ -180,6 +180,7 @@ function main(): void {
     let addr = parseInt(addrArea.value, 10);
     if (isNaN(addr)) {
       addr = 504;
+      addrArea.value = '504';
     }
     return addr;
   }
