@@ -8,7 +8,7 @@ export interface MemContent {
 }
 
 /**
- * Converts a number to binary format with a specified bit length.
+ * Converts a number to two's complement binary format with a specified bit length.
  * @param num The number to convert to binary.
  * @param bitLength The desired length of the binary representation.
  * @returns The binary representation of the number.
