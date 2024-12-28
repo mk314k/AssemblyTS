@@ -250,4 +250,3 @@ function main(): void {
 
 // Call the main function when the DOM is ready
 document.addEventListener("DOMContentLoaded", main);
-
