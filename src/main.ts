@@ -213,10 +213,18 @@ function main(): void {
       consoleBox.log(`${msg}`, 'error');
       setStatus('Runtime Error', true);
     }
-  );
-  run?.addEventListener(
-    'click', () => {
-      Assembler.execute(getAddr('runAddr'));
+  }
+
+  // Attach event listeners to buttons for compiling and executing code
+  const buildRun = document.getElementById("buildRun");
+  const build = document.getElementById("build");
+  const run = document.getElementById("run");
+  const reset = document.getElementById("reset");
+  const clearConsoleBtn = document.getElementById("clearConsole");
+
+  buildRun?.addEventListener('click', () => {
+    if (compile()) {
+      runProgram();
     }
   );
 }
