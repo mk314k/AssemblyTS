@@ -186,9 +186,21 @@ function main(): void {
   }
 
   // Compile assembly code
-  function compile(): void {
-    parser(CodeEditor.code, getAddr('buildAddr'), Assembler.instMemory);
-    Assembler.showInst();
+  function compile(): boolean {
+    try {
+      const startAddr = getAddr('buildAddr');
+      parser(CodeEditor.code, startAddr, Assembler.instMemory);
+      Assembler.showInst();
+      const count = Assembler.instMemory.memory.size;
+      consoleBox.log(`Build succeeded (${count} instruction${count === 1 ? '' : 's'} at address ${startAddr}).`, 'info');
+      setStatus('Build OK');
+      return true;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      consoleBox.log(`${msg}`, 'error');
+      setStatus('Build Error', true);
+      return false;
+    }
   }
 
   // Attach event listeners to buttons for compiling and executing code
