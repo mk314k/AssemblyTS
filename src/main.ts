@@ -226,7 +226,26 @@ function main(): void {
     if (compile()) {
       runProgram();
     }
-  );
+  });
+
+  build?.addEventListener('click', () => {
+    compile();
+  });
+
+  run?.addEventListener('click', () => {
+    runProgram();
+  });
+
+  reset?.addEventListener('click', () => {
+    Assembler.reset();
+    consoleBox.clear();
+    consoleBox.log('Registers, memory, and console reset.', 'info');
+    setStatus('Ready');
+  });
+
+  clearConsoleBtn?.addEventListener('click', () => {
+    consoleBox.clear();
+  });
 }
 
 // Call the main function when the DOM is ready
