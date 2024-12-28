@@ -14,9 +14,10 @@ export interface MemContent {
  * @returns The binary representation of the number.
  */
 export function numToBin(num: number, bitLength = 5): string {
-  let numBin = num.toString(2);
-  if (numBin.length < bitLength) {
-    numBin = "0".repeat(bitLength - numBin.length) + numBin;
+  const intVal = Math.trunc(num);
+  if (intVal < 0) {
+    const unsigned = (intVal >>> 0).toString(2);
+    return unsigned.slice(-bitLength).padStart(bitLength, '1');
   }
   return numBin;
 }
