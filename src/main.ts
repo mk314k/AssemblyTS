@@ -203,20 +203,15 @@ function main(): void {
     }
   }
 
-  // Attach event listeners to buttons for compiling and executing code
-  const buildRun = document.getElementById("buildRun") as HTMLButtonElement;
-  const build = document.getElementById("build") as HTMLButtonElement;
-  const run = document.getElementById("run") as HTMLButtonElement;
-
-  buildRun?.addEventListener(
-    'click', () => {
-      compile();
-      Assembler.execute(getAddr('runAddr'));
-    }
-  );
-  build?.addEventListener(
-    'click', () => {
-      compile();
+  function runProgram(): void {
+    try {
+      const runAddr = getAddr('runAddr');
+      Assembler.execute(runAddr);
+      setStatus('Executed');
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      consoleBox.log(`${msg}`, 'error');
+      setStatus('Runtime Error', true);
     }
   );
   run?.addEventListener(
