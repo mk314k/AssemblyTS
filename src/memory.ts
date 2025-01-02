@@ -19,7 +19,11 @@ export function numToBin(num: number, bitLength = 5): string {
     const unsigned = (intVal >>> 0).toString(2);
     return unsigned.slice(-bitLength).padStart(bitLength, '1');
   }
-  return numBin;
+  const numBin = intVal.toString(2);
+  if (numBin.length > bitLength) {
+    return numBin.slice(-bitLength);
+  }
+  return numBin.padStart(bitLength, '0');
 }
 
 /**
