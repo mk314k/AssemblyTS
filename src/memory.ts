@@ -41,7 +41,7 @@ export class Data implements MemContent {
   }
 
   hexRep(): string {
-    return this.data.toString(16);
+    return (this.data >>> 0).toString(16).padStart(8, '0');
   }
 }
 
