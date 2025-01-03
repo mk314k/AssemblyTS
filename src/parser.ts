@@ -12,15 +12,27 @@ const PC_RELATIVE_INSTRUCTIONS = new Set([
   'jal', 'j'
 ]);
 
-function getRegNum(arg: string | undefined): Register | number {
-    /** 
-     * Function to determine the register number based on the argument provided
-     * @param arg - label or reg or (number in string form)
-    */
-    if (arg === undefined) {
-        return '';
-    }
-    arg = arg.trim();
+/**
+ * Function to determine the register or numerical argument based on the token provided.
+ * If the instruction is PC-relative (branch or jal/j) and the argument is a label,
+ * converts the label's absolute address into a PC-relative byte offset (`labelAddr - currentPc`).
+ *
+ * @param arg - label or reg or (number in string form)
+ * @param currentPc - address of the current instruction
+ * @param isPcRelative - whether label resolution should be relative to currentPc
+ */
+function getRegNum(
+  arg: string | undefined,
+  currentPc: number,
+  isPcRelative: boolean
+): Register | number {
+  if (arg === undefined) {
+    return '';
+  }
+  arg = arg.trim();
+  if (arg === '') {
+    return '';
+  }
 
     if (labels.has(arg)) {
         return labels.get(arg) as number;
