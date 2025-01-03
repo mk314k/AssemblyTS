@@ -30,8 +30,8 @@ export function numToBin(num: number, bitLength = 5): string {
  * Represents data stored in memory.
  */
 export class Data implements MemContent {
-  constructor(public readonly data: number) { }
-  
+  constructor(public readonly data: number) {}
+
   numValue(): number {
     return this.data;
   }
