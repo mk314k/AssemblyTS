@@ -56,6 +56,13 @@ export class Memory {
   }
 
   /**
+   * Clears all entries in memory.
+   */
+  clear(): void {
+    this.memory.clear();
+  }
+
+  /**
    * Retrieves the content stored at the specified memory address.
    * @param address The memory address to retrieve content from.
    * @returns The content stored at the specified memory address.
