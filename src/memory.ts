@@ -96,5 +96,20 @@ export class Memory {
       memElement.appendChild(emptyDiv);
       return;
     }
+
+    const sortedEntries = Array.from(this.memory.entries()).sort((a, b) => a[0] - b[0]);
+
+    sortedEntries.forEach(([address, value]) => {
+      const memByteDiv = document.createElement('div');
+      memByteDiv.classList.add('mem-byte', 'flex-horizontal');
+      const hexVal = value.hexRep().padStart(8, '0');
+      const decVal = value.numValue();
+      memByteDiv.title = `Address: ${address} (0x${(address >>> 0).toString(16)}) | Decimal: ${decVal}`;
+      memByteDiv.innerHTML = `
+        <div class='address'>${address} <span class='addr-hex'>0x${(address >>> 0).toString(16)}</span></div>
+        <div class='value'>0x${hexVal}</div>
+      `;
+      memElement.appendChild(memByteDiv);
+    });
   }
 }
