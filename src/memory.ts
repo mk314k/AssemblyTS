@@ -85,18 +85,16 @@ export class Memory {
    * @param memElement The HTML element to display memory content.
    */
   outHTML(memElement: HTMLElement | null): void {
-    if (memElement) {
-      memElement.innerHTML = '';
-      this.memory.forEach((value, address) => {
-        const memByteDiv = document.createElement('div');
-        memByteDiv.classList.add('mem-byte');
-        memByteDiv.classList.add('flex-horizontal');
-        memByteDiv.innerHTML = `
-          <div class='address'>${address}</div>
-          <div class='value'>${value.hexRep()}</div>
-        `;
-        memElement.appendChild(memByteDiv);
-      });
+    if (!memElement) return;
+
+    memElement.innerHTML = '';
+
+    if (this.memory.size === 0) {
+      const emptyDiv = document.createElement('div');
+      emptyDiv.className = 'mem-empty';
+      emptyDiv.textContent = 'No memory entries loaded';
+      memElement.appendChild(emptyDiv);
+      return;
     }
   }
 }
