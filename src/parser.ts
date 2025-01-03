@@ -6,6 +6,11 @@ import { Memory } from "./memory";
 // Represents a mapping of labels to memory addresses
 const labels: Map<string, number> = new Map();
 
+// Instructions whose target operand is a PC-relative byte offset when given a label
+const PC_RELATIVE_INSTRUCTIONS = new Set([
+  'beq', 'bne', 'blt', 'bge', 'bgt', 'ble', 'bltu', 'bgeu',
+  'jal', 'j'
+]);
 
 function getRegNum(arg: string | undefined): Register | number {
     /** 
