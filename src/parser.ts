@@ -34,13 +34,16 @@ function getRegNum(
     return '';
   }
 
-    if (labels.has(arg)) {
-        return labels.get(arg) as number;
-    } else if (regValidStr(arg)) {
-        return arg;
-    } else {
-        return parseFloat(arg);
-    }
+  if (labels.has(arg)) {
+    const labelAddr = labels.get(arg) as number;
+    return isPcRelative ? labelAddr - currentPc : labelAddr;
+  } else if (regValidStr(arg)) {
+    return arg;
+  } else if (/^-?0x[0-9a-fA-F]+$/.test(arg)) {
+    return parseInt(arg, 16);
+  } else {
+    return parseFloat(arg);
+  }
 }
 
 // Type for pseudo memory, which has all required properties similar to Memory; Used for type safety
