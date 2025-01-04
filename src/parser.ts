@@ -49,21 +49,42 @@ function getRegNum(
 // Type for pseudo memory, which has all required properties similar to Memory; Used for type safety
 type pseudoMem = Map<number, AssemblyInstruction>;
 
-export function parser(code: string, start_addr = 540, memory?: Memory): pseudoMem | void {
-    /**
-     * Function to parse the assembly code and populate the memory with instructions
-     * @param code
-     * @param start_addr
-     * @param memory
-     */
+/**
+ * Function to parse the assembly code and populate the memory with instructions
+ * Uses a two-pass approach so forward and backward label references both resolve properly.
+ * @param code
+ * @param start_addr
+ * @param memory
+ */
+export function parser(code: string, start_addr = 504, memory?: Memory): pseudoMem | void {
+  const lines = code.split("\n");
+  let instMem: Memory | pseudoMem | undefined = memory;
 
-    // Split the code into lines
-    const lines = code.split("\n");
-    let instMem: Memory | pseudoMem | undefined = memory;
+  if (instMem === undefined) {
+    instMem = new Map<number, AssemblyInstruction>();
+  } else if (instMem instanceof Memory) {
+    instMem.clear();
+  }
 
-    // If memory is not provided, initialize a new pseudo memory
-    if (instMem === undefined) {
-        instMem = new Map<number, AssemblyInstruction>;
+  labels.clear();
+
+  // Pass 1: Collect all labels and their corresponding instruction addresses
+  let scanAddr = start_addr;
+  const instructionLines: { addr: number; text: string; lineNo: number }[] = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i].split('#')[0].trim();
+    if (!line) continue;
+
+    // Support labels on their own line ("loop:") or inline ("loop: addi a0, a0, 1")
+    while (line.includes(':')) {
+      const colonIdx = line.indexOf(':');
+      const labelName = line.slice(0, colonIdx).trim();
+      if (!labelName || /\s/.test(labelName)) {
+        throw new SyntaxError(`Line ${i + 1}: Invalid label name "${labelName}"`);
+      }
+      labels.set(labelName, scanAddr);
+      line = line.slice(colonIdx + 1).trim();
     }
     let addr = start_addr;
 
