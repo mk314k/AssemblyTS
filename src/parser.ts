@@ -129,4 +129,9 @@ export function parser(code: string, start_addr = 504, memory?: Memory): pseudoM
       const inst = new InstClass();
       instMem.set(item.addr, inst);
     }
+  }
+
+  if (memory === undefined) {
+    return instMem as pseudoMem;
+  }
 }
