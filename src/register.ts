@@ -1,4 +1,5 @@
-  import {RegisterIndexError} from './exception';
+import { StateVarList } from 'statebinderk';
+import { RegisterIndexError } from './exception';
 import { numToBin } from './memory';
 
   const regMap: { [key: string]: string } = {
