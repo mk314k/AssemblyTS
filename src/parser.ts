@@ -86,60 +86,10 @@ export function parser(code: string, start_addr = 504, memory?: Memory): pseudoM
       labels.set(labelName, scanAddr);
       line = line.slice(colonIdx + 1).trim();
     }
-    let addr = start_addr;
 
-    // Avoid using previous code labels
-    labels.clear();
-    
-    for (let line of lines) {
-        // Remove white spaces in either ends and comments
-        line = line.split('#')[0];
-        line = line.trim();
-        
- 
-        if (line) {
-            // If the line ends with ':', it's a label declaration
-            if (line.endsWith(':')) {
-                labels.set(line.slice(0, line.length - 1), addr)
-            } else {
-                // Replace '(' and ')' with ',' for splitting
-                line = line.replace(/\(/g, ',').replace(/\)/g, '');
-                const idrdres = line.split(',');
-                const idrd = idrdres[0].split(' ');
-                // Only instructions existing in the instruction map are processed
-                if (instructions.has(idrd[0])) {
-                    const id = instructions.get(idrd[0]) as typeof AssemblyInstruction;
-                    // Get the register numbers or values for the instruction
-                    const reg1 = getRegNum(idrd[1]);
-                    if (reg1) {
-                        const reg2 = getRegNum(idrdres[1]);
-                        if (reg2 || reg2 === 0) {
-                            const reg3 = getRegNum(idrdres[2]);
-                            if (reg3 || reg3 === 0) {
-                                // Create an instance of the instruction with the provided arguments
-                                const inst = new id(reg1, reg2, reg3);
-                                // Set the instruction at the current memory address
-                                instMem.set(addr, inst);
-                            } else {
-                                const inst = new id(reg1, reg2);
-                                instMem.set(addr, inst);
-                            }
-                        } else {
-                            const inst = new id(reg1);
-                            instMem.set(addr, inst);
-                        }
-                    } else {
-                        const inst = new id();
-                        instMem.set(addr, inst);
-                    }
-                    // Increment the memory address by 4
-                    addr = addr + 4;
-                } else {
-                    // Throw a syntax error if the instruction is not recognized
-                    throw new SyntaxError(`${idrd[0]} is not a defined Assembly instruction`);
-                }
-            }
-        }
+    if (line) {
+      instructionLines.push({ addr: scanAddr, text: line, lineNo: i + 1 });
+      scanAddr += 4;
     }
     // If memory was not provided, return the pseudo memory
     if (memory === undefined) {
