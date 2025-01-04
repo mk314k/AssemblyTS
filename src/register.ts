@@ -51,12 +51,11 @@ export type Register = string | number;
 // Function to convert register string or number to its corresponding index
 function regToIndex(reg: Register): number {
   if (typeof reg === 'number') {
-      // Check if it's an integer and within the range 0-31
-      if (Number.isInteger(reg) && reg >= 0 && reg < 32) {
-          return reg;
-      } else {
-          throw new RegisterIndexError();
-      }
+    if (Number.isInteger(reg) && reg >= 0 && reg < 32) {
+      return reg;
+    } else {
+      throw new RegisterIndexError(`Register index ${reg} out of range (0-31)`);
+    }
   } else {
       // If it's a string, convert it to index
       if (reg in regMap) {
