@@ -91,8 +91,42 @@ export function parser(code: string, start_addr = 504, memory?: Memory): pseudoM
       instructionLines.push({ addr: scanAddr, text: line, lineNo: i + 1 });
       scanAddr += 4;
     }
-    // If memory was not provided, return the pseudo memory
-    if (memory === undefined) {
-        return instMem as pseudoMem;
+  }
+
+  // Pass 2: Parse instructions and resolve operands/labels
+  for (const item of instructionLines) {
+    // Normalize memory addressing syntax `offset(base)` -> `,offset,base`
+    const normalized = item.text.replace(/\(/g, ',').replace(/\)/g, '');
+    const commaParts = normalized.split(',').map(part => part.trim());
+    const firstTokens = commaParts[0].split(/\s+/);
+    const mnemonic = firstTokens[0].toLowerCase();
+
+    if (!instructions.has(mnemonic)) {
+      throw new SyntaxError(`Line ${item.lineNo}: "${firstTokens[0]}" is not a defined Assembly instruction`);
+    }
+
+    const isPcRel = PC_RELATIVE_INSTRUCTIONS.has(mnemonic);
+    const InstClass = instructions.get(mnemonic) as typeof AssemblyInstruction;
+    const firstArgStr = firstTokens.slice(1).join(' ');
+    const reg1 = getRegNum(firstArgStr || undefined, item.addr, isPcRel);
+
+    if ((reg1 !== '' && !Number.isNaN(reg1)) || reg1 === 0) {
+      const reg2 = getRegNum(commaParts[1], item.addr, isPcRel);
+      if ((reg2 !== '' && !Number.isNaN(reg2)) || reg2 === 0) {
+        const reg3 = getRegNum(commaParts[2], item.addr, isPcRel);
+        if ((reg3 !== '' && !Number.isNaN(reg3)) || reg3 === 0) {
+          const inst = new InstClass(reg1, reg2, reg3);
+          instMem.set(item.addr, inst);
+        } else {
+          const inst = new InstClass(reg1, reg2);
+          instMem.set(item.addr, inst);
+        }
+      } else {
+        const inst = new InstClass(reg1);
+        instMem.set(item.addr, inst);
+      }
+    } else {
+      const inst = new InstClass();
+      instMem.set(item.addr, inst);
     }
 }
