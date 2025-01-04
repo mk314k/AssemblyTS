@@ -57,16 +57,13 @@ function regToIndex(reg: Register): number {
       throw new RegisterIndexError(`Register index ${reg} out of range (0-31)`);
     }
   } else {
-      // If it's a string, convert it to index
-      if (reg in regMap) {
-          reg = regMap[reg];
-      } else {
-          const pattern = /^x([0-9]|[1-2]\d|3[0-1])$/;
-          if (!pattern.test(reg)) {
-              throw new RegisterIndexError();
-          }
-      }
-      return parseInt(reg.slice(1));
+    const trimmed = reg.trim();
+    const mapped = trimmed in regMap ? regMap[trimmed] : trimmed;
+    const pattern = /^x([0-9]|[1-2]\d|3[0-1])$/;
+    if (!pattern.test(mapped)) {
+      throw new RegisterIndexError(`Invalid register "${reg}"`);
+    }
+    return parseInt(mapped.slice(1), 10);
   }
 }
 
