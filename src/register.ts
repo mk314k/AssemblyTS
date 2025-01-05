@@ -98,7 +98,7 @@ export class Counter {
 
   // Method to increment program counter by 4 (size of instruction)
   step(): void {
-      this.val += 4;
+    this.val += 4;
   }
 }
 
