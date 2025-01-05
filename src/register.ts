@@ -88,7 +88,7 @@ export class Counter {
   val: number;
 
   constructor(val = 0) {
-      this.val = val;
+    this.val = val;
   }
 
   // Method to set program counter to a specific value
