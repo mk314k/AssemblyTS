@@ -102,7 +102,7 @@ export class Counter {
   }
 }
 
-// RegisterSet class to manage registers
+// RegisterSet class to manage registers with reactive DOM binding via statebinderk
 export class RegisterSet {
   registers: number[];
 
