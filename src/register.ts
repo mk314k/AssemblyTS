@@ -93,7 +93,7 @@ export class Counter {
 
   // Method to set program counter to a specific value
   jump(val: number): void {
-      this.val = val;
+    this.val = val;
   }
 
   // Method to increment program counter by 4 (size of instruction)
