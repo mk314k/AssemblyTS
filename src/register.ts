@@ -75,8 +75,7 @@ export function regToBin(reg: Register): string {
 // Function to validate if the register string or number is valid
 export function regValid(reg: Register): boolean {
   if (typeof reg === 'number') {
-      // Check if it's an integer and within the range 0-31
-      return Number.isInteger(reg) && reg >= 0 && reg < 32;
+    return Number.isInteger(reg) && reg >= 0 && reg < 32;
   } else {
       const pattern = /^x([0-9]|[1-2]\d|3[0-1])$/;
       return pattern.test(reg) || reg in regMap;
