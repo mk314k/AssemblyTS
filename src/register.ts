@@ -167,6 +167,13 @@ export class RegisterSet {
           </div>
         `;
       }
+      regElement.innerHTML = html;
+    }
+
+    // Sync current register states to the DOM via StateVarList
+    for (let i = 0; i < 32; i++) {
+      this.regStateList.transition(i, this.regStateList.current(i));
+    }
   }
 }
 
