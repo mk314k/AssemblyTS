@@ -176,5 +176,3 @@ export class RegisterSet {
     }
   }
 }
-
-  
