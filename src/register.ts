@@ -133,8 +133,8 @@ export class RegisterSet {
 
   // Method to get value of a register
   getValue(reg: Register): number {
-      const index = regToIndex(reg);
-      return this.registers[index];
+    const index = regToIndex(reg);
+    return this.regStateList.current(index);
   }
 
   // Method to set value of a register
