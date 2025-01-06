@@ -148,26 +148,24 @@ export class RegisterSet {
 
   // Method to initialize/output register cards to HTML element
   outHTML(regElement: HTMLElement | null): void {
-      if (regElement) {
-          let html = "";
-          // Iterate through registers
-          for (const regName in regMap) {
-              let regValue = this.getValue(regName).toString(16);
-              // Add leading zeros if necessary
-              if (regValue.length < 8) {
-                  regValue = "0".repeat(8 - regValue.length) + regValue;
-              }
-              // Create HTML for register display
-              html += `
-                  <div class="register flex-vertical">
-                      <span>${regName}</span>
-                      <span>0x${regValue}</span>
-                      <span>${regMap[regName]}</span>
-                  </div>
-              `;
-          }
-          // Set HTML content of register element
-          regElement.innerHTML = html;
+    if (!regElement) return;
+
+    // Only build the 32 register DOM nodes once; subsequent updates flow through StateVarList
+    if (regElement.children.length !== 32) {
+      let html = "";
+      for (let i = 0; i < 32; i++) {
+        const regName = indexToAbi[i];
+        const xName = regMap[regName];
+        html += `
+          <div id="reg-x${i}" data-abi="${regName}" data-x="${xName}" class="register flex-vertical" title="${regName} (${xName}): 0 (0x00000000)">
+            <div class="reg-header">
+              <span class="reg-abi">${regName}</span>
+              <span class="reg-num">${xName}</span>
+            </div>
+            <span class="reg-val">0x00000000</span>
+            <span class="reg-dec">0</span>
+          </div>
+        `;
       }
   }
 }
