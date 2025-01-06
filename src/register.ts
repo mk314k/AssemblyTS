@@ -137,7 +137,7 @@ export class RegisterSet {
     return this.regStateList.current(index);
   }
 
-  // Method to set value of a register
+  // Method to set value of a register (reactively updates bound DOM element)
   setValue(reg: Register, value: number): void {
       const index = regToIndex(reg);
       // Prevent setting the value of register x0
