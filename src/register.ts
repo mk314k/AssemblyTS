@@ -139,11 +139,11 @@ export class RegisterSet {
 
   // Method to set value of a register (reactively updates bound DOM element)
   setValue(reg: Register, value: number): void {
-      const index = regToIndex(reg);
-      // Prevent setting the value of register x0
-      if (index != 0) {
-          this.registers[index] = value;
-      }
+    const index = regToIndex(reg);
+    // Prevent setting the value of register x0
+    if (index !== 0) {
+      this.regStateList.transition(index, value | 0);
+    }
   }
 
   // Method to output register values to HTML element
