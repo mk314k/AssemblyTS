@@ -146,7 +146,7 @@ export class RegisterSet {
     }
   }
 
-  // Method to output register values to HTML element
+  // Method to initialize/output register cards to HTML element
   outHTML(regElement: HTMLElement | null): void {
       if (regElement) {
           let html = "";
