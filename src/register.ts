@@ -107,7 +107,28 @@ export class RegisterSet {
   private regStateList: StateVarList<number>;
 
   constructor() {
-      this.registers = new Array(32).fill(0);
+    const initialStates = Array.from({ length: 32 }, (_, i) => ({
+      id: `reg-x${i}`,
+      state: 0,
+    }));
+
+    this.regStateList = new StateVarList<number>(initialStates, (elem, rawVal) => {
+      const abiName = elem.getAttribute('data-abi') || '';
+      const xName = elem.getAttribute('data-x') || '';
+      const unsignedHex = (rawVal >>> 0).toString(16).padStart(8, '0');
+      elem.classList.toggle('register-active', rawVal !== 0);
+      elem.title = `${abiName} (${xName}): ${rawVal} (0x${unsignedHex})`;
+
+      const hexSpan = elem.querySelector('.reg-val');
+      const decSpan = elem.querySelector('.reg-dec');
+      if (hexSpan) hexSpan.textContent = `0x${unsignedHex}`;
+      if (decSpan) decSpan.textContent = `${rawVal}`;
+    });
+  }
+
+  // Reset all registers back to 0 reactively
+  reset(): void {
+    this.regStateList.listTransition(new Array(32).fill(0));
   }
 
   // Method to get value of a register
