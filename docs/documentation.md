@@ -45,7 +45,7 @@ AssemblyTS supports `.data` and `.text` sections for pre-populating Data Memory 
   - **Syntax**: `add <rd>, <rs1>, <rs2>`
 - **sub**: Subtract `<rs2>` from `<rs1>` and store the result in `<rd>`.
   - **Syntax**: `sub <rd>, <rs1>, <rs2>`
-- **and**: Perform a bitwise AND operation between two registers.
+- **and**: Bitwise AND between `<rs1>` and `<rs2>`.
   - **Syntax**: `and <rd>, <rs1>, <rs2>`
 - **or**: Perform a bitwise OR operation between two registers.
   - **Syntax**: `or <rd>, <rs1>, <rs2>`
