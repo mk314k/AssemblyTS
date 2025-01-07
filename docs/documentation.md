@@ -2,7 +2,7 @@
 
 ## Registers
 
-AssemblyTS utilizes 32-bit RISC-V integer registers (`RV32I`) for data storage and manipulation:
+AssemblyTS utilizes 32-bit RISC-V integer registers (`RV32IM`) for data storage and manipulation:
 
 | Register | Symbolic Name | Description          |
 |----------|----------------|----------------------|
