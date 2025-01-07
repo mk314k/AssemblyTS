@@ -39,7 +39,7 @@ AssemblyTS supports `.data` and `.text` sections for pre-populating Data Memory 
 - **printm**: Print the 32-bit word stored in data memory at the address held in `<register>`.
   - **Syntax**: `printm <register>`
 
-## Register Operations (R-Type)
+## Register Operations (RV32I R-Type)
 
 - **add**: Add the values of two registers and store the result in a destination register.
   - **Syntax**: `add <rd>, <rs1>, <rs2>`
