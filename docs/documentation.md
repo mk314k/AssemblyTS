@@ -41,7 +41,7 @@ AssemblyTS supports `.data` and `.text` sections for pre-populating Data Memory 
 
 ## Register Operations (RV32I R-Type)
 
-- **add**: Add the values of two registers and store the result in a destination register.
+- **add**: Add `<rs1>` and `<rs2>` and store the result in `<rd>`.
   - **Syntax**: `add <rd>, <rs1>, <rs2>`
 - **sub**: Subtract `<rs2>` from `<rs1>` and store the result in `<rd>`.
   - **Syntax**: `sub <rd>, <rs1>, <rs2>`
