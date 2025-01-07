@@ -20,6 +20,18 @@ AssemblyTS utilizes 32-bit RISC-V integer registers (`RV32IM`) for data storage 
 
 Both Register name (`x0`–`x31`) and its Symbolic ABI name (`zero`–`t6`) can be used interchangeably.
 
+## Assembler Directives (`.data` & `.text`)
+
+AssemblyTS supports `.data` and `.text` sections for pre-populating Data Memory at build time (starting at address `100`):
+
+- **`.data`**: Switch to the data segment.
+- **`.text`**: Switch to the code/instruction segment (default).
+- **`.word w1, w2, ...`**: Store 32-bit 4-byte aligned words in Data Memory.
+- **`.half h1, h2, ...`**: Store 16-bit 2-byte aligned halfwords in Data Memory.
+- **`.byte b1, b2, ...`**: Store 8-bit bytes in Data Memory.
+- **`.asciz "str"` / `.string "str"`**: Store a null-terminated ASCII string in Data Memory.
+- **`.space N` / `.zero N`**: Reserve `N` zero-initialized bytes in Data Memory.
+
 ## Console Instructions
 
 - **print**: Print the signed 32-bit decimal value of a register to the console.
