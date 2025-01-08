@@ -55,7 +55,7 @@ AssemblyTS supports `.data` and `.text` sections for pre-populating Data Memory 
   - **Syntax**: `sll <rd>, <rs1>, <rs2>`
 - **srl**: Logical right shift on `<rs1>` by `<rs2>[4:0]`.
   - **Syntax**: `srl <rd>, <rs1>, <rs2>`
-- **sra**: Perform an arithmetic right shift on `<rs1>` by `<rs2>[4:0]`.
+- **sra**: Arithmetic right shift on `<rs1>` by `<rs2>[4:0]`.
   - **Syntax**: `sra <rd>, <rs1>, <rs2>`
 - **slt**: Set `<rd>` to `1` if `<rs1> < <rs2>` (signed); otherwise `0`.
   - **Syntax**: `slt <rd>, <rs1>, <rs2>`
