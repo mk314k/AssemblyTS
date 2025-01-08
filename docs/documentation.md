@@ -51,7 +51,7 @@ AssemblyTS supports `.data` and `.text` sections for pre-populating Data Memory 
   - **Syntax**: `or <rd>, <rs1>, <rs2>`
 - **xor**: Bitwise XOR between `<rs1>` and `<rs2>`.
   - **Syntax**: `xor <rd>, <rs1>, <rs2>`
-- **sll**: Perform a logical left shift on `<rs1>` by `<rs2>[4:0]`.
+- **sll**: Logical left shift on `<rs1>` by `<rs2>[4:0]`.
   - **Syntax**: `sll <rd>, <rs1>, <rs2>`
 - **srl**: Perform a logical right shift on `<rs1>` by `<rs2>[4:0]`.
   - **Syntax**: `srl <rd>, <rs1>, <rs2>`
