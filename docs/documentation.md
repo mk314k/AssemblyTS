@@ -87,7 +87,7 @@ AssemblyTS supports `.data` and `.text` sections for pre-populating Data Memory 
   - **Syntax**: `addi <rd>, <rs1>, <imm>`
 - **andi**: Bitwise AND between `<rs1>` and `<imm>`.
   - **Syntax**: `andi <rd>, <rs1>, <imm>`
-- **ori**: Perform a bitwise OR between `<rs1>` and `<imm>`.
+- **ori**: Bitwise OR between `<rs1>` and `<imm>`.
   - **Syntax**: `ori <rd>, <rs1>, <imm>`
 - **xori**: Perform a bitwise XOR between `<rs1>` and `<imm>`.
   - **Syntax**: `xori <rd>, <rs1>, <imm>`
