@@ -85,7 +85,7 @@ AssemblyTS supports `.data` and `.text` sections for pre-populating Data Memory 
 
 - **addi**: Add a 12-bit signed immediate value to `<rs1>` and store the result in `<rd>`.
   - **Syntax**: `addi <rd>, <rs1>, <imm>`
-- **andi**: Perform a bitwise AND between `<rs1>` and `<imm>`.
+- **andi**: Bitwise AND between `<rs1>` and `<imm>`.
   - **Syntax**: `andi <rd>, <rs1>, <imm>`
 - **ori**: Perform a bitwise OR between `<rs1>` and `<imm>`.
   - **Syntax**: `ori <rd>, <rs1>, <imm>`
