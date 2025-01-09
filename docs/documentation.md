@@ -123,9 +123,17 @@ Branch targets can be either a **label** (resolved automatically to a PC-relativ
 - **bgeu**: Branch if `<rs1> >= <rs2>` (unsigned).
   - **Syntax**: `bgeu <rs1>, <rs2>, <label_or_offset>`
 
-## Memory Operations
+## Memory Operations (Byte, Halfword, Word)
 
-- **lw**: Load a 32-bit word from data memory at `<rs1> + <offset>` into `<rd>`.
+- **lb**: Load signed 8-bit byte from data memory at `<rs1> + <offset>` into `<rd>`.
+  - **Syntax**: `lb <rd>, <offset>(<rs1>)`
+- **lbu**: Load unsigned 8-bit byte from data memory at `<rs1> + <offset>` into `<rd>`.
+  - **Syntax**: `lbu <rd>, <offset>(<rs1>)`
+- **lh**: Load signed 16-bit halfword from data memory at `<rs1> + <offset>` into `<rd>`.
+  - **Syntax**: `lh <rd>, <offset>(<rs1>)`
+- **lhu**: Load unsigned 16-bit halfword from data memory at `<rs1> + <offset>` into `<rd>`.
+  - **Syntax**: `lhu <rd>, <offset>(<rs1>)`
+- **lw**: Load 32-bit word from data memory at `<rs1> + <offset>` into `<rd>`.
   - **Syntax**: `lw <rd>, <offset>(<rs1>)`
 - **sw**: Store a 32-bit word from `<rs2>` into data memory at `<rs1> + <offset>`.
   - **Syntax**: `sw <rs2>, <offset>(<rs1>)`
