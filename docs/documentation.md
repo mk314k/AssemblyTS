@@ -62,6 +62,25 @@ AssemblyTS supports `.data` and `.text` sections for pre-populating Data Memory 
 - **sltu**: Set `<rd>` to `1` if `<rs1> < <rs2>` (unsigned); otherwise `0`.
   - **Syntax**: `sltu <rd>, <rs1>, <rs2>`
 
+## Multiply & Divide Extension (RV32M R-Type)
+
+- **mul**: Multiply `<rs1>` and `<rs2>`, storing the lower 32 bits in `<rd>`.
+  - **Syntax**: `mul <rd>, <rs1>, <rs2>`
+- **mulh**: Multiply signed `<rs1>` and signed `<rs2>`, storing the upper 32 bits in `<rd>`.
+  - **Syntax**: `mulh <rd>, <rs1>, <rs2>`
+- **mulhsu**: Multiply signed `<rs1>` and unsigned `<rs2>`, storing the upper 32 bits in `<rd>`.
+  - **Syntax**: `mulhsu <rd>, <rs1>, <rs2>`
+- **mulhu**: Multiply unsigned `<rs1>` and unsigned `<rs2>`, storing the upper 32 bits in `<rd>`.
+  - **Syntax**: `mulhu <rd>, <rs1>, <rs2>`
+- **div**: Signed integer division `<rs1> / <rs2>`.
+  - **Syntax**: `div <rd>, <rs1>, <rs2>`
+- **divu**: Unsigned integer division `<rs1> / <rs2>`.
+  - **Syntax**: `divu <rd>, <rs1>, <rs2>`
+- **rem**: Signed remainder `<rs1> % <rs2>`.
+  - **Syntax**: `rem <rd>, <rs1>, <rs2>`
+- **remu**: Unsigned remainder `<rs1> % <rs2>`.
+  - **Syntax**: `remu <rd>, <rs1>, <rs2>`
+
 ## Register Immediate Operations (I-Type)
 
 - **addi**: Add a 12-bit signed immediate value to `<rs1>` and store the result in `<rd>`.
