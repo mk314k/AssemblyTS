@@ -89,7 +89,7 @@ AssemblyTS supports `.data` and `.text` sections for pre-populating Data Memory 
   - **Syntax**: `andi <rd>, <rs1>, <imm>`
 - **ori**: Bitwise OR between `<rs1>` and `<imm>`.
   - **Syntax**: `ori <rd>, <rs1>, <imm>`
-- **xori**: Perform a bitwise XOR between `<rs1>` and `<imm>`.
+- **xori**: Bitwise XOR between `<rs1>` and `<imm>`.
   - **Syntax**: `xori <rd>, <rs1>, <imm>`
 - **slti**: Set `<rd>` to `1` if `<rs1> < <imm>` (signed); otherwise `0`.
   - **Syntax**: `slti <rd>, <rs1>, <imm>`
