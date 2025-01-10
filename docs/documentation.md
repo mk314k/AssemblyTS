@@ -135,7 +135,11 @@ Branch targets can be either a **label** (resolved automatically to a PC-relativ
   - **Syntax**: `lhu <rd>, <offset>(<rs1>)`
 - **lw**: Load 32-bit word from data memory at `<rs1> + <offset>` into `<rd>`.
   - **Syntax**: `lw <rd>, <offset>(<rs1>)`
-- **sw**: Store a 32-bit word from `<rs2>` into data memory at `<rs1> + <offset>`.
+- **sb**: Store lowest 8-bit byte from `<rs2>` into data memory at `<rs1> + <offset>`.
+  - **Syntax**: `sb <rs2>, <offset>(<rs1>)`
+- **sh**: Store lowest 16-bit halfword from `<rs2>` into data memory at `<rs1> + <offset>`.
+  - **Syntax**: `sh <rs2>, <offset>(<rs1>)`
+- **sw**: Store 32-bit word from `<rs2>` into data memory at `<rs1> + <offset>`.
   - **Syntax**: `sw <rs2>, <offset>(<rs1>)`
 
 ## Upper Immediate & Pseudo-Instructions
