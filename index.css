@@ -444,6 +444,12 @@ main {
   border-color: var(--accent-primary);
 }
 
+.mem-byte.mem-active-pc {
+  background-color: var(--accent-primary-bg);
+  border-color: var(--accent-primary);
+  box-shadow: inset 2px 0 0 var(--accent-primary);
+}
+
 .mem-byte .address {
   color: var(--text-primary);
   font-weight: 500;
