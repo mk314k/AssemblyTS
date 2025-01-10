@@ -165,6 +165,25 @@ header {
   border: 1px solid rgba(88, 166, 255, 0.3);
 }
 
+.header-meta {
+  gap: 10px;
+}
+
+.pc-badge {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  background: var(--bg-app);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+}
+
+.pc-badge strong {
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
 .status-indicator {
   display: inline-flex;
   align-items: center;
