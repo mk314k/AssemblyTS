@@ -146,6 +146,8 @@ Branch targets can be either a **label** (resolved automatically to a PC-relativ
 
 - **li**: Load an immediate value into `<rd>`.
   - **Syntax**: `li <rd>, <imm>`
+- **la**: Load the address of a `.data` or `.text` label into `<rd>`.
+  - **Syntax**: `la <rd>, <label>`
 - **lui**: Load a 20-bit immediate value into the upper 20 bits of `<rd>` (`<imm> << 12`).
   - **Syntax**: `lui <rd>, <imm>`
 - **auipc**: Add upper 20-bit immediate to PC (`<rd> = PC + (<imm> << 12)`).
