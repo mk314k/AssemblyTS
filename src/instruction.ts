@@ -1,4 +1,5 @@
-import { Memory, MemContent, Data, numToBin } from "./memory";
+import { StateVar } from 'statebinderk';
+import { Memory, MemContent, numToBin } from "./memory";
 import { Counter, RegisterSet, Register, regValid, regToBin } from "./register";
 import { RegisterIndexError, SyntaxError } from "./exception";
 import { consoleBox } from "./consoleBox";
