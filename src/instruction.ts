@@ -69,6 +69,7 @@ export class Assembler {
     Assembler.instMemory.clear();
     Assembler.dataMemory.clear();
     Assembler.pc.jump(0);
+    Assembler.isStepping = false;
     Assembler.consoleLog = "";
     Assembler.registers.outHTML(this.regElem);
     if (this.isDataMemActive) {
