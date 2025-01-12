@@ -41,6 +41,7 @@ export class Assembler {
   static consoleOut = () => {
     if (this.consoleLog.trim().length > 0) {
       consoleBox.log(this.consoleLog, 'output');
+      this.consoleLog = "";
     }
   };
 
