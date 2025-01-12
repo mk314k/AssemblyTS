@@ -46,9 +46,17 @@ export class Assembler {
   };
 
   static init(): void {
-    this.regElem = document.getElementById("registers");
-    this.memElem = document.getElementById("memory");
-    Assembler.registers.outHTML(this.regElem);
+    if (typeof document !== 'undefined') {
+      this.regElem = document.getElementById("registers");
+      this.memElem = document.getElementById("memory");
+      Assembler.registers.outHTML(this.regElem);
+      Assembler.refreshMemoryUI();
+      Assembler.syncPcUI();
+    }
+  }
+
+  static refreshMemoryUI(): void {
+    if (typeof document === 'undefined') return;
     if (this.isDataMemActive) {
       Assembler.dataMemory.outHTML(this.memElem);
     } else {
