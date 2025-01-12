@@ -21,6 +21,19 @@ export class Assembler {
   static regElem: HTMLElement | null;
   static memElem: HTMLElement | null;
   static isDataMemActive = false;
+  static isStepping = false;
+
+  // Reactive PC display bound to `#pcBadgeVal` via statebinderk
+  static pcBadgeState = new StateVar<number>(0, 'pcBadgeVal', (elem, pcVal) => {
+    const hex = (pcVal >>> 0).toString(16).padStart(4, '0');
+    elem.textContent = `${pcVal} (0x${hex})`;
+  });
+
+  static syncPcUI(): void {
+    if (typeof document !== 'undefined') {
+      Assembler.pcBadgeState.transition(Assembler.pc.val);
+    }
+  }
 
   /**
    * Outputs the console log to the specified HTML element.
