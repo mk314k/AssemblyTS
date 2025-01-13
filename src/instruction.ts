@@ -134,6 +134,7 @@ export class Assembler {
 
   static execute(addr: number): void {
     Assembler.consoleLog = "";
+    Assembler.isStepping = false;
     Assembler.pc.jump(addr);
     let steps = 0;
 
