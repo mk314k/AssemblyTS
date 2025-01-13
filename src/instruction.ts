@@ -90,6 +90,48 @@ export class Assembler {
     }
   }
 
+  /**
+   * Executes a single instruction at the current PC (or initializes PC to `startAddr` if not currently stepping).
+   * @returns `true` if an instruction was executed and more instructions may follow; `false` if program halted.
+   */
+  static stepInstruction(startAddr: number): boolean {
+    if (!Assembler.isStepping || Assembler.pc.val === 0) {
+      Assembler.pc.jump(startAddr);
+      Assembler.isStepping = true;
+    }
+
+    const currentPc = Assembler.pc.val;
+    const inst = Assembler.instMemory.get(currentPc) as AssemblyInstruction | undefined;
+    if (!inst) {
+      Assembler.isStepping = false;
+      Assembler.pc.jump(0);
+      Assembler.syncPcUI();
+      Assembler.refreshMemoryUI();
+      return false;
+    }
+
+    inst.execute();
+    Assembler.pc.step();
+    Assembler.consoleOut();
+
+    const nextInst = Assembler.pc.val !== 0
+      ? (Assembler.instMemory.get(Assembler.pc.val) as AssemblyInstruction | undefined)
+      : undefined;
+
+    if (Assembler.pc.val === 0 || !nextInst) {
+      Assembler.isStepping = false;
+      Assembler.pc.jump(0);
+    }
+
+    if (typeof document !== 'undefined') {
+      Assembler.registers.outHTML(this.regElem);
+      Assembler.refreshMemoryUI();
+      Assembler.syncPcUI();
+    }
+
+    return Assembler.isStepping;
+  }
+
   static execute(addr: number): void {
     Assembler.consoleLog = "";
     Assembler.pc.jump(addr);
