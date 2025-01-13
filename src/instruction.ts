@@ -80,7 +80,7 @@ export class Assembler {
 
   static showInst(): void {
     if (!this.isDataMemActive) {
-      Assembler.instMemory.outHTML(this.memElem);
+      Assembler.instMemory.outHTML(this.memElem, Assembler.pc.val);
     }
   }
 
