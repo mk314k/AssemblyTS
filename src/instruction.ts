@@ -71,11 +71,10 @@ export class Assembler {
     Assembler.pc.jump(0);
     Assembler.isStepping = false;
     Assembler.consoleLog = "";
-    Assembler.registers.outHTML(this.regElem);
-    if (this.isDataMemActive) {
-      Assembler.dataMemory.outHTML(this.memElem);
-    } else {
-      Assembler.instMemory.outHTML(this.memElem);
+    if (typeof document !== 'undefined') {
+      Assembler.registers.outHTML(this.regElem);
+      Assembler.refreshMemoryUI();
+      Assembler.syncPcUI();
     }
   }
 
