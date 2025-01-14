@@ -383,7 +383,6 @@ class BranchInstruction extends AssemblyInstruction {
   }
 
   execute(): void {
-    // Target PC is current PC + relative byte offset; subtract 4 to compensate for pc.step()
     const targetAddr = Assembler.pc.val + (this.reg_num as number) - 4;
     Assembler.pc.jump(
       this.func(
