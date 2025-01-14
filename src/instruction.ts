@@ -162,7 +162,6 @@ export class Assembler {
       Assembler.registers.outHTML(this.regElem);
       Assembler.syncPcUI();
     }
-    Assembler.registers.outHTML(this.regElem);
     Assembler.consoleOut();
   }
 }
