@@ -170,6 +170,8 @@ export class Assembler {
  * Represents an assembly instruction.
  */
 export class AssemblyInstruction implements MemContent {
+  public sourceLine?: number;
+
   /**
    * Creates an instance of AssemblyInstruction.
    * @param reg1 - The first register (or operand).
