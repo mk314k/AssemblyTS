@@ -364,7 +364,6 @@ class BranchInstruction extends AssemblyInstruction {
   }
 
   binaryRep(): string {
-    // 13-bit signed byte offset: index 0 is bit 12 (MSB), index 12 is bit 0 (LSB, always 0)
     const imm13 = numToBin(this.reg_num as number, 13);
     const bit12 = imm12Bit(imm13, 12);
     const bits10_5 = imm13.slice(2, 8);
