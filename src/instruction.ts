@@ -429,7 +429,7 @@ class Console extends ConsoleInstruction {
   }
 }
 
-// ConsoleMem Instruction: prints the value stored in memory at address in register
+// ConsoleMem Instruction: prints the 32-bit word stored in memory at address in register
 class ConsoleMem extends ConsoleInstruction {
   execute(): void {
     const addr = Assembler.registers.getValue(this.reg1 as Register);
