@@ -433,7 +433,7 @@ class Console extends ConsoleInstruction {
 class ConsoleMem extends ConsoleInstruction {
   execute(): void {
     const addr = Assembler.registers.getValue(this.reg1 as Register);
-    const val = Assembler.dataMemory.get(addr)?.numValue() ?? 0;
+    const val = Assembler.dataMemory.loadWord(addr);
     Assembler.consoleLog += val + "\n";
   }
 }
