@@ -462,8 +462,6 @@ abstract class LoadInstruction extends MemInstruction {
 class Lb extends LoadInstruction {
   funct3 = '000';
   execute(): void {
-    const addr = Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number);
-    const memData = Assembler.dataMemory.get(addr);
     Assembler.registers.setValue(
       this.reg1 as Register,
       memData ? memData.numValue() : 0
