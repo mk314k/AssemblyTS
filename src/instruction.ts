@@ -454,6 +454,13 @@ abstract class LoadInstruction extends MemInstruction {
     );
   }
 
+  protected getEffectiveAddr(): number {
+    return Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number);
+  }
+}
+
+class Lb extends LoadInstruction {
+  funct3 = '000';
   execute(): void {
     const addr = Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number);
     const memData = Assembler.dataMemory.get(addr);
