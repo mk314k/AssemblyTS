@@ -443,7 +443,6 @@ class ConsoleMem extends ConsoleInstruction {
  */
 abstract class LoadInstruction extends MemInstruction {
   opcode = '0000011';
-  funct3 = '010';
 
   binaryRep(): string {
     return (
