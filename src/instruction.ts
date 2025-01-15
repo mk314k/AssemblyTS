@@ -464,7 +464,7 @@ class Lb extends LoadInstruction {
   execute(): void {
     Assembler.registers.setValue(
       this.reg1 as Register,
-      memData ? memData.numValue() : 0
+      Assembler.dataMemory.loadByte(this.getEffectiveAddr())
     );
   }
 }
