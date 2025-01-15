@@ -438,8 +438,10 @@ class ConsoleMem extends ConsoleInstruction {
   }
 }
 
-// Load word (lw) I-type instruction: loads 32-bit word from data memory into destination register
-class Lw extends MemInstruction {
+/**
+ * Base I-Type Load Instruction (lb, lh, lw, lbu, lhu)
+ */
+abstract class LoadInstruction extends MemInstruction {
   opcode = '0000011';
   funct3 = '010';
 
