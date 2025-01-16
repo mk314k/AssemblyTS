@@ -527,6 +527,13 @@ abstract class StoreInstruction extends MemInstruction {
     );
   }
 
+  protected getEffectiveAddr(): number {
+    return Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number);
+  }
+}
+
+class Sb extends StoreInstruction {
+  funct3 = '000';
   execute(): void {
     const addr = Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number);
     Assembler.dataMemory.set(
