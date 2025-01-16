@@ -576,6 +576,9 @@ class Li extends RegImmInstruction {
   }
 }
 
+// Load address (la) pseudo-instruction: loads resolved label address into rd
+class La extends Li {}
+
 // Move (mv) pseudo-instruction: addi rd, rs1, 0
 class Mv extends RegImmInstruction {
   constructor(rd: Register, rs1: Register) {
