@@ -469,9 +469,17 @@ class Lb extends LoadInstruction {
   }
 }
 
-// Store word (sw) S-type instruction: stores 32-bit word from source register into data memory
-class Sw extends MemInstruction {
-  opcode = '0100011';
+class Lh extends LoadInstruction {
+  funct3 = '001';
+  execute(): void {
+    Assembler.registers.setValue(
+      this.reg1 as Register,
+      Assembler.dataMemory.loadHalf(this.getEffectiveAddr())
+    );
+  }
+}
+
+class Lw extends LoadInstruction {
   funct3 = '010';
 
   binaryRep(): string {
