@@ -481,6 +481,39 @@ class Lh extends LoadInstruction {
 
 class Lw extends LoadInstruction {
   funct3 = '010';
+  execute(): void {
+    Assembler.registers.setValue(
+      this.reg1 as Register,
+      Assembler.dataMemory.loadWord(this.getEffectiveAddr())
+    );
+  }
+}
+
+class Lbu extends LoadInstruction {
+  funct3 = '100';
+  execute(): void {
+    Assembler.registers.setValue(
+      this.reg1 as Register,
+      Assembler.dataMemory.loadByteUnsigned(this.getEffectiveAddr())
+    );
+  }
+}
+
+class Lhu extends LoadInstruction {
+  funct3 = '101';
+  execute(): void {
+    Assembler.registers.setValue(
+      this.reg1 as Register,
+      Assembler.dataMemory.loadHalfUnsigned(this.getEffectiveAddr())
+    );
+  }
+}
+
+/**
+ * Base S-Type Store Instruction (sb, sh, sw)
+ */
+abstract class StoreInstruction extends MemInstruction {
+  opcode = '0100011';
 
   binaryRep(): string {
     const immVal = numToBin(this.reg_num as number, 12);
