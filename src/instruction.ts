@@ -535,10 +535,29 @@ abstract class StoreInstruction extends MemInstruction {
 class Sb extends StoreInstruction {
   funct3 = '000';
   execute(): void {
-    const addr = Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number);
-    Assembler.dataMemory.set(
-      addr,
-      new Data(Assembler.registers.getValue(this.reg1 as Register))
+    Assembler.dataMemory.storeByte(
+      this.getEffectiveAddr(),
+      Assembler.registers.getValue(this.reg1 as Register)
+    );
+  }
+}
+
+class Sh extends StoreInstruction {
+  funct3 = '001';
+  execute(): void {
+    Assembler.dataMemory.storeHalf(
+      this.getEffectiveAddr(),
+      Assembler.registers.getValue(this.reg1 as Register)
+    );
+  }
+}
+
+class Sw extends StoreInstruction {
+  funct3 = '010';
+  execute(): void {
+    Assembler.dataMemory.storeWord(
+      this.getEffectiveAddr(),
+      Assembler.registers.getValue(this.reg1 as Register)
     );
   }
 }
