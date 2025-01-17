@@ -691,7 +691,7 @@ const funcList = {
   },
 };
 
-// R-Type Register-Register Operations
+// R-Type Register-Register Operations (RV32I)
 class Add extends RegInstruction {
   funct3 = "000";
   func = funcList.add;
