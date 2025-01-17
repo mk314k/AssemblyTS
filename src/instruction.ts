@@ -908,7 +908,6 @@ class Jal extends AssemblyInstruction {
   }
 
   execute(): void {
-    // Save return address (PC + 4) into destination register rd
     Assembler.registers.setValue(this.reg1 as Register, Assembler.pc.val + 4);
     // Jump to PC + offset (minus 4 because pc.step() adds +4 after execute)
     Assembler.pc.jump(Assembler.pc.val + (this.reg_num as number) - 4);
