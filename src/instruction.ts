@@ -662,6 +662,33 @@ const funcList = {
   sra: (arg1: number, arg2: number): number => arg1 >> (arg2 & 0x1f),
   slt: (arg1: number, arg2: number): number => (arg1 < arg2 ? 1 : 0),
   sltu: (arg1: number, arg2: number): number => ((arg1 >>> 0) < (arg2 >>> 0) ? 1 : 0),
+
+  // RV32M Standard Multiply/Divide Extension
+  mul: (arg1: number, arg2: number): number => Math.imul(arg1, arg2),
+  mulh: (arg1: number, arg2: number): number =>
+    Number((BigInt(arg1 | 0) * BigInt(arg2 | 0)) >> 32n) | 0,
+  mulhsu: (arg1: number, arg2: number): number =>
+    Number((BigInt(arg1 | 0) * BigInt(arg2 >>> 0)) >> 32n) | 0,
+  mulhu: (arg1: number, arg2: number): number =>
+    Number((BigInt(arg1 >>> 0) * BigInt(arg2 >>> 0)) >> 32n) | 0,
+  div: (arg1: number, arg2: number): number => {
+    if (arg2 === 0) return -1;
+    if ((arg1 | 0) === -2147483648 && (arg2 | 0) === -1) return -2147483648;
+    return Math.trunc((arg1 | 0) / (arg2 | 0)) | 0;
+  },
+  divu: (arg1: number, arg2: number): number => {
+    if (arg2 === 0) return -1; // 0xFFFFFFFF
+    return Math.trunc((arg1 >>> 0) / (arg2 >>> 0)) | 0;
+  },
+  rem: (arg1: number, arg2: number): number => {
+    if (arg2 === 0) return arg1 | 0;
+    if ((arg1 | 0) === -2147483648 && (arg2 | 0) === -1) return 0;
+    return ((arg1 | 0) % (arg2 | 0)) | 0;
+  },
+  remu: (arg1: number, arg2: number): number => {
+    if (arg2 === 0) return arg1 | 0;
+    return ((arg1 >>> 0) % (arg2 >>> 0)) | 0;
+  },
 };
 
 // R-Type Register-Register Operations
