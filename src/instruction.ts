@@ -735,6 +735,48 @@ class Sltu extends RegInstruction {
   func = funcList.sltu;
 }
 
+// R-Type Multiply/Divide Operations (RV32M, funct7 = 0000001)
+class Mul extends RegInstruction {
+  funct3 = "000";
+  funct7 = "0000001";
+  func = funcList.mul;
+}
+class Mulh extends RegInstruction {
+  funct3 = "001";
+  funct7 = "0000001";
+  func = funcList.mulh;
+}
+class Mulhsu extends RegInstruction {
+  funct3 = "010";
+  funct7 = "0000001";
+  func = funcList.mulhsu;
+}
+class Mulhu extends RegInstruction {
+  funct3 = "011";
+  funct7 = "0000001";
+  func = funcList.mulhu;
+}
+class Div extends RegInstruction {
+  funct3 = "100";
+  funct7 = "0000001";
+  func = funcList.div;
+}
+class Divu extends RegInstruction {
+  funct3 = "101";
+  funct7 = "0000001";
+  func = funcList.divu;
+}
+class Rem extends RegInstruction {
+  funct3 = "110";
+  funct7 = "0000001";
+  func = funcList.rem;
+}
+class Remu extends RegInstruction {
+  funct3 = "111";
+  funct7 = "0000001";
+  func = funcList.remu;
+}
+
 // I-Type Register-Immediate Operations
 class Addi extends RegImmInstruction {
   funct3 = "000";
