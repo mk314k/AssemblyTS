@@ -1010,6 +1010,16 @@ export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
   ['slt', Slt],
   ['sltu', Sltu],
 
+  // R-Type Multiply/Divide Operations (RV32M)
+  ['mul', Mul],
+  ['mulh', Mulh],
+  ['mulhsu', Mulhsu],
+  ['mulhu', Mulhu],
+  ['div', Div],
+  ['divu', Divu],
+  ['rem', Rem],
+  ['remu', Remu],
+
   // I-Type Register Immediate Operations
   ['addi', Addi],
   ['andi', Andi],
