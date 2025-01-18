@@ -998,7 +998,7 @@ export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
   ['print', Console],
   ['printm', ConsoleMem],
 
-  // R-Type Register Operations
+  // R-Type Register Operations (RV32I)
   ['add', Add],
   ['sub', Sub],
   ['and', And],
