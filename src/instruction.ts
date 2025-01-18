@@ -937,7 +937,6 @@ function parseJalrArgs(
   let offset = 0;
 
   if (arg2 === undefined) {
-    // Shorthand: `jalr rs1` -> `jalr ra, rs1, 0`
     rd = 'ra';
     rs1 = arg1;
     offset = 0;
