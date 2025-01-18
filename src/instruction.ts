@@ -941,7 +941,6 @@ function parseJalrArgs(
     rs1 = arg1;
     offset = 0;
   } else if (typeof arg2 === 'number' && arg3 !== undefined && regValid(arg3)) {
-    // Memory-style syntax: `jalr rd, offset(rs1)` -> parser splits as (rd, offset, rs1)
     rd = arg1;
     offset = arg2;
     rs1 = arg3 as Register;
