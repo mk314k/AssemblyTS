@@ -978,7 +978,6 @@ class Jalr extends AssemblyInstruction {
 
   execute(): void {
     const nextPc = Assembler.pc.val + 4;
-    // Compute target address with LSB cleared per RISC-V spec: (rs1 + offset) & ~1
     const targetAddr = (Assembler.registers.getValue(this.reg2 as Register) + (this.reg_num as number)) & ~1;
     Assembler.registers.setValue(this.reg1 as Register, nextPc);
     Assembler.pc.jump(targetAddr - 4);
