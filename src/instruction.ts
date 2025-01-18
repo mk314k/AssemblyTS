@@ -945,7 +945,6 @@ function parseJalrArgs(
     offset = arg2;
     rs1 = arg3 as Register;
   } else if (regValid(arg2)) {
-    // 3-arg or 2-reg syntax: `jalr rd, rs1, offset`
     rd = arg1;
     rs1 = arg2 as Register;
     offset = typeof arg3 === 'number' && !isNaN(arg3) ? arg3 : 0;
