@@ -8,7 +8,7 @@ import { consoleBox } from './consoleBox';
 import { codeTabPane, GitUser } from './github';
 
 const SAMPLE_PROGRAMS: Record<string, string> = {
-  'quickstart.asm': `# AssemblyTS Quickstart Demo
+  'quickstart.asm': `# AssemblyTS Quickstart Demo (RV32IM)
 # Load two immediate values into registers a0 and a1
 li a0, 5            # a0 = 5
 li a1, 3            # a1 = 3
