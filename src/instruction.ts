@@ -1053,6 +1053,7 @@ export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
 
   // Upper Immediate & Pseudo-Instructions
   ['li', Li],
+  ['la', La],
   ['lui', Lui],
   ['auipc', Auipc],
   ['mv', Mv],
