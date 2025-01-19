@@ -1041,7 +1041,9 @@ export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
   ['bltu', Bltu],
   ['bgeu', Bgeu],
 
-  // Load/Store Memory Operations
+  // Load/Store Memory Operations (Byte, Halfword, Word)
+  ['lb', Lb],
+  ['lh', Lh],
   ['lw', Lw],
   ['sw', Sw],
 
