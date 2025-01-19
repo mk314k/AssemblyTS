@@ -1045,6 +1045,10 @@ export const instructions: Map<string, typeof AssemblyInstruction> = new Map([
   ['lb', Lb],
   ['lh', Lh],
   ['lw', Lw],
+  ['lbu', Lbu],
+  ['lhu', Lhu],
+  ['sb', Sb],
+  ['sh', Sh],
   ['sw', Sw],
 
   // Upper Immediate & Pseudo-Instructions
