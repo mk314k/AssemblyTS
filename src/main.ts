@@ -1,5 +1,5 @@
 import { StateVar, StateVarList } from 'statebinderk';
-import { Assembler } from './instruction';
+import { Assembler, AssemblyInstruction } from './instruction';
 import { parser } from './parser';
 import { CodeEditor } from './editor';
 import './style.css';
