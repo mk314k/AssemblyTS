@@ -13,7 +13,7 @@ const SAMPLE_PROGRAMS: Record<string, string> = {
 li a0, 5            # a0 = 5
 li a1, 3            # a1 = 3
 
-# Add the values in a0 and a1, store the result in a2
+# Add and multiply using RV32I + RV32M instructions
 add a2, a0, a1      # a2 = a0 + a1 (8)
 print a2            # Prints 8 to the console
 
