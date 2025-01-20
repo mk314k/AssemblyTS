@@ -15,12 +15,9 @@ li a1, 3            # a1 = 3
 
 # Add and multiply using RV32I + RV32M instructions
 add a2, a0, a1      # a2 = a0 + a1 (8)
-print a2            # Prints 8 to the console
-
-# Bitwise shift & subtract example
-slli a3, a2, 2      # a3 = 8 << 2 (32)
-sub a4, a3, a0      # a4 = 32 - 5 (27)
-print a4            # Prints 27 to the console
+mul a3, a2, a0      # a3 = 8 * 5 (40)
+print a2            # Prints 8
+print a3            # Prints 40
 
 # End of program
 ret                 # Return from program`,
