@@ -53,9 +53,15 @@ lw ra, 0(sp)        # Restore main's return address
 addi sp, sp, 4      # Deallocate stack frame
 ret                 # Exit program
 
-sum_double:
-add a0, a0, a1      # a0 = a0 + a1
-slli a0, a0, 1      # a0 = a0 * 2
+factorial:
+li t0, 1            # accumulator = 1
+fact_loop:
+ble a0, zero, fact_done
+mul t0, t0, a0      # accumulator *= a0
+addi a0, a0, -1     # a0--
+j fact_loop
+fact_done:
+mv a0, t0
 ret                 # Return to caller (jumps to ra)`,
 
   'memory_demo.asm': `# Data Memory Store (sw) and Load (lw) Demo
