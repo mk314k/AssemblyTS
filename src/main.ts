@@ -44,9 +44,8 @@ li sp, 1024         # Initialize stack pointer
 addi sp, sp, -4     # Allocate 4 bytes on stack
 sw ra, 0(sp)        # Save main's return address (0)
 
-li a0, 12           # 1st argument: 12
-li a1, 30           # 2nd argument: 30
-jal ra, sum_double  # Call sum_double(12, 30)
+li a0, 6            # Compute 6! (factorial = 720)
+jal ra, factorial   # Call factorial(6)
 
 print a0            # Prints (12 + 30) * 2 = 84
 
