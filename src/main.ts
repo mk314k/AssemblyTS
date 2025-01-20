@@ -47,7 +47,7 @@ sw ra, 0(sp)        # Save main's return address (0)
 li a0, 6            # Compute 6! (factorial = 720)
 jal ra, factorial   # Call factorial(6)
 
-print a0            # Prints (12 + 30) * 2 = 84
+print a0            # Prints 720
 
 lw ra, 0(sp)        # Restore main's return address
 addi sp, sp, 4      # Deallocate stack frame
