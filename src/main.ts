@@ -64,20 +64,26 @@ fact_done:
 mv a0, t0
 ret                 # Return to caller (jumps to ra)`,
 
-  'memory_demo.asm': `# Data Memory Store (sw) and Load (lw) Demo
-li s0, 100          # Base memory address = 100
-li a0, 42           # Value 1
-li a1, 1024         # Value 2
+  'data_section.asm': `# .data & .text Section Directives + Byte/Word Memory Demo
+.data
+nums: .word 10, 20, 30, 40
+bytes: .byte 0x41, 0x42, 0x43, 0x00
 
-sw a0, 0(s0)        # Store 42 at address 100
-sw a1, 4(s0)        # Store 1024 at address 104
+.text
+la s0, nums         # Load address of 'nums' array (100)
+lw t0, 0(s0)        # t0 = 10
+lw t1, 4(s0)        # t1 = 20
+lw t2, 8(s0)        # t2 = 30
+lw t3, 12(s0)       # t3 = 40
 
-lw t0, 0(s0)        # Load from address 100 into t0
-lw t1, 4(s0)        # Load from address 104 into t1
-add t2, t0, t1      # t2 = 42 + 1024 = 1066
+add a0, t0, t1      # 10 + 20 = 30
+add a0, a0, t2      # 30 + 30 = 60
+add a0, a0, t3      # 60 + 40 = 100
+print a0            # Prints sum of array (100)
 
-printm s0           # Print memory at address in s0 (42)
-print t2            # Print sum (1066)
+la s1, bytes        # Load address of 'bytes'
+lbu a1, 0(s1)       # Load first byte (0x41 = 65)
+print a1            # Prints 65
 ret`
 };
 
