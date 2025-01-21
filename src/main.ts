@@ -254,6 +254,7 @@ function main(): void {
   const buildRun = document.getElementById("buildRun");
   const build = document.getElementById("build");
   const run = document.getElementById("run");
+  const step = document.getElementById("step");
   const reset = document.getElementById("reset");
   const clearConsoleBtn = document.getElementById("clearConsole");
 
