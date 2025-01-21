@@ -272,6 +272,10 @@ function main(): void {
     runProgram();
   });
 
+  step?.addEventListener('click', () => {
+    stepProgram();
+  });
+
   reset?.addEventListener('click', () => {
     Assembler.reset();
     consoleBox.clear();
