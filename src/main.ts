@@ -197,8 +197,11 @@ function main(): void {
   function compile(): boolean {
     try {
       const startAddr = getAddr('buildAddr');
-      parser(CodeEditor.code, startAddr, Assembler.instMemory);
-      Assembler.showInst();
+      Assembler.isStepping = false;
+      Assembler.pc.jump(0);
+      Assembler.syncPcUI();
+      parser(CodeEditor.code, startAddr, Assembler.instMemory, Assembler.dataMemory);
+      Assembler.refreshMemoryUI();
       const count = Assembler.instMemory.memory.size;
       consoleBox.log(`Build succeeded (${count} instruction${count === 1 ? '' : 's'} at address ${startAddr}).`, 'info');
       setStatus('Build OK');
