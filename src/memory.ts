@@ -27,7 +27,7 @@ export function numToBin(num: number, bitLength = 5): string {
 }
 
 /**
- * Represents data stored in memory.
+ * Represents a 32-bit word stored in memory.
  */
 export class Data implements MemContent {
   constructor(public readonly data: number) {}
