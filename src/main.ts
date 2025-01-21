@@ -226,6 +226,30 @@ function main(): void {
     }
   }
 
+  function stepProgram(): void {
+    try {
+      const runAddr = getAddr('runAddr');
+      if (Assembler.instMemory.memory.size === 0) {
+        if (!compile()) return;
+      }
+      const nextPc = Assembler.isStepping && Assembler.pc.val !== 0 ? Assembler.pc.val : runAddr;
+      const inst = Assembler.instMemory.get(nextPc) as AssemblyInstruction | undefined;
+      const lineInfo = inst?.sourceLine ? ` (line ${inst.sourceLine})` : '';
+
+      const hasMore = Assembler.stepInstruction(runAddr);
+      if (hasMore) {
+        setStatus(`Stepping @ ${nextPc}${lineInfo}`);
+      } else {
+        setStatus('Step Complete');
+        consoleBox.log('Program execution completed.', 'info');
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      consoleBox.log(`${msg}`, 'error');
+      setStatus('Runtime Error', true);
+    }
+  }
+
   // Attach event listeners to buttons for compiling and executing code
   const buildRun = document.getElementById("buildRun");
   const build = document.getElementById("build");
