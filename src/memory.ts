@@ -66,6 +66,7 @@ export class Memory {
 
   /**
    * Retrieves the content stored at the specified memory address.
+   * For unaligned or byte-manipulated addresses, reconstructs the 32-bit word if bytes exist.
    * @param address The memory address to retrieve content from.
    * @returns The content stored at the specified memory address.
    */
