@@ -71,7 +71,17 @@ export class Memory {
    * @returns The content stored at the specified memory address.
    */
   get(address: number): MemContent | undefined {
-    return this.memory.get(address);
+    const direct = this.memory.get(address);
+    if (direct !== undefined) {
+      return direct;
+    }
+    // Check if any overlapping aligned 32-bit words exist around this address
+    const base0 = address & ~3;
+    const base1 = (address + 3) & ~3;
+    if (this.memory.has(base0) || this.memory.has(base1)) {
+      return new Data(this.loadWord(address));
+    }
+    return undefined;
   }
 
   /**
