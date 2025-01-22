@@ -86,6 +86,7 @@ export class Memory {
 
   /**
    * Sets the content at the specified memory address.
+   * If `value` is a `Data` instance, stores it using little-endian byte-addressable words.
    * @param address The memory address to set content at.
    * @param value The content to be stored at the memory address.
    */
