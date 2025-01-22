@@ -33,7 +33,7 @@ export class Data implements MemContent {
   constructor(public readonly data: number) {}
 
   numValue(): number {
-    return this.data;
+    return this.data | 0;
   }
 
   binaryRep(): string {
