@@ -91,7 +91,113 @@ export class Memory {
    * @param value The content to be stored at the memory address.
    */
   set(address: number, value: MemContent): void {
-    this.memory.set(address, value);
+    if (value instanceof Data) {
+      this.storeWord(address, value.numValue());
+    } else {
+      this.memory.set(address, value);
+    }
+  }
+
+  /**
+   * Reads a single unsigned byte (0..255) from a byte address (little-endian within 4-byte aligned words).
+   */
+  public readByteUnsigned(address: number): number {
+    const wordAddr = address & ~3;
+    const byteOffset = address & 3;
+    const content = this.memory.get(wordAddr);
+    if (!content) return 0;
+    const wordVal = content.numValue();
+    return (wordVal >>> (byteOffset * 8)) & 0xff;
+  }
+
+  /**
+   * Writes a single byte (0..255) to a byte address (little-endian within 4-byte aligned words).
+   */
+  public writeByte(address: number, byteVal: number): void {
+    const wordAddr = address & ~3;
+    const byteOffset = address & 3;
+    const shift = byteOffset * 8;
+    const currentWord = this.memory.get(wordAddr)?.numValue() ?? 0;
+    const mask = ~(0xff << shift);
+    const updatedWord = (currentWord & mask) | ((byteVal & 0xff) << shift);
+    this.memory.set(wordAddr, new Data(updatedWord));
+  }
+
+  /**
+   * Loads a signed 8-bit byte (`lb`) from `address`.
+   */
+  public loadByte(address: number): number {
+    const b = this.readByteUnsigned(address);
+    return (b << 24) >> 24;
+  }
+
+  /**
+   * Loads an unsigned 8-bit byte (`lbu`) from `address`.
+   */
+  public loadByteUnsigned(address: number): number {
+    return this.readByteUnsigned(address);
+  }
+
+  /**
+   * Loads a signed 16-bit halfword (`lh`, little-endian) from `address`.
+   */
+  public loadHalf(address: number): number {
+    const b0 = this.readByteUnsigned(address);
+    const b1 = this.readByteUnsigned(address + 1);
+    const half = b0 | (b1 << 8);
+    return (half << 16) >> 16;
+  }
+
+  /**
+   * Loads an unsigned 16-bit halfword (`lhu`, little-endian) from `address`.
+   */
+  public loadHalfUnsigned(address: number): number {
+    const b0 = this.readByteUnsigned(address);
+    const b1 = this.readByteUnsigned(address + 1);
+    return (b0 | (b1 << 8)) >>> 0;
+  }
+
+  /**
+   * Loads a 32-bit word (`lw`, little-endian) from `address`.
+   */
+  public loadWord(address: number): number {
+    if ((address & 3) === 0) {
+      return (this.memory.get(address)?.numValue() ?? 0) | 0;
+    }
+    const b0 = this.readByteUnsigned(address);
+    const b1 = this.readByteUnsigned(address + 1);
+    const b2 = this.readByteUnsigned(address + 2);
+    const b3 = this.readByteUnsigned(address + 3);
+    return (b0 | (b1 << 8) | (b2 << 16) | (b3 << 24)) | 0;
+  }
+
+  /**
+   * Stores an 8-bit byte (`sb`) to `address`.
+   */
+  public storeByte(address: number, value: number): void {
+    this.writeByte(address, value & 0xff);
+  }
+
+  /**
+   * Stores a 16-bit halfword (`sh`, little-endian) to `address`.
+   */
+  public storeHalf(address: number, value: number): void {
+    this.writeByte(address, value & 0xff);
+    this.writeByte(address + 1, (value >>> 8) & 0xff);
+  }
+
+  /**
+   * Stores a 32-bit word (`sw`, little-endian) to `address`.
+   */
+  public storeWord(address: number, value: number): void {
+    if ((address & 3) === 0) {
+      this.memory.set(address, new Data(value | 0));
+      return;
+    }
+    this.writeByte(address, value & 0xff);
+    this.writeByte(address + 1, (value >>> 8) & 0xff);
+    this.writeByte(address + 2, (value >>> 16) & 0xff);
+    this.writeByte(address + 3, (value >>> 24) & 0xff);
   }
 
   /**
