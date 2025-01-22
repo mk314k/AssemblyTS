@@ -47,6 +47,8 @@ export class Data implements MemContent {
 
 /**
  * Represents memory in the system.
+ * Supports both word-level `MemContent` entries (used by Instruction Memory and Data Memory UI)
+ * and true little-endian byte-addressable load/store operations (`lb`, `lbu`, `lh`, `lhu`, `lw`, `sb`, `sh`, `sw`).
  */
 export class Memory {
   public readonly memory: Map<number, MemContent>;
