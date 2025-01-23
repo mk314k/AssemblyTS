@@ -1,4 +1,4 @@
-import { AssemblyInstruction, instructions } from "./instruction";
+import { Assembler, AssemblyInstruction, instructions } from "./instruction";
 import { SyntaxError } from "./exception";
 import { Register, regValidStr } from "./register";
 import { Memory } from "./memory";
