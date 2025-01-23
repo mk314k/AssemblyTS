@@ -16,6 +16,23 @@ const PC_RELATIVE_INSTRUCTIONS = new Set([
 ]);
 
 /**
+ * Parses a numeric literal (decimal or hexadecimal `0x...`).
+ */
+function parseNumericLiteral(token: string, lineNo?: number): number {
+  const trimmed = token.trim();
+  if (/^-?0x[0-9a-fA-F]+$/.test(trimmed)) {
+    return parseInt(trimmed, 16);
+  }
+  const num = Number(trimmed);
+  if (Number.isNaN(num)) {
+    throw new SyntaxError(
+      lineNo ? `Line ${lineNo}: Invalid numeric literal "${token}"` : `Invalid numeric literal "${token}"`
+    );
+  }
+  return num;
+}
+
+/**
  * Function to determine the register or numerical argument based on the token provided.
  * If the instruction is PC-relative (branch or jal/j) and the argument is a label,
  * converts the label's absolute address into a PC-relative byte offset (`labelAddr - currentPc`).
