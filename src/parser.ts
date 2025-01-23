@@ -3,8 +3,11 @@ import { SyntaxError } from "./exception";
 import { Register, regValidStr } from "./register";
 import { Memory } from "./memory";
 
-// Represents a mapping of labels to memory addresses
-const labels: Map<string, number> = new Map();
+// Represents a mapping of labels to memory addresses (both .data and .text labels)
+export const labels: Map<string, number> = new Map();
+
+// Default starting address for `.data` segment
+const DEFAULT_DATA_START_ADDR = 100;
 
 // Instructions whose target operand is a PC-relative byte offset when given a label
 const PC_RELATIVE_INSTRUCTIONS = new Set([
