@@ -223,6 +223,10 @@ export class Memory {
     sortedEntries.forEach(([address, value]) => {
       const memByteDiv = document.createElement('div');
       memByteDiv.classList.add('mem-byte', 'flex-horizontal');
+      memByteDiv.id = `mem-addr-${address}`;
+      if (activeAddress !== undefined && activeAddress !== 0 && address === activeAddress) {
+        memByteDiv.classList.add('mem-active-pc');
+      }
       const hexVal = value.hexRep().padStart(8, '0');
       const decVal = value.numValue();
       memByteDiv.title = `Address: ${address} (0x${(address >>> 0).toString(16)}) | Decimal: ${decVal}`;
