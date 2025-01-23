@@ -205,7 +205,7 @@ export class Memory {
    * @param memElement The HTML element to display memory content.
    * @param activeAddress Optional PC address to highlight in instruction memory.
    */
-  outHTML(memElement: HTMLElement | null): void {
+  outHTML(memElement: HTMLElement | null, activeAddress?: number): void {
     if (!memElement) return;
 
     memElement.innerHTML = '';
