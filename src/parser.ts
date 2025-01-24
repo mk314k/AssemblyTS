@@ -66,6 +66,96 @@ function getRegNum(
   }
 }
 
+/**
+ * Unescapes common C-style escape sequences inside `.asciz` / `.string` literals.
+ */
+function unescapeStringLiteral(raw: string): string {
+  return raw
+    .replace(/\\n/g, '\n')
+    .replace(/\\t/g, '\t')
+    .replace(/\\r/g, '\r')
+    .replace(/\\0/g, '\0')
+    .replace(/\\"/g, '"')
+    .replace(/\\\\/g, '\\');
+}
+
+/**
+ * Parses a `.data` directive line and writes the values into `dataMem` starting at `dataAddr`.
+ * Returns the updated `dataAddr`.
+ */
+function parseDataDirective(
+  line: string,
+  lineNo: number,
+  dataAddr: number,
+  dataMem: Memory
+): number {
+  const match = line.match(/^(\.\w+)\s*(.*)$/);
+  if (!match) {
+    throw new SyntaxError(`Line ${lineNo}: Expected data directive (e.g., .word, .byte, .half, .asciz) in .data section`);
+  }
+  const directive = match[1].toLowerCase();
+  const rest = match[2].trim();
+
+  if (directive === '.word') {
+    // Align to 4-byte boundary if needed
+    if ((dataAddr & 3) !== 0) {
+      dataAddr = (dataAddr + 3) & ~3;
+    }
+    const values = rest.split(',').map(v => v.trim()).filter(Boolean);
+    if (values.length === 0) {
+      throw new SyntaxError(`Line ${lineNo}: .word directive requires at least one value`);
+    }
+    for (const valStr of values) {
+      dataMem.storeWord(dataAddr, parseNumericLiteral(valStr, lineNo));
+      dataAddr += 4;
+    }
+  } else if (directive === '.half') {
+    if ((dataAddr & 1) !== 0) {
+      dataAddr += 1;
+    }
+    const values = rest.split(',').map(v => v.trim()).filter(Boolean);
+    if (values.length === 0) {
+      throw new SyntaxError(`Line ${lineNo}: .half directive requires at least one value`);
+    }
+    for (const valStr of values) {
+      dataMem.storeHalf(dataAddr, parseNumericLiteral(valStr, lineNo));
+      dataAddr += 2;
+    }
+  } else if (directive === '.byte') {
+    const values = rest.split(',').map(v => v.trim()).filter(Boolean);
+    if (values.length === 0) {
+      throw new SyntaxError(`Line ${lineNo}: .byte directive requires at least one value`);
+    }
+    for (const valStr of values) {
+      dataMem.storeByte(dataAddr, parseNumericLiteral(valStr, lineNo));
+      dataAddr += 1;
+    }
+  } else if (directive === '.asciz' || directive === '.string') {
+    const strMatch = rest.match(/^"(.*)"$/);
+    if (!strMatch) {
+      throw new SyntaxError(`Line ${lineNo}: ${directive} requires a double-quoted string literal`);
+    }
+    const str = unescapeStringLiteral(strMatch[1]);
+    for (let i = 0; i < str.length; i++) {
+      dataMem.storeByte(dataAddr, str.charCodeAt(i));
+      dataAddr += 1;
+    }
+    // Null terminator
+    dataMem.storeByte(dataAddr, 0);
+    dataAddr += 1;
+  } else if (directive === '.space' || directive === '.zero') {
+    const numBytes = parseNumericLiteral(rest, lineNo);
+    for (let i = 0; i < numBytes; i++) {
+      dataMem.storeByte(dataAddr + i, 0);
+    }
+    dataAddr += numBytes;
+  } else {
+    throw new SyntaxError(`Line ${lineNo}: Unknown data directive "${directive}"`);
+  }
+
+  return dataAddr;
+}
+
 // Type for pseudo memory, which has all required properties similar to Memory; Used for type safety
 type pseudoMem = Map<number, AssemblyInstruction>;
 
