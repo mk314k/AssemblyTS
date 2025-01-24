@@ -58,7 +58,7 @@ function getRegNum(
     return arg;
   } else if (/^-?0x[0-9a-fA-F]+$/.test(arg)) {
     return parseInt(arg, 16);
-  } else {
+  } else if (/^-?\d+(\.\d+)?$/.test(arg)) {
     return parseFloat(arg);
   }
 }
