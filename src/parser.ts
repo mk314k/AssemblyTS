@@ -60,6 +60,9 @@ function getRegNum(
     return parseInt(arg, 16);
   } else if (/^-?\d+(\.\d+)?$/.test(arg)) {
     return parseFloat(arg);
+  } else {
+    // Return non-numeric string token (e.g. invalid register like "x99") so instruction constructors can throw RegisterIndexError
+    return arg;
   }
 }
 
