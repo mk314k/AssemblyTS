@@ -36,10 +36,7 @@ function parseNumericLiteral(token: string, lineNo?: number): number {
  * Function to determine the register or numerical argument based on the token provided.
  * If the instruction is PC-relative (branch or jal/j) and the argument is a label,
  * converts the label's absolute address into a PC-relative byte offset (`labelAddr - currentPc`).
- *
- * @param arg - label or reg or (number in string form)
- * @param currentPc - address of the current instruction
- * @param isPcRelative - whether label resolution should be relative to currentPc
+ * For `la` / `li` or other instructions, resolves a label to its absolute address.
  */
 function getRegNum(
   arg: string | undefined,
