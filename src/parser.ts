@@ -192,6 +192,7 @@ export function parser(
 
   const instructionLines: { addr: number; text: string; lineNo: number }[] = [];
 
+  // Pass 1: Process sections (.data / .text), populate data directives, and collect all labels
   for (let i = 0; i < lines.length; i++) {
     let line = lines[i].split('#')[0].trim();
     if (!line) continue;
