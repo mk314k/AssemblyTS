@@ -168,7 +168,12 @@ type pseudoMem = Map<number, AssemblyInstruction>;
  * @param memory - Optional instruction Memory instance
  * @param dataMemory - Optional data Memory instance (defaults to `Assembler.dataMemory`)
  */
-export function parser(code: string, start_addr = 504, memory?: Memory): pseudoMem | void {
+export function parser(
+  code: string,
+  start_addr = 504,
+  memory?: Memory,
+  dataMemory: Memory = Assembler.dataMemory
+): pseudoMem | void {
   const lines = code.split("\n");
   let instMem: Memory | pseudoMem | undefined = memory;
 
