@@ -162,9 +162,11 @@ type pseudoMem = Map<number, AssemblyInstruction>;
 /**
  * Function to parse the assembly code and populate the memory with instructions (and `.data` into data memory).
  * Uses a two-pass approach so forward and backward label references both resolve properly.
- * @param code
- * @param start_addr
- * @param memory
+ *
+ * @param code - Assembly source code
+ * @param start_addr - Starting instruction memory address (default 504)
+ * @param memory - Optional instruction Memory instance
+ * @param dataMemory - Optional data Memory instance (defaults to `Assembler.dataMemory`)
  */
 export function parser(code: string, start_addr = 504, memory?: Memory): pseudoMem | void {
   const lines = code.split("\n");
