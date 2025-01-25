@@ -185,8 +185,11 @@ export function parser(
 
   labels.clear();
 
-  // Pass 1: Collect all labels and their corresponding instruction addresses
-  let scanAddr = start_addr;
+  let currentSection: 'text' | 'data' = 'text';
+  let scanTextAddr = start_addr;
+  let scanDataAddr = DEFAULT_DATA_START_ADDR;
+  let hasDataDirectives = false;
+
   const instructionLines: { addr: number; text: string; lineNo: number }[] = [];
 
   for (let i = 0; i < lines.length; i++) {
