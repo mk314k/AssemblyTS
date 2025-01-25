@@ -197,7 +197,20 @@ export function parser(
     let line = lines[i].split('#')[0].trim();
     if (!line) continue;
 
-    // Support labels on their own line ("loop:") or inline ("loop: addi a0, a0, 1")
+    // Check for section directives (.data or .text) before or after labels
+    if (line.toLowerCase() === '.data') {
+      if (!hasDataDirectives) {
+        dataMemory.clear();
+        hasDataDirectives = true;
+      }
+      currentSection = 'data';
+      continue;
+    } else if (line.toLowerCase() === '.text' || line.toLowerCase().startsWith('.globl')) {
+      currentSection = 'text';
+      continue;
+    }
+
+    // Extract any label definitions on the line ("arr: .word 1, 2" or "loop:")
     while (line.includes(':')) {
       const colonIdx = line.indexOf(':');
       const labelName = line.slice(0, colonIdx).trim();
