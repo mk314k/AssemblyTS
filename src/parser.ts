@@ -212,6 +212,8 @@ export function parser(
 
     // Extract any label definitions on the line ("arr: .word 1, 2" or "loop:")
     while (line.includes(':')) {
+      // Do not split colons inside string literals
+      const firstQuote = line.indexOf('"');
       const colonIdx = line.indexOf(':');
       const labelName = line.slice(0, colonIdx).trim();
       if (!labelName || /\s/.test(labelName)) {
