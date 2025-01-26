@@ -261,7 +261,7 @@ export function parser(
     }
   }
 
-  // Pass 2: Parse instructions and resolve operands/labels
+  // Pass 2: Parse instructions in `.text` and resolve operands/labels
   for (const item of instructionLines) {
     // Normalize memory addressing syntax `offset(base)` -> `,offset,base`
     const normalized = item.text.replace(/\(/g, ',').replace(/\)/g, '');
