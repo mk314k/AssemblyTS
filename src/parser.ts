@@ -215,6 +215,9 @@ export function parser(
       // Do not split colons inside string literals
       const firstQuote = line.indexOf('"');
       const colonIdx = line.indexOf(':');
+      if (firstQuote !== -1 && colonIdx > firstQuote) {
+        break;
+      }
       const labelName = line.slice(0, colonIdx).trim();
       if (!labelName || /\s/.test(labelName)) {
         throw new SyntaxError(`Line ${i + 1}: Invalid label name "${labelName}"`);
