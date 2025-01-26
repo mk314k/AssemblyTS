@@ -239,9 +239,25 @@ export function parser(
       line = line.slice(colonIdx + 1).trim();
     }
 
-    if (line) {
-      instructionLines.push({ addr: scanAddr, text: line, lineNo: i + 1 });
-      scanAddr += 4;
+    if (!line) continue;
+
+    if (line.toLowerCase() === '.data') {
+      if (!hasDataDirectives) {
+        dataMemory.clear();
+        hasDataDirectives = true;
+      }
+      currentSection = 'data';
+      continue;
+    } else if (line.toLowerCase() === '.text' || line.toLowerCase().startsWith('.globl')) {
+      currentSection = 'text';
+      continue;
+    }
+
+    if (currentSection === 'data') {
+      scanDataAddr = parseDataDirective(line, i + 1, scanDataAddr, dataMemory);
+    } else {
+      instructionLines.push({ addr: scanTextAddr, text: line, lineNo: i + 1 });
+      scanTextAddr += 4;
     }
   }
 
