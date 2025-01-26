@@ -222,7 +222,20 @@ export function parser(
       if (!labelName || /\s/.test(labelName)) {
         throw new SyntaxError(`Line ${i + 1}: Invalid label name "${labelName}"`);
       }
-      labels.set(labelName, scanAddr);
+
+      if (currentSection === 'data') {
+        // Align word directives to 4-byte boundary before binding label address
+        const remainder = line.slice(colonIdx + 1).trim();
+        if (remainder.toLowerCase().startsWith('.word') && (scanDataAddr & 3) !== 0) {
+          scanDataAddr = (scanDataAddr + 3) & ~3;
+        } else if (remainder.toLowerCase().startsWith('.half') && (scanDataAddr & 1) !== 0) {
+          scanDataAddr += 1;
+        }
+        labels.set(labelName, scanDataAddr);
+      } else {
+        labels.set(labelName, scanTextAddr);
+      }
+
       line = line.slice(colonIdx + 1).trim();
     }
 
