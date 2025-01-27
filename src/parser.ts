@@ -289,8 +289,7 @@ export function parser(
           inst = new InstClass(reg1, reg2);
         }
       } else {
-        const inst = new InstClass(reg1);
-        instMem.set(item.addr, inst);
+        inst = new InstClass(reg1);
       }
     } else {
       const inst = new InstClass();
