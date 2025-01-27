@@ -278,6 +278,7 @@ export function parser(
     const firstArgStr = firstTokens.slice(1).join(' ');
     const reg1 = getRegNum(firstArgStr || undefined, item.addr, isPcRel);
 
+    let inst: AssemblyInstruction;
     if ((reg1 !== '' && !Number.isNaN(reg1)) || reg1 === 0) {
       const reg2 = getRegNum(commaParts[1], item.addr, isPcRel);
       if ((reg2 !== '' && !Number.isNaN(reg2)) || reg2 === 0) {
