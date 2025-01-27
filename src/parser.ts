@@ -284,8 +284,7 @@ export function parser(
       if ((reg2 !== '' && !Number.isNaN(reg2)) || reg2 === 0) {
         const reg3 = getRegNum(commaParts[2], item.addr, isPcRel);
         if ((reg3 !== '' && !Number.isNaN(reg3)) || reg3 === 0) {
-          const inst = new InstClass(reg1, reg2, reg3);
-          instMem.set(item.addr, inst);
+          inst = new InstClass(reg1, reg2, reg3);
         } else {
           const inst = new InstClass(reg1, reg2);
           instMem.set(item.addr, inst);
