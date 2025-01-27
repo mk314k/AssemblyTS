@@ -286,8 +286,7 @@ export function parser(
         if ((reg3 !== '' && !Number.isNaN(reg3)) || reg3 === 0) {
           inst = new InstClass(reg1, reg2, reg3);
         } else {
-          const inst = new InstClass(reg1, reg2);
-          instMem.set(item.addr, inst);
+          inst = new InstClass(reg1, reg2);
         }
       } else {
         const inst = new InstClass(reg1);
