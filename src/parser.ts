@@ -294,6 +294,9 @@ export function parser(
     } else {
       inst = new InstClass();
     }
+
+    inst.sourceLine = item.lineNo;
+    instMem.set(item.addr, inst);
   }
 
   if (memory === undefined) {
