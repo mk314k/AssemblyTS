@@ -111,6 +111,7 @@ export class RegisterSet {
   private regStateList: StateVarList<number>;
 
   constructor() {
+    this.registers = new Array(32).fill(0);
     const initialStates = Array.from({ length: 32 }, (_, i) => ({
       id: `reg-x${i}`,
       state: 0,
