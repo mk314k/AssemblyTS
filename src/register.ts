@@ -133,7 +133,10 @@ export class RegisterSet {
 
   // Reset all registers back to 0 reactively
   reset(): void {
-    this.regStateList.listTransition(new Array(32).fill(0));
+    this.registers.fill(0);
+    if (typeof document !== 'undefined') {
+      this.regStateList.listTransition(new Array(32).fill(0));
+    }
   }
 
   // Method to get value of a register
