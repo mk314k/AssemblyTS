@@ -142,7 +142,7 @@ export class RegisterSet {
   // Method to get value of a register
   getValue(reg: Register): number {
     const index = regToIndex(reg);
-    return this.regStateList.current(index);
+    return this.registers[index];
   }
 
   // Method to set value of a register (reactively updates bound DOM element)
