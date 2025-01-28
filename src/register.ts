@@ -73,7 +73,10 @@ export function regToBin(reg: Register): string {
 }
 
 // Function to validate if the register string or number is valid
-export function regValid(reg: Register): boolean {
+export function regValid(reg: Register | undefined): boolean {
+  if (reg === undefined || reg === null) {
+    return false;
+  }
   if (typeof reg === 'number') {
     return Number.isInteger(reg) && reg >= 0 && reg < 32;
   } else {
