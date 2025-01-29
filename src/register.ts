@@ -150,7 +150,11 @@ export class RegisterSet {
     const index = regToIndex(reg);
     // Prevent setting the value of register x0
     if (index !== 0) {
-      this.regStateList.transition(index, value | 0);
+      const val32 = value | 0;
+      this.registers[index] = val32;
+      if (typeof document !== 'undefined') {
+        this.regStateList.transition(index, val32);
+      }
     }
   }
 
