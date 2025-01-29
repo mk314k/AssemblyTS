@@ -160,7 +160,7 @@ export class RegisterSet {
 
   // Method to initialize/output register cards to HTML element
   outHTML(regElement: HTMLElement | null): void {
-    if (!regElement) return;
+    if (!regElement || typeof document === 'undefined') return;
 
     // Only build the 32 register DOM nodes once; subsequent updates flow through StateVarList
     if (regElement.children.length !== 32) {
