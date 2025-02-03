@@ -4,7 +4,7 @@
 
 ## Live Playground
 
-## Features
+Try AssemblyTS directly in your browser at the **[AssemblyTS Playground](https://mk314k.github.io/AssemblyTS/)**.
 
 - **Interactive Assembly Environment**: AssemblyTS offers an interactive environment where users can write and execute Assembly code in real-time.
 <!-- - **TypeScript Implementation**: Built using TypeScript, AssemblyTS leverages the power of a modern and type-safe programming language. -->
