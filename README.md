@@ -6,11 +6,7 @@
 
 Try AssemblyTS directly in your browser at the **[AssemblyTS Playground](https://mk314k.github.io/AssemblyTS/)**.
 
-- **Interactive Assembly Environment**: AssemblyTS offers an interactive environment where users can write and execute Assembly code in real-time.
-<!-- - **TypeScript Implementation**: Built using TypeScript, AssemblyTS leverages the power of a modern and type-safe programming language. -->
-- **Console Output Debugging**: AssemblyTS allows to include print statement to read register and memory during execution.
-- **No Installation Required**: AssemblyTS runs entirely in the browser, eliminating the need for complex setup or installation procedures.
-- **Educational Tool**: AssemblyTS serves as an educational tool for learning Assembly language concepts and principles.
+## Key Features
 
 ## Getting Started
 
