@@ -2,9 +2,7 @@
 
 **AssemblyTS** is an interactive **RISC-V (`RV32IM`)** Assembly language IDE and emulator implemented in TypeScript. It provides a complete browser-based environment for writing, assembling, stepping through, and executing RISC-V assembly code in real time.
 
-## Documentation
-
-For detailed documentation on the AssemblyTS instructions, please refer to the [docs.md](docs/documentation.md) file.
+## Live Playground
 
 ## Features
 
