@@ -18,7 +18,7 @@ Try AssemblyTS directly in your browser at the **[AssemblyTS Playground](https:/
 - **Reactive Register & UI State**: Powered by [`statebinderk`](https://www.npmjs.com/package/statebinderk) for targeted DOM updates across all 32 registers (`x0`–`x31`), status indicators, and modals.
 - **GitHub Integration**: Load `.asm` files from any public GitHub repository or authenticate via OAuth / Personal Access Token to commit and save files directly from the browser.
 
-To start using AssemblyTS, simply visit the [AssemblyTS Playground](https://mk314k.github.io/AssemblyTS/) in your web browser. From there, you can begin writing and executing Assembly code right away.
+## Documentation
 
 <!-- ## Usage
 
