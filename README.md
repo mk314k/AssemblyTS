@@ -8,7 +8,15 @@ Try AssemblyTS directly in your browser at the **[AssemblyTS Playground](https:/
 
 ## Key Features
 
-## Getting Started
+- **RISC-V `RV32IM` Instruction Set**:
+  - **Base Integer (`RV32I`)**: `add`, `sub`, `and`, `or`, `xor`, `sll`, `srl`, `sra`, `slt`, `sltu`, `addi`, `andi`, `ori`, `xori`, `slti`, `sltiu`, `slli`, `srli`, `srai`, `lui`, `auipc`.
+  - **Multiply & Divide (`RV32M`)**: `mul`, `mulh`, `mulhsu`, `mulhu`, `div`, `divu`, `rem`, `remu`.
+  - **Branches & Jumps**: PC-relative branches (`beq`, `bne`, `blt`, `bge`, `bltu`, `bgeu`, `ble`, `bgt`) and jumps (`jal`, `jalr`, `j`, `ret`).
+  - **Byte-Addressable Memory**: Little-endian byte (`lb`, `lbu`, `sb`), halfword (`lh`, `lhu`, `sh`), and 32-bit word (`lw`, `sw`) operations.
+  - **Assembler Directives**: `.data` and `.text` segments supporting `.word`, `.half`, `.byte`, `.asciz` / `.string`, `.space` / `.zero`, and the `la` pseudo-instruction.
+- **Step-by-Step Debugger**: Step forward instruction-by-instruction with live Program Counter (`PC`) tracking, active instruction highlighting in memory, and active source line highlighting in the editor gutter.
+- **Reactive Register & UI State**: Powered by [`statebinderk`](https://www.npmjs.com/package/statebinderk) for targeted DOM updates across all 32 registers (`x0`–`x31`), status indicators, and modals.
+- **GitHub Integration**: Load `.asm` files from any public GitHub repository or authenticate via OAuth / Personal Access Token to commit and save files directly from the browser.
 
 To start using AssemblyTS, simply visit the [AssemblyTS Playground](https://mk314k.github.io/AssemblyTS/) in your web browser. From there, you can begin writing and executing Assembly code right away.
 
