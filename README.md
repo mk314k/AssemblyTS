@@ -24,7 +24,9 @@ For detailed documentation on all supported instructions and directives, see [`d
 
 ## Local Development
 
-<!-- ## Examples
+```bash
+# Install dependencies
+npm install
 
 Explore the examples directory for sample Assembly code snippets and usage scenarios. These examples can help you understand various Assembly language concepts and how to use them effectively within the AssemblyTS environment. -->
 
