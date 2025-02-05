@@ -20,7 +20,7 @@ Try AssemblyTS directly in your browser at the **[AssemblyTS Playground](https:/
 
 ## Documentation
 
-<!-- ## Usage
+For detailed documentation on all supported instructions and directives, see [`docs/documentation.md`](docs/documentation.md).
 
 1. **Writing Code**: Use the built-in code editor to write your Assembly code. AssemblyTS supports a variety of Assembly language constructs and instructions.
 2. **Executing Code**: Click the "Run" button to execute your Assembly code. AssemblyTS will interpret your code and display the output in real-time.
