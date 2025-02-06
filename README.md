@@ -40,7 +40,7 @@ npm run build
 
 ## License
 
-AssemblyTS is licensed under the [MIT License](LICENSE), allowing for free use, modification, and distribution of the software. See the LICENSE file for details.
+AssemblyTS is licensed under the [MIT License](LICENSE).
 
 ## Support
 
