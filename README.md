@@ -31,7 +31,8 @@ npm install
 # Start Vite development server
 npm run dev
 
-<!-- ## Contributing
+# Run automated unit tests
+npm test
 
 We welcome contributions from the community! Whether you're interested in adding new features, fixing bugs, or improving documentation, your contributions are highly appreciated. Please see our [Contribution Guidelines](CONTRIBUTING.md) for more information on how to get started. -->
 
