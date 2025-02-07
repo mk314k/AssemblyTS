@@ -598,7 +598,7 @@ main {
   width: var(--lnum-width);
   min-width: var(--lnum-width);
   height: 100%;
-  padding: 14px 10px 14px 0;
+  padding: 14px 0;
   background-color: var(--bg-editor);
   border-right: 1px solid rgba(48, 54, 61, 0.5);
   color: var(--text-muted);
