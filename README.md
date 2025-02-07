@@ -44,4 +44,4 @@ AssemblyTS is licensed under the [MIT License](LICENSE).
 
 ## Support
 
-For support, bug reports, or feature requests, please [open an issue](https://github.com/mk314k/AssemblyTS/issues) on GitHub.
+For bug reports or feature requests, please [open an issue](https://github.com/mk314k/AssemblyTS/issues) on GitHub.
