@@ -709,6 +709,60 @@ main {
   padding: 4px 6px;
 }
 
+.repo-meta {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  padding: 4px 2px 8px 2px;
+  word-break: break-all;
+}
+
+.repo-save-box {
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.repo-save-input {
+  width: 100%;
+  padding: 6px 8px;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  outline: none;
+}
+
+.repo-save-input:focus {
+  border-color: var(--border-focus);
+}
+
+.repo-save-btn {
+  width: 100%;
+  padding: 7px 10px;
+  background-color: #238636;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background-color 0.15s ease;
+}
+
+.repo-save-btn:hover {
+  background-color: #2ea043;
+}
+
 .explorer-empty {
   padding: 8px;
   font-size: 0.74rem;
