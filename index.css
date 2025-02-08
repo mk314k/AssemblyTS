@@ -609,7 +609,6 @@ main {
   justify-content: flex-start;
   align-items: stretch;
   overflow: hidden;
-  white-space: pre;
   user-select: none;
 }
 
