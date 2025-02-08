@@ -612,6 +612,18 @@ main {
   user-select: none;
 }
 
+.line-num-row {
+  padding-right: 10px;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.line-num-row.active-source-line {
+  background-color: var(--accent-primary-bg);
+  color: var(--accent-primary);
+  font-weight: 700;
+  border-right: 2px solid var(--accent-primary);
+}
+
 #code {
   flex: 1;
   height: 100%;
