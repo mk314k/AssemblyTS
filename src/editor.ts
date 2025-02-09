@@ -2,6 +2,7 @@ export class CodeEditor {
   private static editor: HTMLElement | null;
   private static lineElem: HTMLElement | null;
   public static lineNum = 0;
+  public static activeLine: number | null = null;
   public static code = '';
 
   public static init(code = ''): void {
