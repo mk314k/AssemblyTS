@@ -43,6 +43,7 @@ export class CodeEditor {
     if (this.editor && this.lineElem) {
       this.code = newCode;
       this.editor.innerText = newCode;
+      this.activeLine = null;
       this.renderLineNumbers(this.countLines(newCode));
     }
   }
