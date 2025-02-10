@@ -27,7 +27,6 @@ export class CodeEditor {
 
   private static countLines(text: string): number {
     if (!text) return 1;
-    // Normalize trailing newline quirks from contenteditable innerText
     const normalized = text.replace(/\r\n/g, '\n');
     const lines = normalized.split('\n');
     return Math.max(1, lines.length);
