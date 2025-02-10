@@ -35,6 +35,7 @@ export class CodeEditor {
   private static updateCode(e: Event): void {
     const target = e.target as HTMLElement;
     this.code = target.innerText;
+    this.activeLine = null;
     this.renderLineNumbers(this.countLines(this.code));
   }
 
