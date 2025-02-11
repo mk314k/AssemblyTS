@@ -48,6 +48,26 @@ export class CodeEditor {
     }
   }
 
+  /**
+   * Highlights the specified 1-based source line number in the line gutter during step debugging,
+   * or clears the highlight when `lineNo` is `null`.
+   */
+  public static setActiveLine(lineNo: number | null): void {
+    this.activeLine = lineNo;
+    if (!this.lineElem) return;
+
+    const children = this.lineElem.querySelectorAll('.line-num-row');
+    children.forEach((el) => {
+      const rowNum = Number(el.getAttribute('data-line'));
+      if (lineNo !== null && rowNum === lineNo) {
+        el.classList.add('active-source-line');
+        el.scrollIntoView({ block: 'nearest' });
+      } else {
+        el.classList.remove('active-source-line');
+      }
+    });
+  }
+
   private static handleKeyDown(event: KeyboardEvent): void {
     // Support Tab key for indentation inside the editor
     if (event.key === 'Tab') {
