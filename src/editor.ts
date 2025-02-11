@@ -84,7 +84,7 @@ export class CodeEditor {
   private static renderLineNumbers(totalLines: number): void {
     this.lineNum = Math.max(1, totalLines);
     if (this.lineElem) {
-      const nums: string[] = [];
+      let html = '';
       for (let i = 1; i <= this.lineNum; i++) {
         nums.push(`${i}`);
       }
