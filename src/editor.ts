@@ -69,7 +69,6 @@ export class CodeEditor {
   }
 
   private static handleKeyDown(event: KeyboardEvent): void {
-    // Support Tab key for indentation inside the editor
     if (event.key === 'Tab') {
       event.preventDefault();
       document.execCommand('insertText', false, '    ');
