@@ -89,7 +89,7 @@ export class CodeEditor {
         const activeClass = this.activeLine === i ? ' active-source-line' : '';
         html += `<div class="line-num-row${activeClass}" data-line="${i}">${i}</div>`;
       }
-      this.lineElem.innerText = nums.join('\n') + '\n';
+      this.lineElem.innerHTML = html;
     }
   }
 }
