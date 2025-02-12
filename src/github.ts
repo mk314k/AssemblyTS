@@ -10,6 +10,7 @@ const REDIRECT_URI: string = 'https://mk314k.github.io/AssemblyTS/';
 interface RepoFileInfo {
   name: string;
   url: string;
+  sha?: string;
 }
 
 interface RepoFileContent {
