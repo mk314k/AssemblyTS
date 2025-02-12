@@ -86,7 +86,8 @@ export class CodeEditor {
     if (this.lineElem) {
       let html = '';
       for (let i = 1; i <= this.lineNum; i++) {
-        nums.push(`${i}`);
+        const activeClass = this.activeLine === i ? ' active-source-line' : '';
+        html += `<div class="line-num-row${activeClass}" data-line="${i}">${i}</div>`;
       }
       this.lineElem.innerText = nums.join('\n') + '\n';
     }
