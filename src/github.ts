@@ -39,6 +39,8 @@ export class GitUser {
     GitUser.token = '';
     GitUser.authLabelState.transition('Login');
     codeTabPane.repoCodes.clear();
+    codeTabPane.repoShas.clear();
+    codeTabPane.currentFile = '';
     codeTabPane.showHTML();
   }
 
