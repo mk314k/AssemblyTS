@@ -137,7 +137,16 @@ export class GitUser {
   public static writeFileToRepo = async (path: string, content: string): Promise<void> => {
     if (this.token && this.userName && this.repo) {
       const base64Content = btoa(content);
-      await axios.put(
+      const existingSha = codeTabPane.repoShas.get(path);
+      const payload: Record<string, string> = {
+        message: `Update ${path} via AssemblyTS`,
+        content: base64Content,
+      };
+      if (existingSha) {
+        payload.sha = existingSha;
+      }
+
+      const res = await axios.put(
         `https://api.github.com/repos/${this.userName}/${this.repo}/contents/${path}`,
         {
           message: `Editing ${path}`,
