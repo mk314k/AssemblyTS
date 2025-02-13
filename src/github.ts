@@ -29,6 +29,10 @@ export class GitUser {
 
   constructor() {}
 
+  public static hasWriteAccess(): boolean {
+    return this.token !== '' && this.userName !== '' && this.repo !== '';
+  }
+
   public static reset(): void {
     GitUser.userName = '';
     GitUser.repo = '';
