@@ -16,6 +16,7 @@ interface RepoFileInfo {
 interface RepoFileContent {
   name: string;
   content: string;
+  sha?: string;
 }
 
 export class GitUser {
