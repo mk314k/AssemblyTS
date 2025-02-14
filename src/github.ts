@@ -156,6 +156,12 @@ export class GitUser {
           }
         }
       );
+
+      const newSha = res.data?.content?.sha;
+      if (newSha) {
+        codeTabPane.repoShas.set(path, newSha);
+      }
+      codeTabPane.repoCodes.set(path, content);
     }
   };
 }
