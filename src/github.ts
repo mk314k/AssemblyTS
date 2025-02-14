@@ -170,6 +170,7 @@ export class codeTabPane {
   public static repoCodes = new Map<string, string>();
   public static repoShas = new Map<string, string>();
   public static localCodes = new Map<string, string>();
+  public static currentFile = '';
 
   constructor() {}
 
