@@ -148,10 +148,7 @@ export class GitUser {
 
       const res = await axios.put(
         `https://api.github.com/repos/${this.userName}/${this.repo}/contents/${path}`,
-        {
-          message: `Editing ${path}`,
-          content: base64Content
-        },
+        payload,
         {
           headers: {
             Authorization: `token ${this.token}`,
