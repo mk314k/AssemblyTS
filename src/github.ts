@@ -176,6 +176,7 @@ export class codeTabPane {
 
   public static async fetchRepoContents(repoFiles: RepoFileInfo[]): Promise<void> {
     codeTabPane.repoCodes.clear();
+    codeTabPane.repoShas.clear();
     for (const file of repoFiles) {
       if (file.name.endsWith('.asm') || file.name.endsWith('.s')) {
         const response = await fetch(file.url);
