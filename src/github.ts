@@ -200,7 +200,10 @@ export class codeTabPane {
 
     if (GitUser.repo !== '' && GitUser.userName !== '') {
       const fileItems = Array.from(codeTabPane.repoCodes.keys())
-        .map(fname => `<div id="tab-${fname}" class="code-tab-layer file-item"><i class="fa-regular fa-file-code"></i> ${fname}</div>`)
+        .map(fname => {
+          const isActive = fname === codeTabPane.currentFile ? ' active-file' : '';
+          return `<div id="tab-${fname}" class="code-tab-layer file-item${isActive}"><i class="fa-regular fa-file-code"></i> ${fname}</div>`;
+        })
         .join('');
 
       codeTab.innerHTML = `
