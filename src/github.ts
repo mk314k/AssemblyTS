@@ -183,6 +183,9 @@ export class codeTabPane {
         if (response.status === 200) {
           const fileData: RepoFileContent = await response.json();
           codeTabPane.repoCodes.set(fileData.name, atob(fileData.content));
+          if (fileData.sha) {
+            codeTabPane.repoShas.set(fileData.name, fileData.sha);
+          }
         }
       }
     }
