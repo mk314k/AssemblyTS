@@ -206,6 +206,17 @@ export class codeTabPane {
         })
         .join('');
 
+      const saveControls = GitUser.hasWriteAccess()
+        ? `
+          <div class="repo-save-box">
+            <input type="text" id="saveFileName" class="repo-save-input" value="${codeTabPane.currentFile || 'main.asm'}" placeholder="filename.asm">
+            <button id="saveToGitBtn" class="repo-save-btn" title="Commit & push current editor code to GitHub">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Save to GitHub
+            </button>
+          </div>
+        `
+        : '';
+
       codeTab.innerHTML = `
         <div class="explorer-header">EXPLORER</div>
         <div class="code-tab-layer repo-user">
