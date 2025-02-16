@@ -189,6 +189,8 @@ export class codeTabPane {
         }
       }
     }
+    const firstFile = Array.from(codeTabPane.repoCodes.keys())[0] || 'main.asm';
+    codeTabPane.currentFile = firstFile;
     codeTabPane.showHTML();
   }
 
