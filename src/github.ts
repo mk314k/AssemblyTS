@@ -218,7 +218,7 @@ export class codeTabPane {
         : '';
 
       codeTab.innerHTML = `
-        <div class="explorer-header">EXPLORER</div>
+        <div class="explorer-header">GITHUB REPO</div>
         <div class="code-tab-layer repo-user">
           <div><i class="fa-brands fa-github"></i> ${GitUser.userName}</div>
           <div class="code-tab-layer repo-folder">
