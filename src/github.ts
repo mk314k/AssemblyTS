@@ -220,9 +220,8 @@ export class codeTabPane {
       codeTab.innerHTML = `
         <div class="explorer-header">GITHUB REPO</div>
         <div class="code-tab-layer repo-user">
-          <div><i class="fa-brands fa-github"></i> ${GitUser.userName}</div>
-          <div class="code-tab-layer repo-folder">
-            <div><i class="fa-regular fa-folder-open"></i> ${GitUser.repo}</div>
+          <div class="repo-meta"><i class="fa-brands fa-github"></i> ${GitUser.userName} / <strong>${GitUser.repo}</strong></div>
+          <div class="explorer-list">
             ${fileItems || '<div class="explorer-empty">No .asm files found</div>'}
           </div>
         </div>
