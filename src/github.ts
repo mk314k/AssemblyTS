@@ -225,6 +225,7 @@ export class codeTabPane {
             ${fileItems || '<div class="explorer-empty">No .asm files found</div>'}
           </div>
         </div>
+        ${saveControls}
       `;
 
       this.repoCodes.forEach((content, fname) => {
