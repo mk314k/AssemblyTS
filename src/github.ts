@@ -232,6 +232,7 @@ export class codeTabPane {
         const tabf = document.getElementById(`tab-${fname}`);
         if (tabf) {
           tabf.addEventListener('click', () => {
+            codeTabPane.currentFile = fname;
             document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active-file'));
             tabf.classList.add('active-file');
             CodeEditor.changeCode(content);
