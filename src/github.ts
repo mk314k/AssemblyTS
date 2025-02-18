@@ -235,6 +235,8 @@ export class codeTabPane {
             codeTabPane.currentFile = fname;
             document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active-file'));
             tabf.classList.add('active-file');
+            const saveInput = document.getElementById('saveFileName') as HTMLInputElement | null;
+            if (saveInput) saveInput.value = fname;
             CodeEditor.changeCode(content);
           });
         }
