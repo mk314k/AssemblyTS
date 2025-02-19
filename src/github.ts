@@ -241,6 +241,24 @@ export class codeTabPane {
           });
         }
       });
+
+      const saveBtn = document.getElementById('saveToGitBtn');
+      saveBtn?.addEventListener('click', async () => {
+        const saveInput = document.getElementById('saveFileName') as HTMLInputElement | null;
+        let targetName = saveInput ? saveInput.value.trim() : codeTabPane.currentFile || 'main.asm';
+        if (!targetName.endsWith('.asm') && !targetName.endsWith('.s')) {
+          targetName += '.asm';
+        }
+        try {
+          consoleBox.log(`Saving "${targetName}" to ${GitUser.userName}/${GitUser.repo}...`, 'info');
+          await GitUser.writeFileToRepo(targetName, CodeEditor.code);
+          codeTabPane.currentFile = targetName;
+          codeTabPane.showHTML();
+          consoleBox.log(`Saved "${targetName}" to GitHub successfully.`, 'info');
+        } catch (err) {
+          consoleBox.log(`Failed to save "${targetName}" to GitHub.`, 'error');
+        }
+      });
     } else {
       codeTab.innerHTML = `
         <div class="explorer-header">WORKSPACE</div>
