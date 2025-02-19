@@ -200,6 +200,7 @@ function main(): void {
       Assembler.isStepping = false;
       Assembler.pc.jump(0);
       Assembler.syncPcUI();
+      CodeEditor.setActiveLine(null);
       parser(CodeEditor.code, startAddr, Assembler.instMemory, Assembler.dataMemory);
       Assembler.refreshMemoryUI();
       const count = Assembler.instMemory.memory.size;
