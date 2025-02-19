@@ -218,6 +218,7 @@ function main(): void {
   function runProgram(): void {
     try {
       const runAddr = getAddr('runAddr');
+      CodeEditor.setActiveLine(null);
       Assembler.execute(runAddr);
       setStatus('Executed');
     } catch (err) {
