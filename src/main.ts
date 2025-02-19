@@ -234,9 +234,9 @@ function main(): void {
       if (Assembler.instMemory.memory.size === 0) {
         if (!compile()) return;
       }
-      const nextPc = Assembler.isStepping && Assembler.pc.val !== 0 ? Assembler.pc.val : runAddr;
-      const inst = Assembler.instMemory.get(nextPc) as AssemblyInstruction | undefined;
-      const lineInfo = inst?.sourceLine ? ` (line ${inst.sourceLine})` : '';
+      const executedPc = Assembler.isStepping && Assembler.pc.val !== 0 ? Assembler.pc.val : runAddr;
+      const executedInst = Assembler.instMemory.get(executedPc) as AssemblyInstruction | undefined;
+      const lineInfo = executedInst?.sourceLine ? ` (line ${executedInst.sourceLine})` : '';
 
       const hasMore = Assembler.stepInstruction(runAddr);
       if (hasMore) {
