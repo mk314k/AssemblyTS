@@ -249,6 +249,7 @@ function main(): void {
         consoleBox.log('Program execution completed.', 'info');
       }
     } catch (err) {
+      CodeEditor.setActiveLine(null);
       const msg = err instanceof Error ? err.message : String(err);
       consoleBox.log(`${msg}`, 'error');
       setStatus('Runtime Error', true);
