@@ -240,7 +240,9 @@ function main(): void {
 
       const hasMore = Assembler.stepInstruction(runAddr);
       if (hasMore) {
-        setStatus(`Stepping @ ${nextPc}${lineInfo}`);
+        const nextInst = Assembler.instMemory.get(Assembler.pc.val) as AssemblyInstruction | undefined;
+        CodeEditor.setActiveLine(nextInst?.sourceLine ?? executedInst?.sourceLine ?? null);
+        setStatus(`Stepping @ ${executedPc}${lineInfo}`);
       } else {
         setStatus('Step Complete');
         consoleBox.log('Program execution completed.', 'info');
