@@ -244,6 +244,7 @@ function main(): void {
         CodeEditor.setActiveLine(nextInst?.sourceLine ?? executedInst?.sourceLine ?? null);
         setStatus(`Stepping @ ${executedPc}${lineInfo}`);
       } else {
+        CodeEditor.setActiveLine(null);
         setStatus('Step Complete');
         consoleBox.log('Program execution completed.', 'info');
       }
