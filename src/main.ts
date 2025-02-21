@@ -284,6 +284,7 @@ function main(): void {
 
   reset?.addEventListener('click', () => {
     Assembler.reset();
+    CodeEditor.setActiveLine(null);
     consoleBox.clear();
     consoleBox.log('Registers, memory, and console reset.', 'info');
     setStatus('Ready');
