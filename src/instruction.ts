@@ -1,10 +1,12 @@
 import { StateVar } from 'statebinderk';
 import { Memory, MemContent, numToBin } from "./memory";
 import { Counter, RegisterSet, Register, regValid, regToBin } from "./register";
+import { ARMRegisterSet } from "./armRegister";
 import { RegisterIndexError, SyntaxError } from "./exception";
 import { consoleBox } from "./consoleBox";
 
 const MAX_EXECUTION_STEPS = 10000;
+export type Architecture = 'riscv' | 'arm';
 
 /**
  * The Assembler class represents an Assembler (emulator for hardware
@@ -13,7 +15,9 @@ const MAX_EXECUTION_STEPS = 10000;
  * and console output for debugging purpose.
  */
 export class Assembler {
-  static registers = new RegisterSet();   // 32 Registers
+  static arch: Architecture = 'riscv';    // Active ISA ('riscv' default, or 'arm')
+  static registers = new RegisterSet();   // 32 RISC-V Registers
+  static armRegisters = new ARMRegisterSet(); // 16 ARM Registers + CPSR Flags
   static instMemory = new Memory();       // Instruction Memory
   static dataMemory = new Memory();       // Data Memory
   static pc = new Counter();              // Program counter for keeping track of the current instruction address
@@ -28,6 +32,23 @@ export class Assembler {
     const hex = (pcVal >>> 0).toString(16).padStart(4, '0');
     elem.textContent = `${pcVal} (0x${hex})`;
   });
+
+  static setArch(newArch: Architecture): void {
+    Assembler.arch = newArch;
+    if (typeof document !== 'undefined' && this.regElem) {
+      this.regElem.innerHTML = '';
+      Assembler.refreshRegistersUI();
+    }
+  }
+
+  static refreshRegistersUI(): void {
+    if (typeof document === 'undefined') return;
+    if (Assembler.arch === 'arm') {
+      Assembler.armRegisters.outHTML(this.regElem);
+    } else {
+      Assembler.registers.outHTML(this.regElem);
+    }
+  }
 
   static syncPcUI(): void {
     if (typeof document !== 'undefined') {
@@ -49,7 +70,7 @@ export class Assembler {
     if (typeof document !== 'undefined') {
       this.regElem = document.getElementById("registers");
       this.memElem = document.getElementById("memory");
-      Assembler.registers.outHTML(this.regElem);
+      Assembler.refreshRegistersUI();
       Assembler.refreshMemoryUI();
       Assembler.syncPcUI();
     }
@@ -66,13 +87,14 @@ export class Assembler {
 
   static reset(): void {
     Assembler.registers.reset();
+    Assembler.armRegisters.reset();
     Assembler.instMemory.clear();
     Assembler.dataMemory.clear();
     Assembler.pc.jump(0);
     Assembler.isStepping = false;
     Assembler.consoleLog = "";
     if (typeof document !== 'undefined') {
-      Assembler.registers.outHTML(this.regElem);
+      Assembler.refreshRegistersUI();
       Assembler.refreshMemoryUI();
       Assembler.syncPcUI();
     }
@@ -110,6 +132,10 @@ export class Assembler {
       return false;
     }
 
+    if (Assembler.arch === 'arm') {
+      Assembler.armRegisters.setValue('pc', currentPc);
+    }
+
     inst.execute();
     Assembler.pc.step();
     Assembler.consoleOut();
@@ -121,10 +147,12 @@ export class Assembler {
     if (Assembler.pc.val === 0 || !nextInst) {
       Assembler.isStepping = false;
       Assembler.pc.jump(0);
+    } else if (Assembler.arch === 'arm') {
+      Assembler.armRegisters.setValue('pc', Assembler.pc.val);
     }
 
     if (typeof document !== 'undefined') {
-      Assembler.registers.outHTML(this.regElem);
+      Assembler.refreshRegistersUI();
       Assembler.refreshMemoryUI();
       Assembler.syncPcUI();
     }
@@ -139,12 +167,17 @@ export class Assembler {
     let steps = 0;
 
     while (Assembler.pc.val !== 0) {
-      const inst = Assembler.instMemory.get(Assembler.pc.val) as AssemblyInstruction | undefined;
+      const currentPc = Assembler.pc.val;
+      const inst = Assembler.instMemory.get(currentPc) as AssemblyInstruction | undefined;
       if (!inst) {
         if (steps === 0) {
           consoleBox.log(`No instruction found at run address ${addr}. Did you build the code first?`, 'error');
         }
         break;
+      }
+
+      if (Assembler.arch === 'arm') {
+        Assembler.armRegisters.setValue('pc', currentPc);
       }
 
       inst.execute();
@@ -159,7 +192,7 @@ export class Assembler {
     Assembler.pc.jump(0);
     if (typeof document !== 'undefined') {
       Assembler.refreshMemoryUI();
-      Assembler.registers.outHTML(this.regElem);
+      Assembler.refreshRegistersUI();
       Assembler.syncPcUI();
     }
     Assembler.consoleOut();
