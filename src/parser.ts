@@ -83,7 +83,7 @@ function unescapeStringLiteral(raw: string): string {
  * Parses a `.data` directive line and writes the values into `dataMem` starting at `dataAddr`.
  * Returns the updated `dataAddr`.
  */
-function parseDataDirective(
+export function parseDataDirective(
   line: string,
   lineNo: number,
   dataAddr: number,
