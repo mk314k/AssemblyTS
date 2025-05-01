@@ -165,6 +165,31 @@ header {
   border: 1px solid rgba(88, 166, 255, 0.3);
 }
 
+.arch-select {
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background-color: var(--accent-primary-bg);
+  color: var(--accent-primary);
+  border: 1px solid rgba(88, 166, 255, 0.35);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.arch-select:hover,
+.arch-select:focus {
+  border-color: var(--accent-primary);
+  background-color: rgba(56, 139, 253, 0.24);
+}
+
+.arch-select option {
+  background-color: var(--bg-panel);
+  color: var(--text-primary);
+}
+
 .header-meta {
   gap: 10px;
 }
@@ -545,6 +570,21 @@ main {
 .register.register-active {
   background-color: rgba(56, 139, 253, 0.1);
   border-color: rgba(88, 166, 255, 0.45);
+}
+
+.register.cpsr-flag {
+  min-width: 58px;
+  align-items: center;
+  border-color: rgba(210, 153, 34, 0.35);
+}
+
+.register.cpsr-flag .reg-abi {
+  color: var(--accent-warning);
+}
+
+.register.cpsr-flag.register-active {
+  background-color: rgba(210, 153, 34, 0.16);
+  border-color: var(--accent-warning);
 }
 
 .reg-header {

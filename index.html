@@ -16,7 +16,10 @@
         <div class="brand flex-horizontal">
           <span class="brand-badge"><i class="fa-solid fa-microchip"></i></span>
           <div class="header">AssemblyTS</div>
-          <span class="version-pill">RV32IM</span>
+          <select id="archSelect" class="arch-select" title="Select Instruction Set Architecture">
+            <option value="riscv" selected>RISC-V (RV32IM)</option>
+            <option value="arm">ARM (AArch32)</option>
+          </select>
         </div>
         <div class="header-meta flex-horizontal">
           <span class="pc-badge" title="Current Program Counter">PC: <strong id="pcBadgeVal">0 (0x0000)</strong></span>
@@ -83,8 +86,8 @@
         <!-- Register Strip -->
         <div class="registers-wrapper">
           <div class="panel-subheader flex-horizontal">
-            <span><i class="fa-solid fa-sliders"></i> Registers (x0 – x31)</span>
-            <span class="panel-hint">Scroll horizontally to inspect all 32 registers</span>
+            <span id="regPanelTitle"><i class="fa-solid fa-sliders"></i> Registers (x0 – x31)</span>
+            <span class="panel-hint" id="regPanelHint">Scroll horizontally to inspect all 32 registers</span>
           </div>
           <div class="registers flex-horizontal" id="registers"></div>
         </div>

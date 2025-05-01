@@ -1,13 +1,14 @@
 import { StateVar, StateVarList } from 'statebinderk';
-import { Assembler, AssemblyInstruction } from './instruction';
+import { Assembler, AssemblyInstruction, Architecture } from './instruction';
 import { parser } from './parser';
+import { parseArm } from './armParser';
 import { CodeEditor } from './editor';
 import './style.css';
 import { handleLogin } from './login';
 import { consoleBox } from './consoleBox';
 import { codeTabPane, GitUser } from './github';
 
-const SAMPLE_PROGRAMS: Record<string, string> = {
+const RISCV_SAMPLE_PROGRAMS: Record<string, string> = {
   'quickstart.asm': `# AssemblyTS Quickstart Demo (RV32IM)
 # Load two immediate values into registers a0 and a1
 li a0, 5            # a0 = 5
@@ -87,6 +88,76 @@ print a1            # Prints 65
 ret`
 };
 
+const ARM_SAMPLE_PROGRAMS: Record<string, string> = {
+  'arm_quickstart.s': `; AssemblyTS Quickstart Demo (ARM AArch32)
+mov r0, #12         ; r0 = 12
+mov r1, #5          ; r1 = 5
+add r2, r0, r1      ; r2 = 12 + 5 (17)
+mul r3, r2, r1      ; r3 = 17 * 5 (85)
+cmp r3, #50         ; Sets CPSR flags (N=0, Z=0, C=1, V=0)
+print r2            ; Prints 17
+print r3            ; Prints 85
+bx lr               ; Return from program`,
+
+  'arm_fibonacci.s': `; Compute first 7 Fibonacci numbers in ARM
+mov r0, #0          ; F(0) = 0
+mov r1, #1          ; F(1) = 1
+mov r2, #7          ; Counter = 7 terms
+
+loop:
+cmp r2, #0
+beq done            ; If Z == 1 (counter == 0), exit loop
+print r0            ; Print current Fibonacci term
+add r3, r0, r1      ; r3 = r0 + r1
+mov r0, r1          ; r0 = r1
+mov r1, r3          ; r1 = r3
+subs r2, r2, #1     ; counter-- (updates CPSR Z flag)
+bne loop            ; Repeat while Z == 0
+
+done:
+bx lr`,
+
+  'arm_subroutine.s': `; ARM Subroutine (bl), Stack (push/pop) & Return (bx lr)
+mov sp, #1024
+push {lr}           ; Save main return address (0) on stack
+
+mov r0, #6          ; Compute 6! (factorial = 720)
+bl factorial        ; Call factorial(6)
+
+print r0            ; Prints 720
+pop {lr}            ; Restore return address
+bx lr               ; Exit program
+
+factorial:
+mov r1, #1
+fact_loop:
+cmp r0, #1
+ble fact_done
+mul r1, r1, r0
+sub r0, r0, #1
+b fact_loop
+fact_done:
+mov r0, r1
+bx lr`,
+
+  'arm_data_memory.s': `; ARM .data Section & Bracket Addressing [rn, #offset]
+.data
+weights: .word 15, 25, 35, 45
+
+.text
+adr r4, weights     ; Load base address of 'weights' (100)
+ldr r0, [r4]        ; r0 = 15
+ldr r1, [r4, #4]    ; r1 = 25
+ldr r2, [r4, #8]    ; r2 = 35
+ldr r3, [r4, #12]   ; r3 = 45
+
+add r0, r0, r1
+add r0, r0, r2
+add r0, r0, r3      ; r0 = 120
+print r0            ; Prints 120
+bx lr`
+};
+
 // Reactive status badge state managed via statebinderk
 const statusBadgeState = new StateVar<{ text: string; isError: boolean }>(
   { text: 'Ready', isError: false },
@@ -108,7 +179,23 @@ const memTabState = new StateVarList<boolean>(
   }
 );
 
-function renderLocalExamples(activeFile = 'quickstart.asm'): void {
+function getActiveSampleMap(): Record<string, string> {
+  return Assembler.arch === 'arm' ? ARM_SAMPLE_PROGRAMS : RISCV_SAMPLE_PROGRAMS;
+}
+
+function updateRegHeaderForArch(): void {
+  const titleEl = document.getElementById('regPanelTitle');
+  const hintEl = document.getElementById('regPanelHint');
+  if (Assembler.arch === 'arm') {
+    if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-sliders"></i> CPSR Flags (NZCV) &amp; ARM Registers (r0 – r15)`;
+    if (hintEl) hintEl.textContent = 'CPSR flags + 16 general-purpose registers (fp, ip, sp, lr, pc)';
+  } else {
+    if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-sliders"></i> Registers (x0 – x31)`;
+    if (hintEl) hintEl.textContent = 'Scroll horizontally to inspect all 32 registers';
+  }
+}
+
+function renderLocalExamples(activeFile?: string): void {
   if (GitUser.repo !== '' && GitUser.userName !== '') {
     codeTabPane.showHTML();
     return;
@@ -116,25 +203,31 @@ function renderLocalExamples(activeFile = 'quickstart.asm'): void {
   const codeTab = document.getElementById('codeTab');
   if (!codeTab) return;
 
-  const itemsHTML = Object.keys(SAMPLE_PROGRAMS)
+  const sampleMap = getActiveSampleMap();
+  const defaultFile = Object.keys(sampleMap)[0];
+  const selectedFile = activeFile && activeFile in sampleMap ? activeFile : defaultFile;
+
+  const itemsHTML = Object.keys(sampleMap)
     .map(name => {
-      const activeClass = name === activeFile ? ' active-file' : '';
+      const activeClass = name === selectedFile ? ' active-file' : '';
       return `<div id="sample-${name}" class="code-tab-layer file-item${activeClass}"><i class="fa-regular fa-file-code"></i> ${name}</div>`;
     })
     .join('');
 
+  const headerLabel = Assembler.arch === 'arm' ? 'ARM EXAMPLES' : 'RISC-V EXAMPLES';
+
   codeTab.innerHTML = `
-    <div class="explorer-header">EXAMPLES</div>
+    <div class="explorer-header">${headerLabel}</div>
     <div class="explorer-list">
       ${itemsHTML}
     </div>
     <div class="explorer-hint">
       <i class="fa-brands fa-github"></i>
-      <span>Use the <b>Login</b> button in the left toolbar to load your own GitHub <code>.asm</code> repository.</span>
+      <span>Use the <b>Login</b> button in the left toolbar to load your own GitHub <code>.asm</code> / <code>.s</code> repository.</span>
     </div>
   `;
 
-  Object.entries(SAMPLE_PROGRAMS).forEach(([name, content]) => {
+  Object.entries(sampleMap).forEach(([name, content]) => {
     const el = document.getElementById(`sample-${name}`);
     el?.addEventListener('click', () => {
       CodeEditor.changeCode(content);
@@ -152,11 +245,29 @@ function setStatus(text: string, isError = false): void {
  * Initializes the main function responsible for compiling and executing assembly code.
  */
 function main(): void {
-  CodeEditor.init(SAMPLE_PROGRAMS['quickstart.asm']);
+  CodeEditor.init(RISCV_SAMPLE_PROGRAMS['quickstart.asm']);
   consoleBox.init();
   Assembler.init();
+  updateRegHeaderForArch();
   renderLocalExamples('quickstart.asm');
   memTabState.listTransition([true, false]);
+
+  const archSelect = document.getElementById('archSelect') as HTMLSelectElement | null;
+  archSelect?.addEventListener('change', () => {
+    const chosen = (archSelect.value === 'arm' ? 'arm' : 'riscv') as Architecture;
+    Assembler.setArch(chosen);
+    Assembler.reset();
+    CodeEditor.setActiveLine(null);
+    updateRegHeaderForArch();
+
+    const sampleMap = getActiveSampleMap();
+    const firstFile = Object.keys(sampleMap)[0];
+    CodeEditor.changeCode(sampleMap[firstFile]);
+    renderLocalExamples(firstFile);
+    consoleBox.clear();
+    consoleBox.log(`Switched architecture to ${chosen === 'arm' ? 'ARM (AArch32)' : 'RISC-V (RV32IM)'}.`, 'info');
+    setStatus('Ready');
+  });
 
   const gitButton = document.getElementById("git");
   gitButton?.addEventListener('click', (e) => {
@@ -193,7 +304,7 @@ function main(): void {
     return addr;
   }
 
-  // Compile assembly code
+  // Compile assembly code for active architecture
   function compile(): boolean {
     try {
       const startAddr = getAddr('buildAddr');
@@ -201,10 +312,17 @@ function main(): void {
       Assembler.pc.jump(0);
       Assembler.syncPcUI();
       CodeEditor.setActiveLine(null);
-      parser(CodeEditor.code, startAddr, Assembler.instMemory, Assembler.dataMemory);
+
+      if (Assembler.arch === 'arm') {
+        parseArm(CodeEditor.code, startAddr, Assembler.instMemory, Assembler.dataMemory);
+      } else {
+        parser(CodeEditor.code, startAddr, Assembler.instMemory, Assembler.dataMemory);
+      }
+
       Assembler.refreshMemoryUI();
       const count = Assembler.instMemory.memory.size;
-      consoleBox.log(`Build succeeded (${count} instruction${count === 1 ? '' : 's'} at address ${startAddr}).`, 'info');
+      const isaLabel = Assembler.arch === 'arm' ? 'ARM' : 'RISC-V';
+      consoleBox.log(`${isaLabel} build succeeded (${count} instruction${count === 1 ? '' : 's'} at address ${startAddr}).`, 'info');
       setStatus('Build OK');
       return true;
     } catch (err) {
