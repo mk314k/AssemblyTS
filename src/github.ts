@@ -7,6 +7,25 @@ const GITHUB_CLIENT_ID: string = 'Ov23liZl7f0TzzDD0CSA';
 const TOKEN_URI: string = 'https://purpletreeauth.netlify.app/.netlify/functions/api/auth/github/callback';
 const REDIRECT_URI: string = 'https://mk314k.github.io/AssemblyTS/';
 
+function encodeBase64UTF8(text: string): string {
+  const bytes = new TextEncoder().encode(text);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+function decodeBase64UTF8(base64: string): string {
+  const cleaned = base64.replace(/\s+/g, '');
+  const binary = atob(cleaned);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return new TextDecoder().decode(bytes);
+}
+
 interface RepoFileInfo {
   name: string;
   url: string;
@@ -89,7 +108,7 @@ export class GitUser {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     if (!code) {
-      const authUrl = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=repo`;
+      const authUrl = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=public_repo`;
       window.location.href = authUrl;
       return;
     }
@@ -135,34 +154,36 @@ export class GitUser {
   };
 
   public static writeFileToRepo = async (path: string, content: string): Promise<void> => {
-    if (this.token && this.userName && this.repo) {
-      const base64Content = btoa(content);
-      const existingSha = codeTabPane.repoShas.get(path);
-      const payload: Record<string, string> = {
-        message: `Update ${path} via AssemblyTS`,
-        content: base64Content,
-      };
-      if (existingSha) {
-        payload.sha = existingSha;
-      }
-
-      const res = await axios.put(
-        `https://api.github.com/repos/${this.userName}/${this.repo}/contents/${path}`,
-        payload,
-        {
-          headers: {
-            Authorization: `token ${this.token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-
-      const newSha = res.data?.content?.sha;
-      if (newSha) {
-        codeTabPane.repoShas.set(path, newSha);
-      }
-      codeTabPane.repoCodes.set(path, content);
+    if (!this.hasWriteAccess()) {
+      throw new Error('Write access is required to save files');
     }
+
+    const base64Content = encodeBase64UTF8(content);
+    const existingSha = codeTabPane.repoShas.get(path);
+    const payload: Record<string, string> = {
+      message: `Update ${path} via AssemblyTS`,
+      content: base64Content,
+    };
+    if (existingSha) {
+      payload.sha = existingSha;
+    }
+
+    const res = await axios.put(
+      `https://api.github.com/repos/${this.userName}/${this.repo}/contents/${path}`,
+      payload,
+      {
+        headers: {
+          Authorization: `token ${this.token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    const newSha = res.data?.content?.sha;
+    if (newSha) {
+      codeTabPane.repoShas.set(path, newSha);
+    }
+    codeTabPane.repoCodes.set(path, content);
   };
 }
 
@@ -182,7 +203,7 @@ export class codeTabPane {
         const response = await fetch(file.url);
         if (response.status === 200) {
           const fileData: RepoFileContent = await response.json();
-          codeTabPane.repoCodes.set(fileData.name, atob(fileData.content));
+          codeTabPane.repoCodes.set(fileData.name, decodeBase64UTF8(fileData.content));
           if (fileData.sha) {
             codeTabPane.repoShas.set(fileData.name, fileData.sha);
           }
@@ -256,7 +277,8 @@ export class codeTabPane {
           codeTabPane.showHTML();
           consoleBox.log(`Saved "${targetName}" to GitHub successfully.`, 'info');
         } catch (err) {
-          consoleBox.log(`Failed to save "${targetName}" to GitHub.`, 'error');
+          const msg = err instanceof Error ? err.message : 'Failed to save to GitHub.';
+          consoleBox.log(msg, 'error');
         }
       });
     } else {

@@ -23,10 +23,12 @@ export const loginPAT = `
     <h2 class="pop-title"><i class="fa-solid fa-key"></i> PAT Authentication</h2>
     <button id="closePop" class="pop-close" title="Close">&times;</button>
   </div>
-  <p class="pop-subtitle">Enter your GitHub username and Personal Access Token</p>
+  <div class="pop-note">
+    Tip: Use a Fine-Grained PAT (<code>github_pat_...</code>) scoped only to your assembly repository.
+  </div>
   <div class="pop-field">
     <input type="text" id="userName" class="pop-input" placeholder="GitHub Username" required>
-    <input type="password" id="PAT" class="pop-input" placeholder="Personal Access Token (ghp_...)" required>
+    <input type="password" id="PAT" class="pop-input" placeholder="Fine-Grained or Classic PAT" required>
   </div>
   <div class="pop-actions">
     <button id="login" class="pop-button pat-auth">Connect Repository</button>
