@@ -167,3 +167,20 @@ Branch targets can be either a **label** (resolved automatically to a PC-relativ
   - **Syntax**: `j <label_or_offset>`
 - **ret**: Return from subroutine (`jalr x0, ra, 0`).
   - **Syntax**: `ret`
+
+---
+
+## ARM (`AArch32`) Mode Reference
+
+You can switch the active architecture in the top navigation bar from **RISC-V (RV32IM)** (default) to **ARM (AArch32)**.
+
+### ARM Registers & CPSR Condition Flags
+- **Registers (`r0` – `r15`)**: 16 general-purpose 32-bit registers (`r0` is writable; `r11=fp`, `r12=ip`, `r13=sp`, `r14=lr`, `r15=pc`).
+- **CPSR Flags (`N`, `Z`, `C`, `V`)**: Displayed at the left of the register strip (`N` = Negative, `Z` = Zero, `C` = Carry / Not-Borrow, `V` = Signed Overflow). Updated by `cmp`, `cmn`, `tst`, `adds`, `subs`, `movs`.
+
+### ARM Instructions
+- **Data Processing**: `mov`, `movs`, `mvn`, `adr`, `add`, `adds`, `sub`, `subs`, `rsb`, `and`, `orr`, `eor`, `bic`, `lsl`, `lsr`, `asr`, `mul`, `sdiv`, `udiv` (supports `#imm` or register as last operand, e.g. `add r0, r1, #10`).
+- **Compare & Test**: `cmp <rn>, <op2>`, `cmn <rn>, <op2>`, `tst <rn>, <op2>`.
+- **Memory & Stack**: `ldr`, `str`, `ldrb`, `ldrsb`, `strb`, `ldrh`, `ldrsh`, `strh` (with bracket syntax `ldr r0, [r4, #4]`), plus `push {lr}` and `pop {lr}`.
+- **Branches & Subroutines**: `b <label>`, `bl <label>` (links return address into `lr`), `bx lr` (or `ret`), and conditional branches `beq`, `bne`, `blt`, `bge`, `bgt`, `ble`, `bhi`, `bls`, `bcs`, `bcc`.
+
