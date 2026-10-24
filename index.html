@@ -3,72 +3,125 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AssemblyTS</title>
+    <title>AssemblyTS — Interactive RISC-V Assembly IDE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     
     <script src="https://kit.fontawesome.com/7ca2746f93.js" crossorigin="anonymous"></script>
-    <script type="module" crossorigin src="./assets/index-e0291010.js"></script>
-    <link rel="stylesheet" href="./assets/index-0cb0ef4f.css">
+    <script type="module" crossorigin src="./assets/index-5497a5c5.js"></script>
+    <link rel="stylesheet" href="./assets/index-5c993b45.css">
   </head>
   <body class="flex-vertical">
     <header class="flex-vertical">
-      <nav class="flex-horizontal">
+      <nav class="flex-horizontal nav-bar">
+        <div class="brand flex-horizontal">
+          <span class="brand-badge"><i class="fa-solid fa-microchip"></i></span>
           <div class="header">AssemblyTS</div>
+          <span class="version-pill">RISC-V 32I</span>
+        </div>
+        <div class="header-meta flex-horizontal">
+          <span class="status-indicator" id="statusBadge"><span class="status-dot"></span> Ready</span>
+        </div>
       </nav>
     </header>
     <main class="flex-horizontal">
-        <div class="flex-vertical tools">
-            <input type="text" id="buildAddr" class="tool-input" value="504" required>
-            <span class="tool-span flex-vertical"><span>Build</span><span>Address</span></span>
-            <input type="text" id="runAddr" class="tool-input" value="504" required>
-            <span class="tool-span flex-vertical"><span>Run</span><span>Address</span></span>
-            <div class="tool"></div>
-            <div class="tool flex-vertical" id="buildRun">
-                <i class="fa-solid fa-gears"></i>
-                <span class="tool-span flex-vertical"><span>Build</span><span>&Run</span></span>
-            </div>
-            <div class="tool flex-vertical" id="build">
-                <i class="fa-solid fa-gear"></i>
-                <span>Build</span>
-            </div>
-            <div class="tool flex-vertical" id="run">
-                <i class="fa-solid fa-terminal"></i>
-                <span>Run</span>
-            </div>
-            <div class="tool flex-vertical" id="git">
-                <i class="fa-brands fa-github"></i>
-                <span id="gitStatus" class="tool-span">Login</span>
-            </div>
+      <!-- Left Sidebar Toolbar -->
+      <div class="flex-vertical tools">
+        <div class="tool-group">
+          <label for="buildAddr" class="tool-span flex-vertical"><span>Build</span><span>Address</span></label>
+          <input type="text" id="buildAddr" class="tool-input" value="504" required>
         </div>
-        <div class="memory flex-vertical">
-            <div class="flex-horizontal">
-                <div id="imemory" class="memory-option">Instruction</div>
-                <div id="dmemory" class="memory-option">Data</div>
-            </div>
-            <div id="memory"></div>
+        <div class="tool-group">
+          <label for="runAddr" class="tool-span flex-vertical"><span>Run</span><span>Address</span></label>
+          <input type="text" id="runAddr" class="tool-input" value="504" required>
         </div>
-        <div class="flex-vertical">
-            <div class="registers flex-horizontal" id="registers"></div>
-            <div class="code-container flex-horizontal" id="code-container">
-                <div class="flex-vertical line-num" id="lineNum"></div>
-                <div name="code" id="code" contenteditable="true"></div>
-                <div id="codeTab" class="flex-vertical code-tab"></div>
-            </div>
-            <div name="console" id="console" readonly></div>
+        <div class="tool-divider"></div>
+        <div class="tool flex-vertical tool-primary" id="buildRun" title="Assemble and execute program">
+          <i class="fa-solid fa-gears"></i>
+          <span class="tool-span flex-vertical"><span>Build</span><span>&amp; Run</span></span>
         </div>
-        <div class="pop-up flex-vertical" id="dialogBox"></div>
+        <div class="tool flex-vertical" id="build" title="Assemble instructions into memory">
+          <i class="fa-solid fa-hammer"></i>
+          <span>Build</span>
+        </div>
+        <div class="tool flex-vertical" id="run" title="Execute instructions from Run Address">
+          <i class="fa-solid fa-play"></i>
+          <span>Run</span>
+        </div>
+        <div class="tool flex-vertical" id="reset" title="Reset registers, memory, and console">
+          <i class="fa-solid fa-rotate-left"></i>
+          <span>Reset</span>
+        </div>
+        <div class="tool flex-vertical" id="git" title="Connect to GitHub">
+          <i class="fa-brands fa-github"></i>
+          <span id="gitStatus" class="tool-span">Login</span>
+        </div>
+      </div>
+
+      <!-- Memory Inspector Column -->
+      <div class="memory flex-vertical">
+        <div class="panel-header flex-horizontal">
+          <span class="panel-title"><i class="fa-solid fa-memory"></i> Memory</span>
+          <div class="memory-tabs flex-horizontal">
+            <div id="imemory" class="memory-option active">Instruction</div>
+            <div id="dmemory" class="memory-option">Data</div>
+          </div>
+        </div>
+        <div class="memory-table-head flex-horizontal">
+          <span>Address</span>
+          <span>Hex Value</span>
+        </div>
+        <div id="memory" class="memory-list"></div>
+      </div>
+
+      <!-- Center & Right Workspace -->
+      <div class="workspace flex-vertical">
+        <!-- Register Strip -->
+        <div class="registers-wrapper">
+          <div class="panel-subheader flex-horizontal">
+            <span><i class="fa-solid fa-sliders"></i> Registers (x0 – x31)</span>
+            <span class="panel-hint">Scroll horizontally to inspect all 32 registers</span>
+          </div>
+          <div class="registers flex-horizontal" id="registers"></div>
+        </div>
+
+        <!-- Code Editor + File Explorer -->
+        <div class="code-container flex-horizontal" id="code-container">
+          <div class="editor-surface flex-horizontal">
+            <div class="flex-vertical line-num" id="lineNum"></div>
+            <div name="code" id="code" contenteditable="true" spellcheck="false"></div>
+          </div>
+          <div id="codeTab" class="flex-vertical code-tab"></div>
+        </div>
+
+        <!-- Console Output -->
+        <div class="console-wrapper flex-vertical">
+          <div class="console-header flex-horizontal">
+            <span><i class="fa-solid fa-terminal"></i> Console Output</span>
+            <button id="clearConsole" class="console-clear-btn" title="Clear Console">
+              <i class="fa-solid fa-trash-can"></i> Clear
+            </button>
+          </div>
+          <div name="console" id="console" readonly></div>
+        </div>
+      </div>
+
+      <!-- Modal Dialog Box -->
+      <div class="pop-up flex-vertical" id="dialogBox"></div>
     </main>
     <footer>
-        <!-- Footer section -->
-        <div class="flex-horizontal" id="footer-elements">
-            <div>
-                <a href = "https://github.com/mk314k/AssemblyTS/blob/main/docs/documentation.md">Documentation</a>
-            </div>
-            <div class="flex-horizontal" id ="social-icons"></div>
-            <div id="source-code">
-                <!-- Source code link -->
-                See Source Code on <a href="https://github.com/mk314k/Pyssemble-typescript">Github</a>
-            </div>
+      <div class="flex-horizontal" id="footer-elements">
+        <div class="footer-links flex-horizontal">
+          <a href="https://github.com/mk314k/AssemblyTS/blob/main/docs/documentation.md" target="_blank" rel="noopener noreferrer">
+            <i class="fa-solid fa-book"></i> Documentation
+          </a>
         </div>
+        <div class="flex-horizontal" id="social-icons"></div>
+        <div id="source-code">
+          See Source Code on <a href="https://github.com/mk314k/AssemblyTS" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+        </div>
+      </div>
     </footer>
     
   </body>
